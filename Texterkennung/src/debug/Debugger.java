@@ -10,6 +10,12 @@ public class Debugger implements IGUI
 	}
 
 	@Override
+	public String getName()
+	{
+		return "Debugger";
+	}
+
+	@Override
 	public void gui() {
 		// TODO Auto-generated method stub
 		
