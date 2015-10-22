@@ -3,12 +3,13 @@ package texterkennung;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {
-	public Erkennung_Vertretungsplan(BufferedImage bufferedImage)
+	public Erkennung_Vertretungsplan(BufferedImage bufferedImage, ArrayList<Color> farbListe)
 	{
-		super(bufferedImage);
+		super(bufferedImage, farbListe);
 	}
 
 	@Override

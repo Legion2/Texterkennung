@@ -1,7 +1,8 @@
 package GUI;
 
-public interface IGUI {
+import debug.IInfo;
 
-	
+public interface IGUI extends IInfo
+{
 	public void gui();
 }

@@ -2,9 +2,7 @@ package debug;
 
 import java.awt.image.BufferedImage;
 
-public interface IDebugger 
+public interface IDebugger extends IInfo
 {
-	String getName();
-	
 	BufferedImage visualisieren();
 }
