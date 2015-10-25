@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class MainGUI extends Application {
 
 	private Stage WindowLayout;
-	private BorderPane rootLayout;
+	private BorderPane TexterkennungPanels;
 
 	@Override
 	public void start(Stage WindowLayout) {
@@ -21,7 +21,7 @@ public class MainGUI extends Application {
 
 		initRootLayout();
 
-		//showPersonOverview();
+		showPersonOverview();
 	}
 
 	/**
@@ -32,10 +32,10 @@ public class MainGUI extends Application {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainGUI.class.getResource("views/WindowLayout.fxml"));
-			rootLayout = (BorderPane) loader.load();
+			TexterkennungPanels = (BorderPane) loader.load();
 
 			// Show the scene containing the root layout.
-			Scene scene = new Scene(rootLayout);
+			Scene scene = new Scene(TexterkennungPanels);
 			WindowLayout.setScene(scene);
 			WindowLayout.show();
 		} catch (IOException e) {
@@ -50,11 +50,11 @@ public class MainGUI extends Application {
 		try {
 			// Load person overview.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainGUI.class.getResource("PersonOverview.fxml"));
+			loader.setLocation(MainGUI.class.getResource("views/TexterkennungPanels.fxml"));
 			AnchorPane personOverview = (AnchorPane) loader.load();
 
 			// Set person overview into the center of root layout.
-			rootLayout.setCenter(personOverview);
+			TexterkennungPanels.setCenter(personOverview);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
