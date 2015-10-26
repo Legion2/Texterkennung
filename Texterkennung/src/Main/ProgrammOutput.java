@@ -1,6 +1,5 @@
 package Main;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class ProgrammOutput implements IGUI
 
 	@Override
 	public void gui() {
-		// muss geändert werden
+		// TODO Hier muss die gui ausgegeben werden
 		
 	}
 
@@ -42,7 +41,7 @@ public class ProgrammOutput implements IGUI
             
             this.erkennung.run(par1, par2);
         }
-      //+update gui
+      // TODO Hier muss die Anzeige der gui aktuallisiert werden
 	}
 	
 	/**
@@ -50,7 +49,7 @@ public class ProgrammOutput implements IGUI
 	 */
 	public void Knopf_gedrueckt_Bildladen()
 	{
-        //Pfad zur Bild datei
+        // TODO Pfad zur Bild datei
 		String pfad = "";
         if (pfad != null)
         {
@@ -60,7 +59,7 @@ public class ProgrammOutput implements IGUI
             	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
             	this.erkennung = new Erkennung_Text(ImageIO.read(new File(pfad)), farbListe, new Font("Arial", Font.PLAIN, 30));
 
-                //+update gui
+                // TODO Hier muss die Anzeige der gui aktuallisiert werden
             } catch (IOException ex) {
                 System.out.println("Fehler aufgetreten beim Lesen der Datei");
             }

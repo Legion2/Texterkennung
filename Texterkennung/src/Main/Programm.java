@@ -3,6 +3,7 @@ package Main;
 import java.util.ArrayList;
 
 import GUI.IGUI;
+import GUI.MainGUI;
 import debug.Debugger;
 import texterkennung.Erkennung;
 
@@ -20,6 +21,6 @@ public class Programm
 		IGUIList.add(new ProgrammOutput());
 		IGUIList.add(new Debugger());
 		//TODO Gui ist zu implementieren
-		//GUI gui = new GUI(IGUIList);
+		MainGUI gui = new MainGUI(IGUIList);
 	}
 }

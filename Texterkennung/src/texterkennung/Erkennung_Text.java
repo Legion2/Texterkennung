@@ -59,11 +59,13 @@ public class Erkennung_Text extends Erkennung
 				}
 			}
 		}
+		
+		// TODO nichtfertig
 	}
 
 	@Override
 	public void gui(Graphics g, int w) {
 		// TODO Auto-generated method stub
-		
+		// TODO nichtfertig
 	}
 }

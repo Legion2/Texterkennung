@@ -6,7 +6,7 @@ public class Debugger implements IGUI
 {
 	public Debugger()
 	{
-		
+		// TODO nichtfertig
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class Debugger implements IGUI
 
 	@Override
 	public void gui() {
-		// TODO Auto-generated method stub
+		// TODO Hier die Gui für den debugger erstellen
 		
 	}
 }

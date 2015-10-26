@@ -1,6 +1,7 @@
 package GUI;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +10,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class MainGUI extends Application {
-
+public class MainGUI extends Application
+{
+	private ArrayList<IGUI> iGUIList;
+	
 	private Stage WindowLayout;
 	private BorderPane TexterkennungPanels;
+
+	public MainGUI(ArrayList<IGUI> iGUIList)
+	{
+		// TODO Gui change implementieren
+		this.iGUIList = iGUIList;
+	}
 
 	@Override
 	public void start(Stage WindowLayout) {

@@ -16,6 +16,8 @@ public class Operator_Verbindungen extends Operator
 	{
 		//this.originalBild = originalBild;
 		//this.farbListe = farbListe;
+		
+		// TODO nichtfertig
 	}
 	
 	
@@ -49,5 +51,7 @@ public class Operator_Verbindungen extends Operator
 				
 			}
 		}*/
+		
+		// TODO nichtfertig
 	}
 }
