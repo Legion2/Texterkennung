@@ -1,4 +1,4 @@
-package texterkennung;
+package advanced;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -170,7 +170,7 @@ public class ABufferedImage extends BufferedImage
 	public int getGruen(int x, int y)
 	{
 		int argb  = this.getRGB(x, y);
-		return(argb >> 8)  & 0xff;
+		return (argb >> 8)  & 0xff;
 	}
 	
 	public int getBlau(int x, int y)

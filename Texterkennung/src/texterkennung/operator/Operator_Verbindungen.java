@@ -1,9 +1,24 @@
 package texterkennung.operator;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-public class Operator_Verbindungen extends Operator{
+import advanced.ABufferedImage;
+import advanced.AColor;
 
+public class Operator_Verbindungen extends Operator
+{
+	private int[][] gruppen;
+	
+	
+	
+	public Operator_Verbindungen(ABufferedImage originalBild, ArrayList<AColor> farbListe)
+	{
+		//this.originalBild = originalBild;
+		//this.farbListe = farbListe;
+	}
+	
+	
 	@Override
 	public String getName()
 	{
@@ -17,8 +32,22 @@ public class Operator_Verbindungen extends Operator{
 	}
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
+	public void run()
+	{
+		/*this.gruppen = new int[this.originalBild.getWidth()][this.originalBild.getHeight()];
+		this.gruppen[0][0] = 0;
 		
+		for (int x = 1; x < this.originalBild.getWidth(); x++)
+		{
+			
+		}
+		
+		for (int y = 1; y < this.originalBild.getHeight(); y++)
+		{
+			for (int x = 1; x < this.originalBild.getWidth(); x++)
+			{
+				
+			}
+		}*/
 	}
 }

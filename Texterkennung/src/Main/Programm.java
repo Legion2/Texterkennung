@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import GUI.IGUI;
 import debug.Debugger;
 import texterkennung.Erkennung;
-import texterkennung.Zeichen;
 
 public class Programm
 {
@@ -20,15 +19,7 @@ public class Programm
 		ArrayList<IGUI> IGUIList = new ArrayList<IGUI>();
 		IGUIList.add(new ProgrammOutput());
 		IGUIList.add(new Debugger());
-		//ist zu implementieren
+		//TODO Gui ist zu implementieren
 		//GUI gui = new GUI(IGUIList);
-		
-		//wird dann entfernt
-		Fenster f = new Fenster(this);
-		
-		
-		
-        f.setVisible(true);
-        Zeichen.setup();
 	}
 }

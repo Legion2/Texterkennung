@@ -1,24 +1,27 @@
 package texterkennung;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import advanced.ABufferedImage;
+import advanced.AColor;
 import debug.IDebugger;
 
 public abstract class Erkennung implements IDebugger {
 
-	protected ArrayList<Color> farbListe;
+	protected ArrayList<AColor> farbListe;
 	
 	protected final ABufferedImage originalBild;
 	protected ABufferedImage testBild;
 	
-	public Erkennung(BufferedImage bufferedImage, ArrayList<Color> farbListe)
+	public Erkennung(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font)
 	{
 		this.originalBild = new ABufferedImage(bufferedImage);
 		this.originalBild.setImage(bufferedImage);
 		this.farbListe = farbListe;
+		Zeichen.setup(font);
 	}
 
 	public abstract void run(int par1, int par2);

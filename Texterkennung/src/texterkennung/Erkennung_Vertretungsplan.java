@@ -1,15 +1,18 @@
 package texterkennung;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import advanced.AColor;
+import texterkennung.operator.Operator_Verbindungen;
+
 public class Erkennung_Vertretungsplan extends Erkennung
 {
-	public Erkennung_Vertretungsplan(BufferedImage bufferedImage, ArrayList<Color> farbListe)
+	public Erkennung_Vertretungsplan(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font)
 	{
-		super(bufferedImage, farbListe);
+		super(bufferedImage, farbListe, font);
 	}
 
 	@Override
@@ -29,7 +32,19 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	{
 		System.out.println("run");
 		
-		testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		new Operator_Verbindungen(this.originalBild, farbListe);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
 		for (int x = 0; x < this.originalBild.getWidth(); x++)
 		{
@@ -53,7 +68,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 					this.originalBild.setRGB(x, y, new Color(this.originalBild.getRot(x, y), this.originalBild.getGruen(x, y), this.originalBild.getBlau(x, y), 0).getRGB());
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override

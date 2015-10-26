@@ -1,6 +1,7 @@
 package Main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import GUI.IGUI;
+import advanced.AColor;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 
@@ -54,9 +56,9 @@ public class ProgrammOutput implements IGUI
         {
             try
             {
-            	ArrayList<Color> farbListe = new ArrayList<Color>();
-            	farbListe.add(new Color(0, 0, 0));//Farbe Schwarz
-            	this.erkennung = new Erkennung_Text(ImageIO.read(new File(pfad)), farbListe);
+            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
+            	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+            	this.erkennung = new Erkennung_Text(ImageIO.read(new File(pfad)), farbListe, new Font("Arial", Font.PLAIN, 30));
 
                 //+update gui
             } catch (IOException ex) {

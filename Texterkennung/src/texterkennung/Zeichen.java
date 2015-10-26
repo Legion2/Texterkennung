@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import advanced.ABufferedImage;
+
 public class Zeichen 
 {
 	//Parameter
@@ -20,14 +22,14 @@ public class Zeichen
 	private int[] snow_v;
 	private int[] snow_h;
 	
-	public Zeichen(char c)
+	public Zeichen(char c, Font f)
 	{
 		this.zeichen = c;
 		//Zeichen zeichnen
 		zeichenBild = new ABufferedImage(h, v, BufferedImage.TYPE_BYTE_GRAY);
 		Graphics2D g = zeichenBild.createGraphics();
 		//g.setFont(g.getFont().deriveFont(30f));
-		g.setFont(new Font("Arial", Font.PLAIN, 30));
+		g.setFont(f);
 		g.drawString(String.valueOf(c), 0, 20);
 		
 		//Summe erstellen
@@ -46,18 +48,18 @@ public class Zeichen
 		}
 	}
 	
-	public static void setup()
+	public static void setup(Font f)
 	{
 		zeichenListe = new HashMap<String, Zeichen>();
 		for (int i = 0; i < standartZeichen.length(); i++)
 		{
-			add(standartZeichen.charAt(i));
+			add(standartZeichen.charAt(i), f);
 		}
 	}
 	
-	public static void add(char c)
+	public static void add(char c, Font f)
 	{
-		zeichenListe.put(String.valueOf(c), new Zeichen(c));
+		zeichenListe.put(String.valueOf(c), new Zeichen(c, f));
 	}
 	
 	public BufferedImage getBufferedImage() {
