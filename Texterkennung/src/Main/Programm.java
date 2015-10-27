@@ -21,6 +21,6 @@ public class Programm
 		IGUIList.add(new ProgrammOutput());
 		IGUIList.add(new Debugger());
 		//TODO Gui ist zu implementieren
-		MainGUI gui = new MainGUI(IGUIList);
+		//MainGUI gui = new MainGUI(IGUIList);
 	}
 }

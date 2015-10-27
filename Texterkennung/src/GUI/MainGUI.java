@@ -17,11 +17,7 @@ public class MainGUI extends Application
 	private Stage WindowLayout;
 	private BorderPane TexterkennungPanels;
 
-	public MainGUI(ArrayList<IGUI> iGUIList)
-	{
-		// TODO Gui change implementieren
-		this.iGUIList = iGUIList;
-	}
+	
 
 	@Override
 	public void start(Stage WindowLayout) {
