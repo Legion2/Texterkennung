@@ -1,4 +1,4 @@
-package Main;
+package GUI;
 
 import java.awt.Font;
 import java.io.File;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import GUI.IGUI;
 import advanced.AColor;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;

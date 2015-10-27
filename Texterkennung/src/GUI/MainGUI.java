@@ -3,6 +3,7 @@ package GUI;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import debug.Debugger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +18,14 @@ public class MainGUI extends Application
 	private Stage WindowLayout;
 	private BorderPane TexterkennungPanels;
 
-	
+	@Override
+	public void init()
+	{
+		// Init all classes for the program and add them to GUIList
+		this.iGUIList = new ArrayList<IGUI>();
+		this.iGUIList.add(new ProgrammOutput());
+		this.iGUIList.add(new Debugger());
+	}
 
 	@Override
 	public void start(Stage WindowLayout) {
