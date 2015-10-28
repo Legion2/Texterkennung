@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import advanced.ABufferedImage;
 import advanced.AColor;
+import texterkennung.data.Data_int;
+import texterkennung.operator.Operator_Farbzuordnung;
+import texterkennung.operator.Operator_Verbindungen;
 
 public class Erkennung_Text extends Erkennung
 {
@@ -34,7 +37,13 @@ public class Erkennung_Text extends Erkennung
 	{
 		System.out.println("run");
 		
-		testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, 5);
+		OF.run();
+		
+		Operator_Verbindungen OV = new Operator_Verbindungen((Data_int) OF.getData());
+		
+		
+		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
 		for (int x = 0; x < this.originalBild.getWidth(); x++)
 		{
@@ -58,7 +67,7 @@ public class Erkennung_Text extends Erkennung
 					this.originalBild.setRGB(x, y, new Color(this.originalBild.getRot(x, y), this.originalBild.getGruen(x, y), this.originalBild.getBlau(x, y), 0).getRGB());
 				}
 			}
-		}
+		}*/
 		
 		// TODO nichtfertig
 	}

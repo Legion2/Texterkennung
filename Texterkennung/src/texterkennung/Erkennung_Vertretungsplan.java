@@ -32,7 +32,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	{
 		System.out.println("run");
 		
-		new Operator_Verbindungen(this.originalBild, farbListe);
+		
 		
 		
 		

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import advanced.ABufferedImage;
 import advanced.AColor;
+import texterkennung.data.Data;
+import texterkennung.data.Data_int;
 
 /**
  * Sortiert Hintergrundfarben aus
@@ -53,10 +55,17 @@ public class Operator_Farbzuordnung extends Operator
 				{
 					i++;
 				}
+				if (i != farbListe.size())
+				{
+					gruppen[x][y] = i;
+				}
 			}
 		}
-		
-		// TODO nichtfertig
 	}
-
+	
+	@Override
+	public Data getData()
+	{
+		return new Data_int(gruppen);
+	}
 }

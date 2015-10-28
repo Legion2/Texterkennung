@@ -5,18 +5,18 @@ import java.util.ArrayList;
 
 import advanced.ABufferedImage;
 import advanced.AColor;
+import texterkennung.data.Data;
+import texterkennung.data.Data_int;
 
 public class Operator_Verbindungen extends Operator
 {
-	private int[][] gruppen;
+	private Data_int data_int;
 	
 	
 	
-	public Operator_Verbindungen(ABufferedImage originalBild, ArrayList<AColor> farbListe)
+	public Operator_Verbindungen(Data_int data_int)
 	{
-		//this.originalBild = originalBild;
-		//this.farbListe = farbListe;
-		
+		this.data_int = data_int;		
 		// TODO nichtfertig
 	}
 	
@@ -53,5 +53,12 @@ public class Operator_Verbindungen extends Operator
 		}*/
 		
 		// TODO nichtfertig
+	}
+
+
+	@Override
+	public Data getData() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

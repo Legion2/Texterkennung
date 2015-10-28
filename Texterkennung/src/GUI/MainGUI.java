@@ -22,6 +22,8 @@ public class MainGUI extends Application
 	public void init()
 	{
 		// Init all classes for the program and add them to GUIList
+		// TODO 
+		
 		this.iGUIList = new ArrayList<IGUI>();
 		this.iGUIList.add(new ProgrammOutput());
 		this.iGUIList.add(new Debugger());
