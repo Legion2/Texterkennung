@@ -3,7 +3,6 @@ package GUI;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import debug.Debugger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,9 +23,11 @@ public class MainGUI extends Application
 		// Init all classes for the program and add them to GUIList
 		// TODO 
 		
-		this.iGUIList = new ArrayList<IGUI>();
+		/*this.iGUIList = new ArrayList<IGUI>();
 		this.iGUIList.add(new ProgrammOutput());
-		this.iGUIList.add(new Debugger());
+		this.iGUIList.add(new Debugger());*/
+		
+		new ProgrammOutput();
 	}
 
 	@Override

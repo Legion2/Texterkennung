@@ -10,14 +10,13 @@ import texterkennung.data.Data_int;
 
 public class Operator_Verbindungen extends Operator
 {
-	private Data_int data_int;
-	
+	private Data_int data_int_input;
+	private Data_int data_int_output;
 	
 	
 	public Operator_Verbindungen(Data_int data_int)
 	{
-		this.data_int = data_int;		
-		// TODO nichtfertig
+		this.data_int_input = data_int;
 	}
 	
 	
@@ -36,7 +35,11 @@ public class Operator_Verbindungen extends Operator
 	@Override
 	public void run()
 	{
-		/*this.gruppen = new int[this.originalBild.getWidth()][this.originalBild.getHeight()];
+		
+		
+		
+		this.data_int_output = new Data_int(data_int_input);
+		
 		this.gruppen[0][0] = 0;
 		
 		for (int x = 1; x < this.originalBild.getWidth(); x++)
@@ -50,15 +53,15 @@ public class Operator_Verbindungen extends Operator
 			{
 				
 			}
-		}*/
+		}
 		
 		// TODO nichtfertig
 	}
 
 
 	@Override
-	public Data getData() {
-		// TODO Auto-generated method stub
-		return null;
+	public Data getData()
+	{
+		return this.data_int_output;
 	}
 }
