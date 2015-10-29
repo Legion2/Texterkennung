@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import advanced.AColor;
-import texterkennung.operator.Operator_Verbindungen;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {

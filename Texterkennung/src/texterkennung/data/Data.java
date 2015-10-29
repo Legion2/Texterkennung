@@ -1,6 +1,8 @@
 package texterkennung.data;
 
-public abstract class Data
+import debug.IDebugger;
+
+public abstract class Data implements IDebugger
 {
 
 }

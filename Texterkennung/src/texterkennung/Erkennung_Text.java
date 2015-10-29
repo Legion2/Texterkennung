@@ -1,12 +1,10 @@
 package texterkennung;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data_int;
 import texterkennung.operator.Operator_Farbzuordnung;

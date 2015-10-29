@@ -1,6 +1,5 @@
 package texterkennung.operator;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import advanced.ABufferedImage;
@@ -30,14 +29,7 @@ public class Operator_Farbzuordnung extends Operator
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
 	}
-
-	@Override
-	public BufferedImage visualisieren() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	
 	public String getName()
 	{
 		return "Operator_Farbzuordnung";
@@ -66,6 +58,6 @@ public class Operator_Farbzuordnung extends Operator
 	@Override
 	public Data getData()
 	{
-		return new Data_int(gruppen);
+		return new Data_int(this.originalBild.getWidth(), this.originalBild.getHeight(), this.gruppen);
 	}
 }
