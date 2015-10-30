@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import advanced.AColor;
-import texterkennung.data.Data_int;
+import texterkennung.data.Data_ID;
+import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_Verbindungen;
 
@@ -25,9 +26,9 @@ public class Erkennung_Text extends Erkennung
 	}
 
 	@Override
-	public BufferedImage visualisieren() {
-		// TODO Auto-generated method stub
-		return null;
+	public BufferedImage visualisieren()
+	{
+		return this.testBild;
 	}
 
 	@Override
@@ -38,7 +39,11 @@ public class Erkennung_Text extends Erkennung
 		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, 5);
 		OF.run();
 		
-		Operator_Verbindungen OV = new Operator_Verbindungen((Data_int) OF.getData());
+		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
+		OV.run();
+		
+		new Data_NPOS((Data_ID) OV.getData());
+		
 		
 		
 		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);

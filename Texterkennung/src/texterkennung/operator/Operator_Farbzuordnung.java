@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data;
-import texterkennung.data.Data_int;
+import texterkennung.data.Data_ID;
 
 /**
  * Sortiert Hintergrundfarben aus
@@ -30,6 +30,15 @@ public class Operator_Farbzuordnung extends Operator
 		this.schwellwert = schwellwert;
 	}
 	
+	@SuppressWarnings("null")
+	public Operator_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe)
+	{
+		this.originalBild = originalBild;
+		this.farbListe = farbListe;
+		this.schwellwert = (Integer) null;
+	}
+	
+	@Override
 	public String getName()
 	{
 		return "Operator_Farbzuordnung";
@@ -38,6 +47,7 @@ public class Operator_Farbzuordnung extends Operator
 	@Override
 	public void run()
 	{
+		//TODO parallelisieren??? möglich ist es
 		for (int y = 0; y < this.originalBild.getHeight(); y++)
 		{
 			for (int x = 0; x < this.originalBild.getWidth(); x++)
@@ -49,7 +59,11 @@ public class Operator_Farbzuordnung extends Operator
 				}
 				if (i != farbListe.size())
 				{
-					gruppen[x][y] = i;
+					gruppen[x][y] = i+1;
+				}
+				else
+				{
+					gruppen[x][y] = 0;
 				}
 			}
 		}
@@ -58,6 +72,6 @@ public class Operator_Farbzuordnung extends Operator
 	@Override
 	public Data getData()
 	{
-		return new Data_int(this.originalBild.getWidth(), this.originalBild.getHeight(), this.gruppen);
+		return new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), this.gruppen);
 	}
 }

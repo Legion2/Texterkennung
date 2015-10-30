@@ -1,37 +1,39 @@
 package texterkennung.data;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-public class Data_int extends Data
+public class Data_ID extends Data
 {
 	private final int xlenght;
 	private final int ylenght;
 	private int[][] data;
+	private int maxid = 0;
 	
-	public Data_int(int x, int y)
+	public Data_ID(int x, int y)
 	{
 		this.xlenght = x;
 		this.ylenght = y;
 		this.data = new int[x][y];
 	}
 	
-	public Data_int(int x, int y, int[][] data)
+	public Data_ID(int x, int y, int[][] data)
 	{
 		this.xlenght = x;
 		this.ylenght = y;
 		this.data = data;
 	}
 
-	public Data_int(Data_int data_int_input)
+	public Data_ID(Data_ID data_ID_input)
 	{
-		this.xlenght = data_int_input.xlenght;
-		this.ylenght = data_int_input.ylenght;
+		this.xlenght = data_ID_input.xlenght;
+		this.ylenght = data_ID_input.ylenght;
 		this.data = new int[this.xlenght][this.ylenght];
 	}
 	
 	public int getInt(int x, int y)
 	{
-		return this.data[x][y];
+		return (x < 0 || y < 0) ? 0 : this.data[x][y];
 	}
 	
 	public void setInt(int x, int y, int wert)
@@ -58,7 +60,8 @@ public class Data_int extends Data
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				// TODO
+				// TODO testen!!!
+				bi.setRGB(x, y, new Color((this.data[x][y]*5)%255, 255 - (this.data[x][y]*7)%255, (this.data[x][y]*11)%255).getRGB());
 			}
 		}
 		
@@ -69,5 +72,15 @@ public class Data_int extends Data
 	public String getName()
 	{
 		return "Int-Array-Data";
+	}
+
+	public int getMaxid()
+	{
+		return maxid;
+	}
+
+	public void setMaxid(int maxid)
+	{
+		this.maxid = maxid;
 	}
 }

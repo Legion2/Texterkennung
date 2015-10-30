@@ -1,21 +1,20 @@
 package texterkennung.operator;
 
 import texterkennung.data.Data;
-import texterkennung.data.Data_int;
+import texterkennung.data.Data_ID;
 
 public class Operator_Verbindungen extends Operator
 {
-	private Data_int data_int_input;
-	private Data_int data_int_output;
+	private Data_ID data_int_input;
+	private Data_ID data_int_output;
 	
 	
-	public Operator_Verbindungen(Data_int data_int)
+	public Operator_Verbindungen(Data_ID data_int)
 	{
 		this.data_int_input = data_int;
 	}
 	
-	
-	
+	@Override
 	public String getName()
 	{
 		return "Verbindungen";
@@ -24,25 +23,32 @@ public class Operator_Verbindungen extends Operator
 	@Override
 	public void run()
 	{
+		int x = 0, y = 0, id = 0;
+		this.data_int_output = new Data_ID(data_int_input);
 		
-		this.data_int_output = new Data_int(data_int_input);
-		
-		this.data_int_output.setInt(0, 0, 0);
-		
-		for (int x = 1; x < this.data_int_input.getXlenght(); x++)
+		for (y = 0; y < this.data_int_input.getYlenght(); y++)
 		{
-			
-		}
-		
-		for (int y = 1; y < this.data_int_input.getYlenght(); y++)
-		{
-			for (int x = 1; x < this.data_int_input.getXlenght(); x++)
+			for (x = 0; x < this.data_int_input.getXlenght(); x++)
 			{
-				
+				if (this.data_int_input.getInt(x - 1, y) == this.data_int_input.getInt(x, y))
+				{
+					this.data_int_output.setInt(x, y, this.data_int_output.getInt(x - 1, y));
+				}
+				else if (this.data_int_input.getInt(x, y - 1) == this.data_int_input.getInt(x, y))
+				{
+					this.data_int_output.setInt(x, y, this.data_int_output.getInt(x, y - 1));
+				}
+				else
+				{
+					id++;
+					this.data_int_output.setInt(x, y, id);
+				}
 			}
 		}
 		
-		// TODO nichtfertig
+		this.data_int_output.setMaxid(id);
+		// TODO testen!!!
+		// TODO noch nichtfertig
 	}
 
 
