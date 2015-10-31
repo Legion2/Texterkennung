@@ -34,11 +34,13 @@ public class ProgrammOutput implements IGUI
 	{
         if (this.erkennung != null)
         {
-        	
+        	/* TODO only testing
         	int par1=Integer.parseInt("");
             int par2=Integer.parseInt("");
             
             this.erkennung.run(par1, par2);
+            */
+            this.erkennung.run(0, 0);
         }
       // TODO Hier muss die Anzeige der gui aktuallisiert werden
 	}
@@ -49,7 +51,7 @@ public class ProgrammOutput implements IGUI
 	public void Knopf_gedrueckt_Bildladen()
 	{
         // TODO Pfad zur Bild datei
-		String pfad = "";
+		String pfad = "D:/GitHub/Texterkennung/Texterkennung/res/Text.png";
         if (pfad != null)
         {
             try

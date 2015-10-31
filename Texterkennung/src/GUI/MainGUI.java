@@ -2,6 +2,7 @@ package GUI;
 
 import java.io.IOException;
 
+import debug.Debugger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +12,8 @@ import javafx.stage.Stage;
 
 public class MainGUI extends Application
 {
-	//private ArrayList<IGUI> iGUIList;
+	private static Debugger debugger;
+	private ProgrammOutput programmOutput;
 	
 	private Stage WindowLayout;
 	private BorderPane TexterkennungPanels;
@@ -22,11 +24,9 @@ public class MainGUI extends Application
 		// Init all classes for the program and add them to GUIList
 		// TODO 
 		
-		/*this.iGUIList = new ArrayList<IGUI>();
-		this.iGUIList.add(new ProgrammOutput());
-		this.iGUIList.add(new Debugger());*/
 		
-		new ProgrammOutput();
+		debugger = new Debugger();
+		this.programmOutput = new ProgrammOutput();
 	}
 
 	@Override
@@ -37,6 +37,15 @@ public class MainGUI extends Application
 		initRootLayout();
 
 		showPersonOverview();
+		
+		//------------------------------------------------------
+		/**
+		 * only for testing
+		 * TODO remove this later
+		 */
+		this.programmOutput.Knopf_gedrueckt_Bildladen();
+		this.programmOutput.Knopf_gedrueckt_Texterkennen();
+		//-------------------------------------------------
 	}
 
 	/**
@@ -85,5 +94,10 @@ public class MainGUI extends Application
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public static Debugger getDebugger()
+	{
+		return debugger;
 	}
 }

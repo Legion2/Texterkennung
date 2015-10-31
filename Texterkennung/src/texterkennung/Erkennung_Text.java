@@ -5,11 +5,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import GUI.MainGUI;
+import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_Verbindungen;
+import texterkennung.operator.Operator_Zeichenzuordnung;
 
 public class Erkennung_Text extends Erkennung
 {
@@ -36,15 +39,19 @@ public class Erkennung_Text extends Erkennung
 	{
 		System.out.println("run");
 		
-		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, 5);
+		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, 100);
 		OF.run();
 		
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
 		OV.run();
 		
-		new Data_NPOS((Data_ID) OV.getData());
+		Data_NPOS data_NPOS = new Data_NPOS((Data_ID) OV.getData());//Daten umwandeln
 		
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS);
+		OZ.run();
 		
+		this.testBild = new ABufferedImage(originalBild);//TODO testing only
+		MainGUI.getDebugger().savelist();
 		
 		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		

@@ -17,7 +17,7 @@ import texterkennung.data.Data_ID;
  */
 public class Operator_Farbzuordnung extends Operator
 {
-	private int[][] gruppen;
+	private Data_ID data_ID;
 	
 	private final ABufferedImage originalBild;
 	private final ArrayList<AColor> farbListe;
@@ -28,6 +28,7 @@ public class Operator_Farbzuordnung extends Operator
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
 	}
 	
 	@SuppressWarnings("null")
@@ -36,6 +37,7 @@ public class Operator_Farbzuordnung extends Operator
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = (Integer) null;
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
 	}
 	
 	@Override
@@ -59,11 +61,11 @@ public class Operator_Farbzuordnung extends Operator
 				}
 				if (i != farbListe.size())
 				{
-					gruppen[x][y] = i+1;
+					this.data_ID.setInt(x, y, i + 1);
 				}
 				else
 				{
-					gruppen[x][y] = 0;
+					this.data_ID.setInt(x, y, 0);
 				}
 			}
 		}
@@ -72,6 +74,6 @@ public class Operator_Farbzuordnung extends Operator
 	@Override
 	public Data getData()
 	{
-		return new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), this.gruppen);
+		return this.data_ID;
 	}
 }

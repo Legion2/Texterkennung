@@ -3,52 +3,37 @@ package texterkennung.data;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-public class Data_ID extends Data
+public class Data_ID extends Data2D
 {
-	private final int xlenght;
-	private final int ylenght;
 	private int[][] data;
 	private int maxid = 0;
 	
 	public Data_ID(int x, int y)
 	{
-		this.xlenght = x;
-		this.ylenght = y;
+		super(x, y);
 		this.data = new int[x][y];
 	}
 	
 	public Data_ID(int x, int y, int[][] data)
 	{
-		this.xlenght = x;
-		this.ylenght = y;
+		super(x, y);
 		this.data = data;
 	}
 
 	public Data_ID(Data_ID data_ID_input)
 	{
-		this.xlenght = data_ID_input.xlenght;
-		this.ylenght = data_ID_input.ylenght;
+		super(data_ID_input.xlenght, data_ID_input.ylenght);
 		this.data = new int[this.xlenght][this.ylenght];
 	}
 	
 	public int getInt(int x, int y)
 	{
-		return (x < 0 || y < 0) ? 0 : this.data[x][y];
+		return (x < 0 || y < 0 || x >= this.xlenght || y >= this.ylenght) ? 0 : this.data[x][y];
 	}
 	
 	public void setInt(int x, int y, int wert)
 	{
 		this.data[x][y] = wert;
-	}
-	
-	public int getXlenght()
-	{
-		return xlenght;
-	}
-	
-	public int getYlenght()
-	{
-		return ylenght;
 	}
 	
 	@Override
@@ -61,7 +46,7 @@ public class Data_ID extends Data
 			for (int x = 0; x < this.xlenght; x++)
 			{
 				// TODO testen!!!
-				bi.setRGB(x, y, new Color((this.data[x][y]*5)%255, 255 - (this.data[x][y]*7)%255, (this.data[x][y]*11)%255).getRGB());
+				bi.setRGB(x, y, new Color((this.data[x][y]*17)%255, 255 - (this.data[x][y]*47)%255, (this.data[x][y]*23)%255).getRGB());
 			}
 		}
 		
@@ -71,7 +56,7 @@ public class Data_ID extends Data
 	@Override
 	public String getName()
 	{
-		return "Int-Array-Data";
+		return "ID-Array-Data";
 	}
 
 	public int getMaxid()
