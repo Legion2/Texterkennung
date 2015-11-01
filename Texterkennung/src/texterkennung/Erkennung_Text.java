@@ -11,6 +11,7 @@ import advanced.AColor;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
+import texterkennung.operator.Operator_Raster;
 import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenzuordnung;
 
@@ -38,20 +39,40 @@ public class Erkennung_Text extends Erkennung
 	public void run(int par1, int par2)
 	{
 		System.out.println("run");
+		int schwellwert = 200;
+		int vergleichsID = 0;
 		
-		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, 100);
+		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
 		OF.run();
 		
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
 		OV.run();
 		
-		Data_NPOS data_NPOS = new Data_NPOS((Data_ID) OV.getData());//Daten umwandeln
+		Data_ID data_ID = (Data_ID) OV.getData();
 		
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS);
+		Data_NPOS data_NPOS = new Data_NPOS(data_ID);//Daten umwandeln
+		data_NPOS.setData(data_ID);
+		
+		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
+		OR.run();
+		
+		
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS, (Data_NPOS) OR.getData());
 		OZ.run();
+		
+		
+		
+		
+		
+		
 		
 		this.testBild = new ABufferedImage(originalBild);//TODO testing only
 		MainGUI.getDebugger().savelist();
+		
+		
+		
+		
+		
 		
 		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		

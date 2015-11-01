@@ -11,21 +11,20 @@ public class Data_ID extends Data2D
 	public Data_ID(int x, int y)
 	{
 		super(x, y);
-		this.data = new int[x][y];
 	}
 	
+	//not used
 	public Data_ID(int x, int y, int[][] data)
 	{
 		super(x, y);
 		this.data = data;
 	}
-
-	public Data_ID(Data_ID data_ID_input)
-	{
-		super(data_ID_input.xlenght, data_ID_input.ylenght);
-		this.data = new int[this.xlenght][this.ylenght];
-	}
 	
+	public Data_ID(Data2D data2d)
+	{
+		super(data2d);
+	}
+
 	public int getInt(int x, int y)
 	{
 		return (x < 0 || y < 0 || x >= this.xlenght || y >= this.ylenght) ? 0 : this.data[x][y];
@@ -67,5 +66,11 @@ public class Data_ID extends Data2D
 	public void setMaxid(int maxid)
 	{
 		this.maxid = maxid;
+	}
+
+	@Override
+	protected void init()
+	{
+		this.data = new int[this.xlenght][this.ylenght];
 	}
 }

@@ -10,7 +10,18 @@ public abstract class Data2D extends Data
 		super();
 		this.xlenght = x;
 		this.ylenght = y;
+		init();
 	}
+	
+	public Data2D(Data2D data)
+	{
+		super();
+		this.xlenght = data.xlenght;
+		this.ylenght = data.ylenght;
+		init();
+	}
+	
+	protected abstract void init();
 	
 	public int getXlenght()
 	{

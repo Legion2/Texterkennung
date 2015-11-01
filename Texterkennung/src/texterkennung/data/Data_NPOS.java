@@ -1,31 +1,24 @@
 package texterkennung.data;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class Data_NPOS extends Data2D
 {
 	private int[][] xPOS;
 	private int[][] yPOS;
-	
-	public Data_NPOS(Data_ID data_ID)
+
+	public Data_NPOS(Data2D data2d)
 	{
-		super(data_ID.xlenght, data_ID.ylenght);
-		this.xPOS = new int[data_ID.xlenght][data_ID.ylenght];
-		this.yPOS = new int[data_ID.xlenght][data_ID.ylenght];
-		
-		setData(data_ID);
+		super(data2d);
+	}
+
+	protected void init()
+	{
+		this.xPOS = new int[this.xlenght][this.ylenght];
+		this.yPOS = new int[this.xlenght][this.ylenght];
 	}
 	
-	public Data_NPOS(Data_NPOS data_NPOS)
-	{
-		super(data_NPOS.xlenght, data_NPOS.ylenght);
-		
-		this.xPOS = new int[data_NPOS.xlenght][data_NPOS.ylenght];
-		this.yPOS = new int[data_NPOS.xlenght][data_NPOS.ylenght];
-	}
-	
-	private void setData(Data_ID data_ID)
+	public void setData(Data_ID data_ID)
 	{
 		//TODO parallelisieren??? möglich ist es
 		
@@ -76,5 +69,17 @@ public class Data_NPOS extends Data2D
 	public String getName()
 	{
 		return "Next-Position-Data";
+	}
+	
+	public void setNPOS(int x, int y, int xset, int yset)
+	{
+		this.xPOS[x][y] = xset;
+		this.yPOS[x][y] = yset;
+	}
+	
+	public int[] getNPOS(int x, int y)
+	{
+		int[] array = {this.xPOS[x][y], this.yPOS[x][y]};
+		return array;
 	}
 }

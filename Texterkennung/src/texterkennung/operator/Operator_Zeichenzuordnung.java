@@ -8,7 +8,7 @@ public class Operator_Zeichenzuordnung extends Operator
 	private Data_NPOS data_NPOS_input;
 	private Data_NPOS data_NPOS_output;
 	
-	public Operator_Zeichenzuordnung(Data_NPOS data_NPOS)
+	public Operator_Zeichenzuordnung(Data_NPOS data_NPOS, Data_NPOS data_NPOS2)
 	{
 		this.data_NPOS_input = data_NPOS;
 	}
