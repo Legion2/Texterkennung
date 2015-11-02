@@ -1,18 +1,22 @@
 package GUI;
 
+
 import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class MainGUI extends Application
 {
 	//private ArrayList<IGUI> iGUIList;
-	
+
 	private Stage WindowLayout;
 	private BorderPane TexterkennungPanels;
 
@@ -21,11 +25,11 @@ public class MainGUI extends Application
 	{
 		// Init all classes for the program and add them to GUIList
 		// TODO 
-		
+
 		/*this.iGUIList = new ArrayList<IGUI>();
 		this.iGUIList.add(new ProgrammOutput());
 		this.iGUIList.add(new Debugger());*/
-		
+
 		new ProgrammOutput();
 	}
 
@@ -66,10 +70,10 @@ public class MainGUI extends Application
 			// Load person overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainGUI.class.getResource("views/TexterkennungPanels.fxml"));
-			AnchorPane personOverview = (AnchorPane) loader.load();
+			AnchorPane TexterkennungView = (AnchorPane) loader.load();
 
 			// Set person overview into the center of root layout.
-			TexterkennungPanels.setCenter(personOverview);
+			TexterkennungPanels.setCenter(TexterkennungView);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,5 +89,15 @@ public class MainGUI extends Application
 
 	public static void main(String[] args) {
 		launch(args);
+
+		adTab ();
+	}
+
+	public static void adTab () {
+		Tab tab=new Tab();
+		tab.setText("new tab");
+		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
+		
+		
 	}
 }
