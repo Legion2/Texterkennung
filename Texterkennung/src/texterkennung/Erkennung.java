@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import GUI.GuiElements;
+import GUI.IGUI;
 import advanced.ABufferedImage;
 import advanced.AColor;
-import debug.IDebugger;
 
-public abstract class Erkennung implements IDebugger {
+public abstract class Erkennung implements IGUI {
 
 	protected ArrayList<AColor> farbListe;
 	
@@ -23,7 +23,7 @@ public abstract class Erkennung implements IDebugger {
 		this.originalBild.setImage(bufferedImage);
 		this.farbListe = farbListe;
 		Zeichen.setup(font);
-		GuiElements.getDebugger().add(this);
+		GuiElements.MainGUI.addTab(this);
 	}
 
 	public abstract void run(int par1, int par2);

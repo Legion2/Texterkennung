@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import GUI.GuiElements;
-import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -27,12 +25,6 @@ public class Erkennung_Text extends Erkennung
 	public String getName()
 	{
 		return "Erkennung_Text";
-	}
-
-	@Override
-	public BufferedImage visualisieren()
-	{
-		return this.testBild;
 	}
 
 	@Override
@@ -59,18 +51,6 @@ public class Erkennung_Text extends Erkennung
 		
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS, (Data_NPOS) OR.getData());
 		OZ.run();
-		
-		
-		
-		
-		
-		
-		
-		this.testBild = new ABufferedImage(originalBild);//TODO testing only
-		GuiElements.getDebugger().savelist();
-		
-		
-		
 		
 		
 		
@@ -107,5 +87,11 @@ public class Erkennung_Text extends Erkennung
 	public void gui(Graphics g, int w) {
 		// TODO Auto-generated method stub
 		// TODO nichtfertig
+	}
+
+	@Override
+	public void gui() {
+		// TODO Auto-generated method stub
+		
 	}
 }

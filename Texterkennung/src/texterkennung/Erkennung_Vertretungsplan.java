@@ -21,12 +21,6 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	}
 
 	@Override
-	public BufferedImage visualisieren()
-	{
-		return this.getOriginalBild();
-	}
-
-	@Override
 	public void run(int par1, int par2)
 	{
 		System.out.println("run");
@@ -84,5 +78,11 @@ public class Erkennung_Vertretungsplan extends Erkennung
             //g.drawImage(originalBild.getDifferenzBild(),w/2 , hoeheneu/2, w/2,hoeheneu/2, null);
             //g.drawImage(Zeichen.zeichenListe.get("A").getBufferedImage(),w/2 , 0, 20,40, null);
         }
+	}
+
+	@Override
+	public void gui() {
+		// TODO Auto-generated method stub
+		
 	}
 }

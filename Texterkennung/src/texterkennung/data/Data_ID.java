@@ -36,7 +36,7 @@ public class Data_ID extends Data2D
 	}
 	
 	@Override
-	public BufferedImage visualisieren()
+	public void gui()
 	{
 		BufferedImage bi = new BufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
 		
@@ -48,8 +48,6 @@ public class Data_ID extends Data2D
 				bi.setRGB(x, y, new Color((this.data[x][y]*17)%255, 255 - (this.data[x][y]*47)%255, (this.data[x][y]*23)%255).getRGB());
 			}
 		}
-		
-		return bi;
 	}
 
 	@Override

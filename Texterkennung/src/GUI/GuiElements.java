@@ -1,8 +1,8 @@
 package GUI;
 
 import java.io.File;
+import java.util.ArrayList;
 
-import debug.Debugger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,17 +24,19 @@ import javafx.stage.Stage;
 
 public class GuiElements extends Application
 {
-
-	private static Debugger debugger;
-	private ProgrammOutput programmOutput;
+	public static GuiElements MainGUI;
 	
+	private ArrayList<IGUI> list;
+	private ProgrammOutput programmOutput;
+	private TabPane tabPane;
 	
 	@Override
 	public void init()
 	{
 		// Init all classes for the program and add them to GUIList
 		// TODO 
-		debugger = new Debugger();
+		MainGUI = this;//TODO kann man das besser lösen
+		list = new ArrayList<IGUI>();
 		this.programmOutput = new ProgrammOutput();
 	}
 	
@@ -104,7 +106,7 @@ public class GuiElements extends Application
 		
 
 		//Tab Layout
-		TabPane tabPane = new TabPane();
+		this.tabPane = new TabPane();
 		Tab tab = new Tab();
 		tab.setText("new tab");
 		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
@@ -153,17 +155,14 @@ public class GuiElements extends Application
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-	
-	public static void adTab () {
-		Tab tab=new Tab();
-		tab.setText("new tab");
-		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
-		
-		
-	}
 
-	public static Debugger getDebugger()
+	public void addTab(IGUI data)
 	{
-		return debugger;
+		list.add(data);
+		
+		Tab tab=new Tab();
+		tab.setText(data.getName());
+		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
+		this.tabPane.getTabs().add(tab);
 	}
 }

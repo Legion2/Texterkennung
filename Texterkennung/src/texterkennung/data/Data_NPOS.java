@@ -58,11 +58,9 @@ public class Data_NPOS extends Data2D
 	}
 
 	@Override
-	public BufferedImage visualisieren()
+	public void gui()
 	{
-		BufferedImage bi = new BufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
-		
-		return bi;
+		BufferedImage bi = new BufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);//kann nicht angezeigt werden
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package texterkennung.operator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;

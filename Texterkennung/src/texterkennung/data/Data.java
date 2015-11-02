@@ -1,13 +1,12 @@
 package texterkennung.data;
 
 import GUI.GuiElements;
-import debug.IDebugger;
+import GUI.IGUI;
 
-public abstract class Data implements IDebugger
+public abstract class Data implements IGUI
 {
 	public Data()
 	{
-		GuiElements.getDebugger().add(this);
+		GuiElements.MainGUI.addTab(this);
 	}
-
 }

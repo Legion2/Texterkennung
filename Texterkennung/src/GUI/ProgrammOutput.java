@@ -51,7 +51,7 @@ public class ProgrammOutput implements IGUI
 	public void Knopf_gedrueckt_Bildladen()
 	{
         // TODO Pfad zur Bild datei
-		String pfad = "D:/GitHub/Texterkennung/Texterkennung/res/Text.png";
+		String pfad = "./res/Text.png";
         if (pfad != null)
         {
             try
