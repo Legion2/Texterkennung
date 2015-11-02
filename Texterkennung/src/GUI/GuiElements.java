@@ -1,17 +1,12 @@
 package GUI;
 
-import GUI.LayoutElements;
 
-import java.awt.Desktop;
+
+
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,9 +17,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -42,7 +34,7 @@ public class GuiElements extends Application{
 		Label label_title = new Label ("Texterkennung");
 		label_title.setFont(GUI.LayoutElements.titleFont);
 		label_title.setAlignment(Pos.TOP_LEFT);
-		label_title.setPadding(new Insets (15));
+		label_title.setPadding(new Insets (5));
 
 		//DateiBrowser-Setup
 		Label label_file = new Label ("Dateipfad: ");
@@ -65,7 +57,7 @@ public class GuiElements extends Application{
 		BorderPane fileSetup = new BorderPane(textfield_filepath);
 		fileSetup.setLeft(label_file);
 		fileSetup.setRight(button_browse);
-		fileSetup.setPadding(new Insets(20));
+		fileSetup.setPadding(new Insets(10));
 
 		fileSetup.setAlignment(label_file, Pos.TOP_CENTER);
 		fileSetup.setAlignment(button_browse, Pos.TOP_CENTER);
@@ -79,17 +71,24 @@ public class GuiElements extends Application{
 		ComboBox comboBox_mode = new ComboBox();
 		comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
 		comboBox_mode.setValue("Texterkennung");
+		
+		Button button_startCalc = new Button ("Starte berechnung");
+		
 
 		BorderPane modeSelection = new BorderPane(comboBox_mode);
-		modeSelection.setLeft(label_file);
-		modeSelection.setPadding(new Insets (20));
+		modeSelection.setLeft(label_mode);
+		modeSelection.setRight(button_startCalc);
+		
+		modeSelection.setPadding(new Insets (10));
 
 		modeSelection.setAlignment(label_mode, Pos.TOP_CENTER);
 		modeSelection.setAlignment(comboBox_mode, Pos.TOP_CENTER);
+		modeSelection.setAlignment(button_startCalc, Pos.TOP_CENTER);
 
 
 		//Berechnung Button
-		Button button_startCalc = new Button ("Starte berechnung");
+		
+		
 
 		//Tab Layout
 		TabPane tabPane = new TabPane();
@@ -100,9 +99,9 @@ public class GuiElements extends Application{
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
-		VBox UIElements = new VBox (fileSetup, modeSelection, button_startCalc, tabPane);
+		VBox UIElements = new VBox (fileSetup, modeSelection, tabPane);
 		UIElements.setPadding(new Insets(20));
-		UIElements.setSpacing(25);
+		UIElements.setSpacing(5);
 		
 		BorderPane pane = new BorderPane();
 
