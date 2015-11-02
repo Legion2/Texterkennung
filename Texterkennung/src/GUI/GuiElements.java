@@ -25,11 +25,11 @@ import javafx.stage.Stage;
 public class GuiElements extends Application
 {
 	public static GuiElements MainGUI;
-	
+
 	private ArrayList<IGUI> list;
 	private ProgrammOutput programmOutput;
 	private TabPane tabPane;
-	
+
 	@Override
 	public void init()
 	{
@@ -39,7 +39,7 @@ public class GuiElements extends Application
 		list = new ArrayList<IGUI>();
 		this.programmOutput = new ProgrammOutput();
 	}
-	
+
 	@Override
 	public void start(final Stage stage) {
 
@@ -52,58 +52,34 @@ public class GuiElements extends Application
 		label_title.setPadding(new Insets (5));
 
 		//DateiBrowser-Setup
-		Label label_file = new Label ("Dateipfad: ");
-		TextField textfield_filepath = new TextField ();
-
-		Button button_browse = new Button ("Durchsuchen");
-
-		FileChooser fileChooser = new FileChooser();
-		button_browse.setOnAction(
-				new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(final ActionEvent e) {
-						File file = fileChooser.showOpenDialog(stage);
-						if (file != null) {
-							//openFile(file);
-						}
-					}
-				});
-
-		BorderPane fileSetup = new BorderPane(textfield_filepath);
-		fileSetup.setLeft(label_file);
-		fileSetup.setRight(button_browse);
-		fileSetup.setPadding(new Insets(10));
-
-		fileSetup.setAlignment(label_file, Pos.TOP_CENTER);
-		fileSetup.setAlignment(button_browse, Pos.TOP_CENTER);
-		fileSetup.setAlignment(textfield_filepath, Pos.TOP_CENTER);
+		BorderPane fileUI=browseSetup();
 
 
 
 		//Modus Auswahl
 		Label label_mode = new Label ("Modus: ");
 
-		ComboBox comboBox_mode = new ComboBox();
+		ComboBox<String> comboBox_mode = new ComboBox<String>();
 		comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
 		comboBox_mode.setValue("Texterkennung");
-		
+
 		Button button_startCalc = new Button ("Starte berechnung");
-		
+
 
 		BorderPane modeSelection = new BorderPane(comboBox_mode);
 		modeSelection.setLeft(label_mode);
 		modeSelection.setRight(button_startCalc);
-		
+
 		modeSelection.setPadding(new Insets (10));
 
-		modeSelection.setAlignment(label_mode, Pos.TOP_CENTER);
-		modeSelection.setAlignment(comboBox_mode, Pos.TOP_CENTER);
-		modeSelection.setAlignment(button_startCalc, Pos.TOP_CENTER);
+		BorderPane.setAlignment(label_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(comboBox_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(button_startCalc, Pos.TOP_CENTER);
 
 
 		//Berechnung Button
-		
-		
+
+
 
 		//Tab Layout
 		this.tabPane = new TabPane();
@@ -114,10 +90,10 @@ public class GuiElements extends Application
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
-		VBox UIElements = new VBox (fileSetup, modeSelection, tabPane);
+		VBox UIElements = new VBox (fileUI, modeSelection, tabPane);
 		UIElements.setPadding(new Insets(20));
 		UIElements.setSpacing(5);
-		
+
 		BorderPane pane = new BorderPane();
 
 		pane.setTop(label_title);
@@ -138,18 +114,49 @@ public class GuiElements extends Application
 		stage.show();
 
 
-
-
 		//------------------------------------------------------
-				/**
-				 * only for testing
-				 * TODO remove this later
-				 */
-				this.programmOutput.Knopf_gedrueckt_Bildladen();
-				this.programmOutput.Knopf_gedrueckt_Texterkennen();
+		/**
+		 * only for testing
+		 * TODO remove this later
+		 */
+		this.programmOutput.Knopf_gedrueckt_Bildladen();
+		this.programmOutput.Knopf_gedrueckt_Texterkennen();
 		//-------------------------------------------------
 
 
+	}
+
+	private BorderPane browseSetup() {
+
+		Label label_file = new Label ("Dateipfad: ");
+		TextField textfield_filepath = new TextField ();
+		Button button_browse = new Button ("Durchsuchen");
+
+
+		BorderPane fileSetup = new BorderPane(textfield_filepath);
+		fileSetup.setLeft(label_file);
+		fileSetup.setRight(button_browse);
+		fileSetup.setPadding(new Insets(10));
+
+		BorderPane.setAlignment(label_file, Pos.TOP_CENTER);
+		BorderPane.setAlignment(button_browse, Pos.TOP_CENTER);
+		BorderPane.setAlignment(textfield_filepath, Pos.TOP_CENTER);
+
+
+		FileChooser fileChooser = new FileChooser();
+		button_browse.setOnAction(
+				new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(final ActionEvent e) {
+						File file = fileChooser.showOpenDialog(null);
+						if (file != null) {
+								textfield_filepath.setText(file.getAbsolutePath());
+						}
+					}
+				});
+		
+		
+		return fileSetup;
 	}
 
 	public static void main(String[] args) {
@@ -159,7 +166,7 @@ public class GuiElements extends Application
 	public void addTab(IGUI data)
 	{
 		list.add(data);
-		
+
 		Tab tab=new Tab();
 		tab.setText(data.getName());
 		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
