@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import GUI.MainGUI;
+import GUI.GuiElements;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import debug.IDebugger;
@@ -23,7 +23,7 @@ public abstract class Erkennung implements IDebugger {
 		this.originalBild.setImage(bufferedImage);
 		this.farbListe = farbListe;
 		Zeichen.setup(font);
-		MainGUI.getDebugger().add(this);
+		GuiElements.getDebugger().add(this);
 	}
 
 	public abstract void run(int par1, int par2);

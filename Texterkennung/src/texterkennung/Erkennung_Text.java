@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import GUI.MainGUI;
+import GUI.GuiElements;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data_ID;
@@ -67,7 +67,7 @@ public class Erkennung_Text extends Erkennung
 		
 		
 		this.testBild = new ABufferedImage(originalBild);//TODO testing only
-		MainGUI.getDebugger().savelist();
+		GuiElements.getDebugger().savelist();
 		
 		
 		
