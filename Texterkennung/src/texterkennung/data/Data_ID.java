@@ -3,13 +3,8 @@ package texterkennung.data;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import javafx.scene.image.Image;
+import advanced.ABufferedImage;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import GUI.GuiElements;
-import GUI.basicCalculation;
 
 public class Data_ID extends Data2D
 {
@@ -46,7 +41,7 @@ public class Data_ID extends Data2D
 	@Override
 	public void gui()
 	{
-		BufferedImage bi = new BufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{
@@ -58,10 +53,7 @@ public class Data_ID extends Data2D
 		}
 		
 		
-		ImageView image = GUI.basicCalculation.BufferdToImage (bi);
-		
-		tabpane =new Pane (image);
-		GuiElements.addTab(this);
+		ImageView image = bi.getBImageView();
 		
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -27,10 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-
-import texterkennung.Erkennung_Text;
-import advanced.AColor;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 
@@ -39,8 +36,7 @@ public class GuiElements extends Application
 {
 	public static GuiElements MainGUI;
 
-	private ArrayList<IGUI> list;
-	private ArrayList<Pane> tabList;
+	private HashMap<IGUI, Pane> list;
 	private ProgrammOutput programmOutput;
 	private TabPane tabPane;
 	
@@ -53,7 +49,7 @@ public class GuiElements extends Application
 		// Init all classes for the program and add them to GUIList
 		// TODO 
 		MainGUI = this;//TODO kann man das besser lösen
-		list = new ArrayList<IGUI>();
+		list = new HashMap<>();
 		this.programmOutput = new ProgrammOutput();
 	}
 
@@ -195,11 +191,14 @@ public class GuiElements extends Application
 
 	public void addTab(IGUI data)
 	{
-		tabList.add(data.tabpane);
-
 		Tab tab=new Tab();
 		tab.setText(data.getName());
-		tab.setContent(data.tabpane);
+		
+		Pane pane = new Pane();
+		tab.setContent(pane);
+		
+		this.list.put(data, pane);
+		
 		this.tabPane.getTabs().add(tab);
 	}
 }
