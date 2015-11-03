@@ -3,6 +3,10 @@ package advanced;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+
 public class ABufferedImage extends BufferedImage
 {
 	private int[][] summeRot;
@@ -147,8 +151,31 @@ public class ABufferedImage extends BufferedImage
 		return Math.sqrt(Math.pow(getDurchschnitt(x-r, y-r, x+r, y+r, this.summeRot), 2) + Math.pow(getDurchschnitt(x-r, y-r, x+r, y+r, this.summeGruen), 2) + Math.pow(getDurchschnitt(x-r, y-r, x+r, y+r, this.summeBlau), 2));
 	}
 
-	public ABufferedImage getDifferenzBild() {
+	public ABufferedImage getDifferenzBild()
+	{
 		return differenzBild;
+	}
+	
+	/**
+	 * @author https://blog.idrsolutions.com/2012/11/convert-bufferedimage-to-javafx-image/
+	 * 
+	 * @return ImageView
+	 */
+	public ImageView getBImageView ()
+	{
+        WritableImage wr = new WritableImage(this.getWidth(), this.getHeight());
+        PixelWriter pw = wr.getPixelWriter();
+        
+        for (int x = 0; x < this.getWidth(); x++)
+        {
+            for (int y = 0; y < this.getHeight(); y++)
+            {
+                pw.setArgb(x, y, this.getRGB(x, y));
+            }
+        }
+        
+        ImageView imView = new ImageView(wr);
+        return imView;
 	}
 	
 	public int getSumme(int x, int y)
