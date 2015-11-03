@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import GUI.GuiElements;
 import GUI.basicCalculation;
 
 public class Data_ID extends Data2D
@@ -58,8 +60,8 @@ public class Data_ID extends Data2D
 		
 		ImageView image = GUI.basicCalculation.BufferdToImage (bi);
 		
-		BorderPane borderpane =new BorderPane (image);
-		
+		tabpane =new Pane (image);
+		GuiElements.addTab(this);
 		
 	}
 
