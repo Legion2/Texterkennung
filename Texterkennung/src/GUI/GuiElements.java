@@ -21,6 +21,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -39,6 +40,7 @@ public class GuiElements extends Application
 	public static GuiElements MainGUI;
 
 	private ArrayList<IGUI> list;
+	private ArrayList<Pane> tabList;
 	private ProgrammOutput programmOutput;
 	private TabPane tabPane;
 	
@@ -193,11 +195,11 @@ public class GuiElements extends Application
 
 	public void addTab(IGUI data)
 	{
-		list.add(data);
+		tabList.add(data.tabpane);
 
 		Tab tab=new Tab();
 		tab.setText(data.getName());
-		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
+		tab.setContent(data.tabpane);
 		this.tabPane.getTabs().add(tab);
 	}
 }
