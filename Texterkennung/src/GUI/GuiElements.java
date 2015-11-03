@@ -1,8 +1,13 @@
 package GUI;
 
+import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+
+import advanced.AColor;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +27,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
+import texterkennung.Erkennung_Text;
+import advanced.AColor;
+import texterkennung.Erkennung;
+import texterkennung.Erkennung_Text;
+
+
 public class GuiElements extends Application
 {
 	public static GuiElements MainGUI;
@@ -29,6 +41,9 @@ public class GuiElements extends Application
 	private ArrayList<IGUI> list;
 	private ProgrammOutput programmOutput;
 	private TabPane tabPane;
+	
+	public Erkennung erkennung;
+	
 
 	@Override
 	public void init()
@@ -77,8 +92,7 @@ public class GuiElements extends Application
 		BorderPane.setAlignment(button_startCalc, Pos.TOP_CENTER);
 
 
-		//Berechnung Button
-
+		
 
 
 		//Tab Layout
@@ -143,14 +157,28 @@ public class GuiElements extends Application
 		BorderPane.setAlignment(textfield_filepath, Pos.TOP_CENTER);
 
 
-		FileChooser fileChooser = new FileChooser();
+		
 		button_browse.setOnAction(
 				new EventHandler<ActionEvent>() {
+
 					@Override
 					public void handle(final ActionEvent e) {
+						FileChooser fileChooser = new FileChooser();
 						File file = fileChooser.showOpenDialog(null);
 						if (file != null) {
 								textfield_filepath.setText(file.getAbsolutePath());
+								
+								
+								try
+					            {
+					            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
+					            	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+					            	erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30));
+
+					                // TODO Hier muss die Anzeige der gui aktuallisiert werden
+					            } catch (IOException ex) {
+					                System.out.println("Fehler aufgetreten beim Lesen der Datei");
+					            }
 						}
 					}
 				});

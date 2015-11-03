@@ -3,6 +3,12 @@ package texterkennung.data;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import GUI.basicCalculation;
+
 public class Data_ID extends Data2D
 {
 	private int[][] data;
@@ -49,6 +55,10 @@ public class Data_ID extends Data2D
 			}
 		}
 		
+		
+		ImageView image = GUI.basicCalculation.BufferdToImage (bi);
+		
+		BorderPane borderpane =new BorderPane (image);
 		
 		
 	}
