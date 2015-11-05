@@ -14,24 +14,16 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		super(bufferedImage, farbListe, font);
 	}
 
-	@Override
+	/*@Override
 	public String getName()
 	{
 		return "Erkennung_Vertretungsplan";
-	}
+	}*/
 
 	@Override
-	public void run(int par1, int par2)
+	public void run()
 	{
 		System.out.println("run");
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		

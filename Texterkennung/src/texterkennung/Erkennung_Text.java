@@ -18,16 +18,17 @@ public class Erkennung_Text extends Erkennung
 	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font)
 	{
 		super(bufferedImage, farbListe, font);
+		setName("Originalbild");
 	}
 
-	@Override
+	/*@Override
 	public String getName()
 	{
 		return "Erkennung_Text";
-	}
+	}*/
 
 	@Override
-	public void run(int par1, int par2)
+	public void run()
 	{
 		System.out.println("run");
 		int schwellwert = 200;
@@ -41,8 +42,8 @@ public class Erkennung_Text extends Erkennung
 		System.out.println("Verbindungen fertig");
 		Data_ID data_ID = (Data_ID) OV.getData();
 		System.out.println("start Data konvertieren");
-		Data_NPOS data_NPOS = new Data_NPOS(data_ID);//Daten umwandeln
-		data_NPOS.setData(data_ID);
+		Data_NPOS data_NPOS = new Data_NPOS(data_ID);
+		data_NPOS.setData(data_ID);//Daten umwandeln
 		System.out.println("fertig data konvertieren");
 		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
 		OR.run();

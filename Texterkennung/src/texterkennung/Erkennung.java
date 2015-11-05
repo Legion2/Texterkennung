@@ -10,8 +10,8 @@ import advanced.ABufferedImage;
 import advanced.AColor;
 import javafx.scene.layout.Pane;
 
-public abstract class Erkennung implements IGUI {
-
+public abstract class Erkennung extends Thread implements IGUI
+{
 	protected ArrayList<AColor> farbListe;
 	
 	protected final ABufferedImage originalBild;
@@ -25,8 +25,6 @@ public abstract class Erkennung implements IGUI {
 		GuiElements.MainGUI.addTab(this);
 		GuiElements.MainGUI.setTab(this);
 	}
-
-	public abstract void run(int par1, int par2);
 	
 	@Override
 	public void gui(Pane pane)

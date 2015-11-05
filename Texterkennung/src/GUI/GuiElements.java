@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import advanced.AColor;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -155,21 +156,33 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 	public void addTab(IGUI data)
 	{
-		Tab tab=new Tab();
-		tab.setText(data.getName());
-		
-		Pane pane = new Pane();
-		tab.setContent(pane);
-		
-		this.list.put(data, pane);
-		
-		this.tabPane.getTabs().add(tab);
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				Tab tab=new Tab();
+				tab.setText(data.getName());
+				
+				Pane pane = new Pane();
+				tab.setContent(pane);
+				
+				list.put(data, pane);
+				
+				tabPane.getTabs().add(tab);
+			}
+		});
 	}
 	
 	public void setTab(IGUI data)
 	{
-		this.list.get(data);
-		data.gui(this.list.get(data));
+		Platform.runLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				list.get(data);
+				data.gui(list.get(data));
+			}
+		});
 	}
 
 	@Override
@@ -208,13 +221,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			if (this.erkennung != null)
 	        {
-	        	/* TODO only testing
-	        	int par1=Integer.parseInt("");
-	            int par2=Integer.parseInt("");
-	            
-	            this.erkennung.run(par1, par2);
-	            */
-	            this.erkennung.run(0, 0);
+	            this.erkennung.start();
 	        }
 		}
 	}
