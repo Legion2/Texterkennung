@@ -2,6 +2,7 @@ package texterkennung.operator;
 
 import java.util.ArrayList;
 
+import GUI.GuiElements;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data;
@@ -69,6 +70,8 @@ public class Operator_Farbzuordnung extends Operator
 				}
 			}
 		}
+		
+		GuiElements.MainGUI.setTab(this.data_ID);
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package texterkennung;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -33,25 +32,25 @@ public class Erkennung_Text extends Erkennung
 		System.out.println("run");
 		int schwellwert = 200;
 		int vergleichsID = 0;
-		
+		System.out.println("Start");
 		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
 		OF.run();
-		
+		System.out.println("Farbzuordnung fertig");
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
 		OV.run();
-		
+		System.out.println("Verbindungen fertig");
 		Data_ID data_ID = (Data_ID) OV.getData();
-		
+		System.out.println("start Data konvertieren");
 		Data_NPOS data_NPOS = new Data_NPOS(data_ID);//Daten umwandeln
 		data_NPOS.setData(data_ID);
-		
+		System.out.println("fertig data konvertieren");
 		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
 		OR.run();
-		
+		System.out.println("Raster fertig");
 		
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS, (Data_NPOS) OR.getData());
 		OZ.run();
-		
+		System.out.println("fertig");
 		
 		
 		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -81,17 +80,5 @@ public class Erkennung_Text extends Erkennung
 		}*/
 		
 		// TODO nichtfertig
-	}
-
-	@Override
-	public void gui(Graphics g, int w) {
-		// TODO Auto-generated method stub
-		// TODO nichtfertig
-	}
-
-	@Override
-	public void gui() {
-		// TODO Auto-generated method stub
-		
 	}
 }

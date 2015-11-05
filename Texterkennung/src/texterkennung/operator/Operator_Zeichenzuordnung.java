@@ -1,5 +1,6 @@
 package texterkennung.operator;
 
+import GUI.GuiElements;
 import texterkennung.data.Data;
 import texterkennung.data.Data_NPOS;
 
@@ -22,7 +23,7 @@ public class Operator_Zeichenzuordnung extends Operator
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		//GuiElements.MainGUI.setTab(this.data_NPOS_output);
 	}
 
 	@Override

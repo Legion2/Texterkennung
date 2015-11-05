@@ -1,11 +1,11 @@
 package texterkennung;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import advanced.AColor;
+import javafx.scene.layout.Pane;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {
@@ -65,9 +65,9 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	}
 
 	@Override
-	public void gui(Graphics g, int w)
+	public void gui(Pane pane)
 	{
-		if (testBild!=null)
+		/*if (testBild!=null)TODO fix this
 		{
             int hoeheneu=testBild.getHeight()*w/testBild.getWidth();
             System.out.println("Maße des Bildes original: "+testBild.getWidth()+" "+testBild.getHeight()+" , nach Anpassung: "+w+" "+hoeheneu);
@@ -77,12 +77,6 @@ public class Erkennung_Vertretungsplan extends Erkennung
             g.drawImage(testBild,0 , hoeheneu/2, w/2,hoeheneu/2, null);
             //g.drawImage(originalBild.getDifferenzBild(),w/2 , hoeheneu/2, w/2,hoeheneu/2, null);
             //g.drawImage(Zeichen.zeichenListe.get("A").getBufferedImage(),w/2 , 0, 20,40, null);
-        }
-	}
-
-	@Override
-	public void gui() {
-		// TODO Auto-generated method stub
-		
+        }*/
 	}
 }

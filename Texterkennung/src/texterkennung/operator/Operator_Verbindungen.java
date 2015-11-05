@@ -2,6 +2,7 @@ package texterkennung.operator;
 
 import java.util.ArrayList;
 
+import GUI.GuiElements;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 
@@ -236,6 +237,7 @@ public class Operator_Verbindungen extends Operator
 		this.data_ID_output.setMaxid(id);
 		// TODO testen!!!
 		// TODO noch nichtfertig
+		GuiElements.MainGUI.setTab(this.data_ID_output);
 	}
 
 

@@ -161,7 +161,7 @@ public class ABufferedImage extends BufferedImage
 	 * 
 	 * @return ImageView
 	 */
-	public ImageView getBImageView ()
+	public ImageView getImageView ()
 	{
         WritableImage wr = new WritableImage(this.getWidth(), this.getHeight());
         PixelWriter pw = wr.getPixelWriter();

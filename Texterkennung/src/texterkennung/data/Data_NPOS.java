@@ -1,6 +1,7 @@
 package texterkennung.data;
 
-import java.awt.image.BufferedImage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 public class Data_NPOS extends Data2D
 {
@@ -58,12 +59,6 @@ public class Data_NPOS extends Data2D
 	}
 
 	@Override
-	public void gui()
-	{
-		BufferedImage bi = new BufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);//kann nicht angezeigt werden
-	}
-
-	@Override
 	public String getName()
 	{
 		return "Next-Position-Data";
@@ -79,5 +74,12 @@ public class Data_NPOS extends Data2D
 	{
 		int[] array = {this.xPOS[x][y], this.yPOS[x][y]};
 		return array;
+	}
+
+	@Override
+	public void gui(Pane pane)
+	{
+		ImageView iv = new ImageView();
+		pane.getChildren().add(iv);
 	}
 }

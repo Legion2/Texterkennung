@@ -32,25 +32,31 @@ import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 
 
-public class GuiElements extends Application
+public class GuiElements extends Application implements EventHandler<ActionEvent>
 {
 	public static GuiElements MainGUI;
-
+	
 	private HashMap<IGUI, Pane> list;
-	private ProgrammOutput programmOutput;
+	
+	private ComboBox<String> comboBox_mode;
+	private Button button_browse;
+	private Button button_startCalc;
+	private TextField textfield_filepath;
 	private TabPane tabPane;
 	
 	public Erkennung erkennung;
 	
+	public static void main(String[] args)
+	{
+		Application.launch(args);
+	}
 
 	@Override
 	public void init()
 	{
 		// Init all classes for the program and add them to GUIList
-		// TODO 
 		MainGUI = this;//TODO kann man das besser lösen
-		list = new HashMap<>();
-		this.programmOutput = new ProgrammOutput();
+		list = new HashMap<IGUI, Pane>();
 	}
 
 	@Override
@@ -65,29 +71,30 @@ public class GuiElements extends Application
 		label_title.setPadding(new Insets (5));
 
 		//DateiBrowser-Setup
-		BorderPane fileUI=browseSetup();
+		BorderPane fileUI = browseSetup();
 
 
 
 		//Modus Auswahl
 		Label label_mode = new Label ("Modus: ");
 
-		ComboBox<String> comboBox_mode = new ComboBox<String>();
-		comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
-		comboBox_mode.setValue("Texterkennung");
+		this.comboBox_mode = new ComboBox<String>();
+		this.comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
+		this.comboBox_mode.setValue("Texterkennung");
 
-		Button button_startCalc = new Button ("Starte berechnung");
+		this.button_startCalc = new Button ("Starte berechnung");
+		this.button_startCalc.setOnAction(this);
 
 
-		BorderPane modeSelection = new BorderPane(comboBox_mode);
+		BorderPane modeSelection = new BorderPane(this.comboBox_mode);
 		modeSelection.setLeft(label_mode);
-		modeSelection.setRight(button_startCalc);
+		modeSelection.setRight(this.button_startCalc);
 
 		modeSelection.setPadding(new Insets (10));
 
 		BorderPane.setAlignment(label_mode, Pos.TOP_CENTER);
-		BorderPane.setAlignment(comboBox_mode, Pos.TOP_CENTER);
-		BorderPane.setAlignment(button_startCalc, Pos.TOP_CENTER);
+		BorderPane.setAlignment(this.comboBox_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(this.button_startCalc, Pos.TOP_CENTER);
 
 
 		
@@ -124,26 +131,13 @@ public class GuiElements extends Application
 		stage.setTitle("Informatik Projekt: Texterkennung");
 		stage.setScene(scene);
 		stage.show();
-
-
-		//------------------------------------------------------
-		/**
-		 * only for testing
-		 * TODO remove this later
-		 */
-		this.programmOutput.Knopf_gedrueckt_Bildladen();
-		this.programmOutput.Knopf_gedrueckt_Texterkennen();
-		//-------------------------------------------------
-
-
 	}
 
 	private BorderPane browseSetup() {
 
 		Label label_file = new Label ("Dateipfad: ");
-		TextField textfield_filepath = new TextField ();
-		Button button_browse = new Button ("Durchsuchen");
-
+		this.textfield_filepath = new TextField ();
+		this.button_browse = new Button ("Durchsuchen");
 
 		BorderPane fileSetup = new BorderPane(textfield_filepath);
 		fileSetup.setLeft(label_file);
@@ -153,40 +147,10 @@ public class GuiElements extends Application
 		BorderPane.setAlignment(label_file, Pos.TOP_CENTER);
 		BorderPane.setAlignment(button_browse, Pos.TOP_CENTER);
 		BorderPane.setAlignment(textfield_filepath, Pos.TOP_CENTER);
-
-
 		
-		button_browse.setOnAction(
-				new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(final ActionEvent e) {
-						FileChooser fileChooser = new FileChooser();
-						File file = fileChooser.showOpenDialog(null);
-						if (file != null) {
-								textfield_filepath.setText(file.getAbsolutePath());
-								
-								
-								try
-					            {
-					            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
-					            	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-					            	erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30));
-
-					                // TODO Hier muss die Anzeige der gui aktuallisiert werden
-					            } catch (IOException ex) {
-					                System.out.println("Fehler aufgetreten beim Lesen der Datei");
-					            }
-						}
-					}
-				});
-		
+		this.button_browse.setOnAction(this);//EventHandler
 		
 		return fileSetup;
-	}
-
-	public static void main(String[] args) {
-		Application.launch(args);
 	}
 
 	public void addTab(IGUI data)
@@ -200,5 +164,58 @@ public class GuiElements extends Application
 		this.list.put(data, pane);
 		
 		this.tabPane.getTabs().add(tab);
+	}
+	
+	public void setTab(IGUI data)
+	{
+		this.list.get(data);
+		data.gui(this.list.get(data));
+	}
+
+	@Override
+	public void handle(ActionEvent arg0)
+	{
+		if (arg0.getSource() == this.button_browse)
+		{
+			FileChooser fileChooser = new FileChooser();
+			File file = fileChooser.showOpenDialog(null);
+			if (file != null)
+			{
+					this.textfield_filepath.setText(file.getAbsolutePath());
+					
+					try
+		            {
+		            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
+		            	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+		            	
+		            	switch (this.comboBox_mode.getValue())
+		            	{
+		            	case "Texterkennung":
+		            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30));
+		            	case "Stundenplan":
+		            		
+		            	case "Vertretungsplan":
+		            		
+		            		
+		            		
+		            	}
+		            } catch (IOException ex) {
+		                System.out.println("Fehler aufgetreten beim Lesen der Datei");
+		            }
+			}
+		}
+		else if (arg0.getSource() == this.button_startCalc)
+		{
+			if (this.erkennung != null)
+	        {
+	        	/* TODO only testing
+	        	int par1=Integer.parseInt("");
+	            int par2=Integer.parseInt("");
+	            
+	            this.erkennung.run(par1, par2);
+	            */
+	            this.erkennung.run(0, 0);
+	        }
+		}
 	}
 }

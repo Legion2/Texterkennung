@@ -1,5 +1,6 @@
 package texterkennung.operator;
 
+import GUI.GuiElements;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -96,6 +97,7 @@ public class Operator_Raster extends Operator
 			}
 		}
 		
+		GuiElements.MainGUI.setTab(this.data_NPOS_output);
 	}
 
 	@Override
