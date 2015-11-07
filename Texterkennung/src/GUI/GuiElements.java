@@ -103,10 +103,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		//Tab Layout
 		this.tabPane = new TabPane();
-		Tab tab = new Tab();
-		tab.setText("new tab");
-		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
-		tabPane.getTabs().add(tab);
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
