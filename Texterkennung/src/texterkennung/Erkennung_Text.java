@@ -52,9 +52,10 @@ public class Erkennung_Text extends Erkennung
 		System.out.println("start Data konvertieren");
 		
 		if (!this.isrunning()) return;
-		Data_NPOS data_NPOS = new Data_NPOS(data_ID);
+		Data_NPOS data_NPOS = new Data_NPOS(data_ID, "Data-Verbindungen-NPOS");
 		data_NPOS.setData(data_ID);//Daten umwandeln
 		System.out.println("fertig data konvertieren");
+		
 		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
 		
 		if (!this.isrunning()) return;

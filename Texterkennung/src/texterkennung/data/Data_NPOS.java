@@ -8,9 +8,9 @@ public class Data_NPOS extends Data2D
 	private int[][] xPOS;
 	private int[][] yPOS;
 
-	public Data_NPOS(Data2D data2d)
+	public Data_NPOS(Data2D data2d, String name)
 	{
-		super(data2d);
+		super(data2d, name);
 	}
 
 	protected void init()
@@ -22,6 +22,7 @@ public class Data_NPOS extends Data2D
 	public void setData(Data_ID data_ID)
 	{
 		//TODO parallelisieren??? möglich ist es
+		int p = 0;
 		
 		for (int i = 0; i <= data_ID.getMaxid(); i++)
 		{
@@ -55,14 +56,19 @@ public class Data_NPOS extends Data2D
 				this.xPOS[lastindex_x][lastindex_y] = firstindex_x;
 				this.yPOS[lastindex_x][lastindex_y] = firstindex_y;
 			}
+			
+			
+			
+			int j = (i * 20) / data_ID.getMaxid();
+			if (j > p)
+			{
+				p = j;
+				System.out.println("Konvertierung bei " + (j * 5) + "%");
+			}
 		}
 	}
 
-	@Override
-	public String getName()
-	{
-		return "Next-Position-Data";
-	}
+	
 	
 	public void setNPOS(int x, int y, int xset, int yset)
 	{

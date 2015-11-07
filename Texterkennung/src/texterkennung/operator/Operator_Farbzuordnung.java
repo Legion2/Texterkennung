@@ -29,7 +29,7 @@ public class Operator_Farbzuordnung extends Operator
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 	}
 	
 	@SuppressWarnings("null")
@@ -38,7 +38,7 @@ public class Operator_Farbzuordnung extends Operator
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = (Integer) null;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 	}
 	
 	@Override

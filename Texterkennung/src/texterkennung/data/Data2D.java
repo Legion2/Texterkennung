@@ -5,17 +5,17 @@ public abstract class Data2D extends Data
 	protected final int xlenght;
 	protected final int ylenght;
 	
-	public Data2D(int x, int y)
+	public Data2D(int x, int y, String name)
 	{
-		super();
+		super(name);
 		this.xlenght = x;
 		this.ylenght = y;
 		init();
 	}
 	
-	public Data2D(Data2D data)
+	public Data2D(Data2D data, String name)
 	{
-		super();
+		super(name);
 		this.xlenght = data.xlenght;
 		this.ylenght = data.ylenght;
 		init();
