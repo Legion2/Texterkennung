@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import com.jogamp.opengl.GL4;
+
 import advanced.AColor;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -15,9 +17,9 @@ import texterkennung.operator.Operator_Zeichenzuordnung;
 public class Erkennung_Text extends Erkennung
 {
 
-	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font)
+	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font, GL4 gl4)
 	{
-		super(bufferedImage, farbListe, font);
+		super(bufferedImage, farbListe, font, gl4);
 		setName("Originalbild");
 	}
 
@@ -34,7 +36,7 @@ public class Erkennung_Text extends Erkennung
 		int schwellwert = 200;
 		int vergleichsID = 0;
 		System.out.println("Start");
-		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
+		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
 		OF.run();
 		System.out.println("Farbzuordnung fertig");
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());

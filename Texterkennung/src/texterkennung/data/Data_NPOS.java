@@ -22,9 +22,10 @@ public class Data_NPOS extends Data2D
 	public void setData(Data_ID data_ID)
 	{
 		//TODO parallelisieren??? möglich ist es
-		
+		System.out.println(data_ID.getMaxid());
 		for (int i = 0; i <= data_ID.getMaxid(); i++)
 		{
+			System.out.println(i);
 			int lastindex_x = -1, lastindex_y = -1;
 			int firstindex_x = -1, firstindex_y = -1;
 			

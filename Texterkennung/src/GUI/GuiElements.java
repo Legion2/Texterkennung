@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jogl.JOGL;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 
@@ -36,6 +37,7 @@ import texterkennung.Erkennung_Text;
 public class GuiElements extends Application implements EventHandler<ActionEvent>
 {
 	public static GuiElements MainGUI;
+	public static JOGL jogl;
 	
 	private HashMap<IGUI, Pane> list;
 	
@@ -49,6 +51,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	
 	public static void main(String[] args)
 	{
+		jogl = new JOGL();
 		Application.launch(args);
 	}
 
@@ -204,7 +207,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		            	switch (this.comboBox_mode.getValue())
 		            	{
 		            	case "Texterkennung":
-		            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30));
+		            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
 		            	case "Stundenplan":
 		            		
 		            	case "Vertretungsplan":
