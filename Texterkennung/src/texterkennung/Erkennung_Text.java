@@ -30,26 +30,40 @@ public class Erkennung_Text extends Erkennung
 	@Override
 	public void run()
 	{
+		super.run();
+		if (!this.isrunning()) return;
 		System.out.println("run");
 		int schwellwert = 200;
 		int vergleichsID = 0;
 		System.out.println("Start");
 		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
+		
+		if (!this.isrunning()) return;
 		OF.run();
 		System.out.println("Farbzuordnung fertig");
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
+		
+		if (!this.isrunning()) return;
 		OV.run();
 		System.out.println("Verbindungen fertig");
+		
+		if (!this.isrunning()) return;
 		Data_ID data_ID = (Data_ID) OV.getData();
 		System.out.println("start Data konvertieren");
+		
+		if (!this.isrunning()) return;
 		Data_NPOS data_NPOS = new Data_NPOS(data_ID);
 		data_NPOS.setData(data_ID);//Daten umwandeln
 		System.out.println("fertig data konvertieren");
 		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
+		
+		if (!this.isrunning()) return;
 		OR.run();
 		System.out.println("Raster fertig");
 		
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS, (Data_NPOS) OR.getData());
+		
+		if (!this.isrunning()) return;
 		OZ.run();
 		System.out.println("fertig");
 		
