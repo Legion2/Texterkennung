@@ -1,5 +1,10 @@
 package texterkennung.data;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+import GUI.GuiElements;
+import advanced.ABufferedImage;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -66,6 +71,7 @@ public class Data_NPOS extends Data2D
 				System.out.println("Konvertierung bei " + (j * 5) + "%");
 			}
 		}
+		GuiElements.MainGUI.setTab(this);
 	}
 
 	
@@ -85,7 +91,19 @@ public class Data_NPOS extends Data2D
 	@Override
 	public void gui(Pane pane)
 	{
-		ImageView iv = new ImageView();
-		pane.getChildren().add(iv);
+		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		
+		for (int y = 0; y < this.ylenght; y++)
+		{
+			for (int x = 0; x < this.xlenght; x++)
+			{
+				// TODO testen!!!
+				bi.setRGB(x, y, new Color(((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) * 17)%255, 255 - ((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) * 47)%255, ((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) *23 )%255).getRGB());
+			}
+		}
+		
+		
+		ImageView image = bi.getImageView();
+		pane.getChildren().add(image);
 	}
 }
