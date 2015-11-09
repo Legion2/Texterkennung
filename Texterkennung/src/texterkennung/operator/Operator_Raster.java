@@ -14,7 +14,7 @@ public class Operator_Raster extends Operator
 	public Operator_Raster(Data_ID data_ID, int vergleichsID)
 	{
 		this.data_ID_input = data_ID;
-		this.data_NPOS_output = new Data_NPOS(data_ID);
+		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-Raster");
 		this.vergleichsID = vergleichsID;
 	}
 
@@ -57,43 +57,68 @@ public class Operator_Raster extends Operator
 				y++;
 			}
 			int yend = y;
-			
-			int xstart = -1, xend = -1;
-			
-			for (x = 0; x < this.data_NPOS_output.getXlenght(); x++)
+			if (ystart < yend)
 			{
-				int j = ystart;
-				while (j < yend && this.data_ID_input.getInt(x, j) == vergleichsID)
-				{
-					j++;
-				}
+				int xstart = 0;
+				int j;
 				
-				if (j == yend)
+				boolean box = false;
+				
+				for (x = 1; x < this.data_NPOS_output.getXlenght(); x++)
 				{
-					if (xstart == -1)
+					j = ystart;
+					while (j < yend && this.data_ID_input.getInt(x, j) == vergleichsID)
 					{
-						xstart = x;
+						j++;
 					}
 					
-					xend = x;
-				}
-				else
-				{
-					if (xstart != -1)
+					if (j == yend)
 					{
-						for (j = ystart; j < yend; j++)
+						if (box)
 						{
-							for (int k = xstart ; k <= xend; k++)
+							for (j = ystart; j < yend; j++)
 							{
-								this.data_NPOS_output.setNPOS(k, j, xend, yend - 1);
+								for (int k = xstart; k < x; k++)
+								{
+									this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
+								}
 							}
+							
+							this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
+							
+							box = false;
+							xstart = x;
 						}
-						
-						this.data_NPOS_output.setNPOS(xend, yend - 1, xstart, ystart);
-						
-						xstart = xend = -1;
+					}
+					else
+					{
+						if (!box)
+						{
+							for (j = ystart; j < yend; j++)
+							{
+								for (int k = xstart; k < x; k++)
+								{
+									this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
+								}
+							}
+							
+							this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
+							
+							box = true;
+							xstart = x;
+						}
 					}
 				}
+				
+				for (j = ystart; j < yend; j++)
+				{
+					for (int k = xstart; k < x; k++)
+					{
+						this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
+					}
+				}
+				
+				this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
 			}
 		}
 		

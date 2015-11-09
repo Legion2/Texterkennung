@@ -25,8 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jogl.JOGL;
@@ -106,10 +104,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		//Tab Layout
 		this.tabPane = new TabPane();
-		Tab tab = new Tab();
-		tab.setText("new tab");
-		tab.setContent(new Rectangle(200,200, Color.LIGHTSTEELBLUE));
-		tabPane.getTabs().add(tab);
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
@@ -135,6 +129,12 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		stage.setTitle("Informatik Projekt: Texterkennung");
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	@Override
+	public void stop()
+	{
+		this.erkennung.close();
 	}
 
 	private BorderPane browseSetup() {

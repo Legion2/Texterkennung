@@ -14,6 +14,7 @@ public class Operator_Verbindungen extends Operator
 	public Operator_Verbindungen(Data_ID data_int)
 	{
 		this.data_ID_input = data_int;
+		this.data_ID_output = new Data_ID(data_ID_input, "Data-Verbindungen");
 	}
 	
 	@Override
@@ -26,7 +27,6 @@ public class Operator_Verbindungen extends Operator
 	public void run()
 	{
 		int x = 0, y = 0, id = 0;
-		this.data_ID_output = new Data_ID(data_ID_input);
 		ArrayList<Integer> masterIDList = new ArrayList<Integer>();
 		masterIDList.add(id);
 		//HashMap<Integer, ArrayList<Integer>> zuordung = new HashMap<Integer, ArrayList<Integer>>();

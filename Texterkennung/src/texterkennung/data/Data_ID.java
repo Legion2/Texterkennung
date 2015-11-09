@@ -12,21 +12,21 @@ public class Data_ID extends Data2D
 	private int[][] data;
 	private int maxid = 0;
 	
-	public Data_ID(int x, int y)
+	public Data_ID(int x, int y, String name)
 	{
-		super(x, y);
+		super(x, y, name);
 	}
 	
 	//not used
-	public Data_ID(int x, int y, int[][] data)
+	public Data_ID(int x, int y, int[][] data, String name)
 	{
-		super(x, y);
+		super(x, y, name);
 		this.data = data;
 	}
 	
-	public Data_ID(Data2D data2d)
+	public Data_ID(Data2D data2d, String name)
 	{
-		super(data2d);
+		super(data2d, name);
 	}
 
 	public int getInt(int x, int y)
@@ -53,12 +53,6 @@ public class Data_ID extends Data2D
 	protected void init()
 	{
 		this.data = new int[this.xlenght][this.ylenght];
-	}
-	
-	@Override
-	public String getName()
-	{
-		return "ID-Array-Data";
 	}
 
 	@Override

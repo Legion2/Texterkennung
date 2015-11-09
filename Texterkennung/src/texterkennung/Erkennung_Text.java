@@ -35,21 +35,24 @@ public class Erkennung_Text extends Erkennung
 	@Override
 	public void run()
 	{
+		super.run();
+		if (!this.isrunning()) return;
 		System.out.println("run");
 		int schwellwert = 200;
 		int vergleichsID = 0;
 		System.out.println("Start");
 		
 		
-		
 		Operator OF;
 		if (this.gpu()) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
 		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
+		if (!this.isrunning()) return;
 		OF.run();
 		System.out.println("Farbzuordnung fertig");
 		
 		
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
+		if (!this.isrunning()) return;
 		OV.run();
 		System.out.println("Verbindungen fertig");
 		
@@ -57,16 +60,19 @@ public class Erkennung_Text extends Erkennung
 		Operator OI;
 		if (this.gpu()) OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
 		else OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		if (!this.isrunning()) return;
 		OI.run();
 		System.out.println("fertig data konvertieren");
 		
 		
 		Operator_Raster OR = new Operator_Raster((Data_ID) OV.getData(), vergleichsID);
+		if (!this.isrunning()) return;
 		OR.run();
 		System.out.println("Raster fertig");
 		
 		
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung((Data_NPOS) OI.getData(), (Data_NPOS) OR.getData());
+		if (!this.isrunning()) return;
 		OZ.run();
 		System.out.println("fertig");
 		

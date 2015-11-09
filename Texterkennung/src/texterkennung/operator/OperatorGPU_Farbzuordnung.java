@@ -40,7 +40,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
@@ -59,7 +59,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = -1;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight());
+		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
