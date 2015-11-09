@@ -36,4 +36,9 @@ public abstract class Erkennung extends Thread implements IGUI
 	{
 		pane.getChildren().add(this.originalBild.getImageView());
 	}
+	
+	protected boolean gpu()
+	{
+		return (this.gl4 != null);
+	}
 }

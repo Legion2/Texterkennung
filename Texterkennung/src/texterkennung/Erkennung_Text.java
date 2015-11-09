@@ -9,7 +9,10 @@ import com.jogamp.opengl.GL4;
 import advanced.AColor;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
+import texterkennung.operator.Operator;
+import texterkennung.operator.OperatorGPU_Farbzuordnung;
 import texterkennung.operator.Operator_Farbzuordnung;
+import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
 import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenzuordnung;
@@ -36,22 +39,34 @@ public class Erkennung_Text extends Erkennung
 		int schwellwert = 200;
 		int vergleichsID = 0;
 		System.out.println("Start");
-		Operator_Farbzuordnung OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
+		
+		
+		
+		Operator OF;
+		if (this.gpu()) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
+		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
 		OF.run();
 		System.out.println("Farbzuordnung fertig");
+		
+		
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
 		OV.run();
 		System.out.println("Verbindungen fertig");
-		Data_ID data_ID = (Data_ID) OV.getData();
-		System.out.println("start Data konvertieren");
-		Data_NPOS data_NPOS = new Data_NPOS(data_ID);
-		data_NPOS.setData(data_ID);//Daten umwandeln
+		
+		
+		Operator OI;
+		if (this.gpu()) OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		else OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		OI.run();
 		System.out.println("fertig data konvertieren");
-		Operator_Raster OR = new Operator_Raster(data_ID, vergleichsID);
+		
+		
+		Operator_Raster OR = new Operator_Raster((Data_ID) OV.getData(), vergleichsID);
 		OR.run();
 		System.out.println("Raster fertig");
 		
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_NPOS, (Data_NPOS) OR.getData());
+		
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung((Data_NPOS) OI.getData(), (Data_NPOS) OR.getData());
 		OZ.run();
 		System.out.println("fertig");
 		
