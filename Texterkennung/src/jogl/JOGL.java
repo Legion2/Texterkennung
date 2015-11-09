@@ -8,6 +8,7 @@ import java.nio.IntBuffer;
 
 import javax.swing.JFrame;
 
+import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -51,7 +52,17 @@ public class JOGL extends JFrame implements GLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
+		System.out.println("display JOGL");
+		/*gl = drawable.getGL().getGL4();
+		IntBuffer buffers = Buffers.newDirectIntBuffer(3);
 		
+		gl.glGenBuffers(1, buffers);//Generiert drei neue Buffernamen(int)
+		gl.glDeleteBuffers(3, buffers);
+		gl.glGenBuffers(1, buffers);//Generiert drei neue Buffernamen(int)
+		System.out.println(buffers.get(0));
+		System.out.println(gl.getContext().toString());
+		gl.glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
+		gl.glDeleteBuffers(3, buffers);*/
 	}
 
 	@Override

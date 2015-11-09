@@ -1,14 +1,19 @@
 package texterkennung.operator;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
+import com.jogamp.opengl.GLContext;
+
+import texterkennung.data.Data_ID;
 
 public abstract class OperatorGPU extends Operator
 {
@@ -24,6 +29,12 @@ public abstract class OperatorGPU extends Operator
 	public OperatorGPU(GL4 gl, String computePath)
 	{
 		this.gl = gl;
+		int r = gl.getContext().makeCurrent();
+		
+		if (r == GLContext.CONTEXT_CURRENT_NEW)
+			System.out.println("CONTEXT_CURRENT_NEW");
+		else if (r == GLContext.CONTEXT_CURRENT)
+			System.out.println("CONTEXT_CURRENT");
 		
 		String vsrc = "";
 		try
@@ -104,15 +115,15 @@ public abstract class OperatorGPU extends Operator
         int[] compiled = new int[1];
         gl.glGetShaderiv(shader, GL2ES2.GL_COMPILE_STATUS, compiled, 0);
 
-        /*if (compiled[0] == 0) {
+        if (compiled[0] == 0) {
             int[] logLength = new int[1];
             gl.glGetShaderiv(shader, GL2ES2.GL_INFO_LOG_LENGTH, logLength, 0);
 
             byte[] log = new byte[logLength[0]+1];
             gl.glGetShaderInfoLog(shader, logLength[0]+1, null, 0, log, 0);
 
-            throw new IllegalStateException("Error compiling the shader: " + new String(log) + " ; " + shaderString);
-        }*/
+            throw new IllegalStateException("Error compiling the shader: " + new String(log));
+        }
 
         return shader;
     }
@@ -138,4 +149,26 @@ public abstract class OperatorGPU extends Operator
         gl.glDeleteShader(this.computeShader);
         gl.glDeleteProgram(this.program);
     }
+	
+	public static void setBufferData(IntBuffer buffer, BufferedImage image)
+	{
+		for (int y = 0; y < image.getHeight(); y++)
+		{
+			for (int x = 0; x < image.getWidth(); x++)
+			{
+				buffer.put(y * image.getWidth() + x, image.getRGB(x, y));
+			}
+		}
+	}
+	
+	public void setDatafromBuffer(Data_ID data_ID, IntBuffer buffer)
+	{
+		for (int y = 0; y < data_ID.getYlenght(); y++)
+		{
+			for (int x = 0; x < data_ID.getXlenght(); x++)
+			{
+				data_ID.setInt(x, y, buffer.get(y * data_ID.getXlenght() + x));
+			}
+		}
+	}
 }
