@@ -31,45 +31,42 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 	private Data_ID data_ID;
 	
 	private final ABufferedImage originalBild;
-	private final ArrayList<AColor> farbListe;
 	private final int schwellwert;
 	
 	public OperatorGPU_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe, int schwellwert, GL4 gl4)
 	{
 		super(gl4, computeShaderPath);
 		this.originalBild = originalBild;
-		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
 		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
-		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
-		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
+		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
+		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
 		
 		for (int i = 0; i < farbListe.size(); i++)
 		{
 			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
 		}
 		
-		setBufferData(this.inputBuffer, this.originalBild);
+		this.setBufferfromImage(this.inputBuffer, this.originalBild);
 	}
 	
 	public OperatorGPU_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe, GL4 gl4)
 	{
 		super(gl4, computeShaderPath);
 		this.originalBild = originalBild;
-		this.farbListe = farbListe;
 		this.schwellwert = -1;
 		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
-		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
-		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getXlenght());
+		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
+		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
 		
 		for (int i = 0; i < farbListe.size(); i++)
 		{
 			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
 		}
 		
-		setBufferData(this.inputBuffer, this.originalBild);
+		this.setBufferfromImage(this.inputBuffer, this.originalBild);
 	}
 	
 	@Override
@@ -87,7 +84,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		
 		IntBuffer buffers = Buffers.newDirectIntBuffer(3);
 		
-		gl.glGenBuffers(3, buffers);//Generiert drei neue Buffernamen(int)*
+		gl.glGenBuffers(3, buffers);//Generiert drei neue Buffernamen(int)
 		System.out.println(buffers.get(2));
 		//System.out.println(gl.getContext().toString());
 		
@@ -128,42 +125,10 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
         
 		this.end();
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*
-		//TODO parallelisieren??? möglich ist es
-		for (int y = 0; y < this.originalBild.getHeight(); y++)
-		{
-			for (int x = 0; x < this.originalBild.getWidth(); x++)
-			{
-				int i = 0;
-				while (i < farbListe.size() && !farbListe.get(i).isColor(this.originalBild.getRGB(x, y), schwellwert))
-				{
-					i++;
-				}
-				if (i != farbListe.size())
-				{
-					this.data_ID.setInt(x, y, i + 1);
-				}
-				else
-				{
-					this.data_ID.setInt(x, y, 0);
-				}
-			}
-		}*/
+		this.dispose();
 		
 		GuiElements.MainGUI.setTab(this.data_ID);
 	}
-	
-	
 
 	@Override
 	public Data getData()

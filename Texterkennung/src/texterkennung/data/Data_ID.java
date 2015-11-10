@@ -64,7 +64,6 @@ public class Data_ID extends Data2D
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				// TODO testen!!!
 				bi.setRGB(x, y, new Color((this.data[x][y]*17)%255, 255 - (this.data[x][y]*47)%255, (this.data[x][y]*23)%255).getRGB());
 			}
 		}

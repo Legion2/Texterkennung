@@ -1,6 +1,5 @@
 package texterkennung.operator;
 
-import GUI.GuiElements;
 import texterkennung.data.Data;
 import texterkennung.data.Data_NPOS;
 
@@ -31,5 +30,4 @@ public class Operator_Zeichenzuordnung extends Operator
 	{
 		return this.data_NPOS_output;
 	}
-
 }

@@ -24,14 +24,13 @@ public class Data_NPOS extends Data2D
 		this.yPOS = new int[this.xlenght][this.ylenght];
 	}
 	
-	public void setData(Data_ID data_ID)
+	@SuppressWarnings("unused")
+	private void setData(Data_ID data_ID)
 	{
-		//TODO parallelisieren??? möglich ist es
 		System.out.println(data_ID.getMaxid());
 		int p = 0;
 		for (int i = 0; i <= data_ID.getMaxid(); i++)
 		{
-			System.out.println(i);
 			int lastindex_x = -1, lastindex_y = -1;
 			int firstindex_x = -1, firstindex_y = -1;
 			
@@ -62,8 +61,6 @@ public class Data_NPOS extends Data2D
 				this.xPOS[lastindex_x][lastindex_y] = firstindex_x;
 				this.yPOS[lastindex_x][lastindex_y] = firstindex_y;
 			}
-			
-			
 			
 			int j = (i * 20) / data_ID.getMaxid();
 			if (j > p)
@@ -98,8 +95,7 @@ public class Data_NPOS extends Data2D
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				// TODO testen!!!
-				bi.setRGB(x, y, new Color(((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) * 17)%255, 255 - ((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) * 47)%255, ((this.xPOS[x][y]*this.ylenght+this.yPOS[x][y]) *23 )%255).getRGB());
+				bi.setRGB(x, y, new Color(((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 1)%255, 255 - ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255, ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255).getRGB());
 			}
 		}
 		

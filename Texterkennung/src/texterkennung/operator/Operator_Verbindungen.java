@@ -235,8 +235,7 @@ public class Operator_Verbindungen extends Operator
 		
 		
 		this.data_ID_output.setMaxid(id);
-		// TODO testen!!!
-		// TODO noch nichtfertig
+		// TODO kann man das besser machen?
 		GuiElements.MainGUI.setTab(this.data_ID_output);
 	}
 

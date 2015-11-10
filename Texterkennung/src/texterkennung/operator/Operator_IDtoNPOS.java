@@ -1,5 +1,6 @@
 package texterkennung.operator;
 
+import GUI.GuiElements;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -24,11 +25,11 @@ public class Operator_IDtoNPOS extends Operator
 	@Override
 	public void run()
 	{
-		//TODO parallelisieren??? möglich ist es
+		System.out.println(this.data_ID_input.getMaxid());
+		int p = 0;
 		System.out.println(data_ID_input.getMaxid());
 		for (int i = 0; i <= data_ID_input.getMaxid(); i++)
 		{
-			System.out.println(i);
 			int lastindex_x = -1, lastindex_y = -1;
 			int firstindex_x = -1, firstindex_y = -1;
 			
@@ -57,7 +58,15 @@ public class Operator_IDtoNPOS extends Operator
 			{
 				this.data_NPOS_output.setNPOS(lastindex_x, lastindex_y, firstindex_x, firstindex_y);
 			}
+			
+			int j = (i * 20) / this.data_ID_input.getMaxid();
+			if (j > p)
+			{
+				p = j;
+				System.out.println("Konvertierung bei " + (j * 5) + "%");
+			}
 		}
+		GuiElements.MainGUI.setTab(this.data_NPOS_output);
 	}
 
 	@Override

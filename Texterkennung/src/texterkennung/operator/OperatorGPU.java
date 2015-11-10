@@ -13,7 +13,9 @@ import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLContext;
 
+import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_NPOS;
 
 public abstract class OperatorGPU extends Operator
 {
@@ -143,31 +145,59 @@ public abstract class OperatorGPU extends Operator
 		gl.glUseProgram(0);
 	}
 	
-	public void dispose()
+	protected void dispose()
 	{
         gl.glDetachShader(this.program, this.computeShader);
         gl.glDeleteShader(this.computeShader);
         gl.glDeleteProgram(this.program);
     }
 	
-	public static void setBufferData(IntBuffer buffer, BufferedImage image)
+	protected void setBufferfromImage(IntBuffer buffer, BufferedImage image)
 	{
 		for (int y = 0; y < image.getHeight(); y++)
 		{
 			for (int x = 0; x < image.getWidth(); x++)
 			{
-				buffer.put(y * image.getWidth() + x, image.getRGB(x, y));
+				int loc = y * image.getWidth() + x;
+				buffer.put(loc, image.getRGB(x, y));
 			}
 		}
 	}
 	
-	public void setDatafromBuffer(Data_ID data_ID, IntBuffer buffer)
+	protected void setBufferfromData(IntBuffer buffer, Data_ID data_ID)
+	{
+		for (int y = 0; y < data_ID.getYlenght(); y++)
+		{
+			for (int x = 0; x < data_ID.getXlenght(); x++)
+			{
+				buffer.put(y * data_ID.getXlenght() + x, data_ID.getInt(x, y));
+			}
+		}
+	}
+	
+	protected void setDatafromBuffer(Data_ID data_ID, IntBuffer buffer)
 	{
 		for (int y = 0; y < data_ID.getYlenght(); y++)
 		{
 			for (int x = 0; x < data_ID.getXlenght(); x++)
 			{
 				data_ID.setInt(x, y, buffer.get(y * data_ID.getXlenght() + x));
+			}
+		}
+	}
+	
+	protected void setDatafromBuffer(Data_NPOS data_NPOS_output, IntBuffer buffer)
+	{
+		// TODO wie die daten speichern?
+		for (int y = 0; y < data_NPOS_output.getYlenght(); y++)
+		{
+			for (int x = 0; x < data_NPOS_output.getXlenght(); x++)
+			{
+				int data = buffer.get(y * data_NPOS_output.getXlenght() + x);
+				int xset = data % data_NPOS_output.getXlenght();
+				int yset = (data - xset) / data_NPOS_output.getYlenght();
+				
+				data_NPOS_output.setNPOS(x, y, xset, yset);
 			}
 		}
 	}

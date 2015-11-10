@@ -134,11 +134,18 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	@Override
 	public void stop()
 	{
-		this.erkennung.close();
+		System.out.println("STOP");
+		
+		if (this.erkennung != null)
+		{
+			this.erkennung.close();
+		}
+		jogl.dispose();//TODO stop the AWT thread
+		jogl.drawable.destroy();
 	}
 
-	private BorderPane browseSetup() {
-
+	private BorderPane browseSetup()
+	{
 		Label label_file = new Label ("Dateipfad: ");
 		this.textfield_filepath = new TextField ();
 		this.button_browse = new Button ("Durchsuchen");
@@ -160,7 +167,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	public void addTab(IGUI data)
 	{
 		Platform.runLater(new Runnable() {
-			
 			@Override
 			public void run() {
 				Tab tab=new Tab();
@@ -179,7 +185,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	public void setTab(IGUI data)
 	{
 		Platform.runLater(new Runnable() {
-			
 			@Override
 			public void run() {
 				list.get(data);
@@ -197,27 +202,29 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null)
 			{
-					this.textfield_filepath.setText(file.getAbsolutePath());
-					
-					try
-		            {
-		            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
-		            	farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-		            	
-		            	switch (this.comboBox_mode.getValue())
-		            	{
-		            	case "Texterkennung":
-		            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
-		            	case "Stundenplan":
-		            		
-		            	case "Vertretungsplan":
-		            		
-		            		
-		            		
-		            	}
-		            } catch (IOException ex) {
-		                System.out.println("Fehler aufgetreten beim Lesen der Datei");
-		            }
+				this.textfield_filepath.setText(file.getAbsolutePath());
+				
+				try
+	            {
+	            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
+	            	
+	            	switch (this.comboBox_mode.getValue())
+	            	{
+	            	case "Texterkennung":
+	            		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		break;
+	            	case "Stundenplan":
+	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
+	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		break;
+	            	case "Vertretungsplan":
+	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		break;
+	            	}
+	            } catch (IOException ex) {
+	                System.out.println("Fehler aufgetreten beim Lesen der Datei");
+	            }
 			}
 		}
 		else if (arg0.getSource() == this.button_startCalc)

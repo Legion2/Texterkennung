@@ -11,6 +11,7 @@ import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
+import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
@@ -58,11 +59,12 @@ public class Erkennung_Text extends Erkennung
 		
 		
 		Operator OI;
-		if (this.gpu()) OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
-		else OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		//if (this.gpu()) OI = new OperatorGPU_IDtoNPOS((Data_ID) OV.getData(), this.gl4);
+		//else OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
 		if (!this.isrunning()) return;
 		OI.run();
-		System.out.println("fertig data konvertieren");
+		System.out.println("fertig Data konvertieren");
 		
 		
 		Operator_Raster OR = new Operator_Raster((Data_ID) OV.getData(), vergleichsID);
@@ -75,33 +77,6 @@ public class Erkennung_Text extends Erkennung
 		if (!this.isrunning()) return;
 		OZ.run();
 		System.out.println("fertig");
-		
-		
-		/*testBild = new ABufferedImage(this.originalBild.getWidth(), this.originalBild.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		
-		for (int x = 0; x < this.originalBild.getWidth(); x++)
-		{
-			for (int y = 0; y < this.originalBild.getHeight(); y++)
-			{
-				testBild.setRGB(x, y, new Color((this.originalBild.getDifferenzBild().getRot(x, y) < par1) ? 0 : this.originalBild.getDifferenzBild().getRot(x, y), (this.originalBild.getDifferenzBild().getGruen(x, y) < par1) ? 0 : this.originalBild.getDifferenzBild().getGruen(x, y), (this.originalBild.getDifferenzBild().getBlau(x, y) < par1) ? 0 : this.originalBild.getDifferenzBild().getBlau(x, y)).getRGB());
-			}
-		}
-		
-		this.testBild.prepare();
-		
-		
-		
-		for (int y = 0; y < originalBild.getHeight(); y++)
-		{
-			int x = 0;			
-			for (x = 0; x < originalBild.getWidth(); x++)
-			{
-				if (this.testBild.getDurchschnitt(x, y, par2) < 1)
-				{
-					this.originalBild.setRGB(x, y, new Color(this.originalBild.getRot(x, y), this.originalBild.getGruen(x, y), this.originalBild.getBlau(x, y), 0).getRGB());
-				}
-			}
-		}*/
 		
 		// TODO nichtfertig
 	}

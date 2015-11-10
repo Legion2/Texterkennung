@@ -26,7 +26,6 @@ public class Operator_Farbzuordnung extends Operator
 	
 	public Operator_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe, int schwellwert)
 	{
-		super();
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
@@ -35,7 +34,6 @@ public class Operator_Farbzuordnung extends Operator
 	
 	public Operator_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe)
 	{
-		super();
 		this.originalBild = originalBild;
 		this.farbListe = farbListe;
 		this.schwellwert = -1;
