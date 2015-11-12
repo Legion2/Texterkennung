@@ -2,15 +2,63 @@ package texterkennung.data;
 
 import java.util.ArrayList;
 
+import GUI.IGUI;
+import javafx.geometry.Insets;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 public class DataList extends Data
 {
 	private ArrayList<Data> data;
+	
+	public DataList(String name)
+	{
+		super(name, true);
+		this.data = new ArrayList<Data>();
+	}
+	
+	public void add(Data data)
+	{
+		this.data.add(data);
+	}
+	
+	public Data get(int index)
+	{
+		return this.data.get(index);
+	}
+	
+	public ArrayList<Data> get()
+	{
+		return this.data;
+	}
+	
+	public int size()
+	{
+		return this.data.size();
+	}
 
 	@Override
-	public void gui(Pane pane) {
-		// TODO Auto-generated method stub
+	public void gui(Pane pane)
+	{
+		TabPane tabPane = new TabPane();
+		VBox UIElements = new VBox (tabPane);
+		for (IGUI iGUI : this.data)
+		{
+			Tab tab = new Tab();
+			tab.setText(iGUI.getName());
+			
+			Pane pane2 = new Pane();
+			
+			iGUI.gui(pane2);
+			
+			tab.setContent(pane2);
+			tabPane.getTabs().add(tab);
+		}
+		
+		pane.getChildren().add(new BorderPane(UIElements));
 		
 	}
 

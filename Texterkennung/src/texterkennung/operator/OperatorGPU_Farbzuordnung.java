@@ -85,8 +85,6 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		IntBuffer buffers = Buffers.newDirectIntBuffer(3);
 		
 		gl.glGenBuffers(3, buffers);//Generiert drei neue Buffernamen(int)
-		System.out.println(buffers.get(2));
-		//System.out.println(gl.getContext().toString());
 		
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(0));//Farben
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, this.farbenBuffer.limit() * 4, this.farbenBuffer, GL4.GL_STATIC_READ);
@@ -98,10 +96,6 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, this.outputBuffer.limit() * 4, this.outputBuffer, GL4.GL_STREAM_READ);
 		
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, 0);
-		
-		//TODO SSBO alles
-		
-		
 		
 		gl.glUniform1i(this.getUniformLocation("schwellwert"), this.schwellwert);
 		

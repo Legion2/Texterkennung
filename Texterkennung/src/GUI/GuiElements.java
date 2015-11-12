@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.Font;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import advanced.AColor;
+import debug.Debugger;
+import debug.IInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,9 +33,10 @@ import javafx.stage.Stage;
 import jogl.JOGL;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
+import texterkennung.data.Data_Image;
 
-
-public class GuiElements extends Application implements EventHandler<ActionEvent>
+//TODO Rename this class
+public class GuiElements extends Application implements EventHandler<ActionEvent>, IInfo
 {
 	public static GuiElements MainGUI;
 	public static JOGL jogl;
@@ -134,8 +138,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	@Override
 	public void stop()
 	{
-		System.out.println("STOP");
-		
+		Debugger.info(this, "STOP");
 		if (this.erkennung != null)
 		{
 			this.erkennung.close();
@@ -206,24 +209,30 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				
 				try
 	            {
-	            	ArrayList<AColor> farbListe = new ArrayList<AColor>();
+					BufferedImage image = ImageIO.read(file);
+					
+					new Data_Image(image, "Originalbild");
+					
+					
+					ArrayList<AColor> farbListe = new ArrayList<AColor>();
 	            	
 	            	switch (this.comboBox_mode.getValue())
 	            	{
 	            	case "Texterkennung":
 	            		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
 	            		break;
 	            	case "Stundenplan":
 	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
 	            		break;
 	            	case "Vertretungsplan":
-	            		erkennung = new Erkennung_Text(ImageIO.read(file), farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
 	            		break;
 	            	}
 	            } catch (IOException ex) {
-	                System.out.println("Fehler aufgetreten beim Lesen der Datei");
+	            	Debugger.error(this, "Fehler aufgetreten beim Lesen der Datei");
 	            }
 			}
 		}
@@ -234,5 +243,11 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	            this.erkennung.start();
 	        }
 		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return "GuiElements";
 	}
 }

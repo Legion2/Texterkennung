@@ -15,6 +15,15 @@ public class ABufferedImage extends BufferedImage
 	
 	private ABufferedImage differenzBild;
 	
+	public ABufferedImage(int width, int height)
+	{
+		super(width, height, BufferedImage.TYPE_INT_ARGB);
+		
+		this.summeRot = new int[this.getWidth()] [this.getHeight()];
+		this.summeGruen = new int[this.getWidth()] [this.getHeight()];
+		this.summeBlau = new int[this.getWidth()] [this.getHeight()];
+	}
+	
 	public ABufferedImage(int width, int height, int imageType)
 	{
 		super(width, height, imageType);

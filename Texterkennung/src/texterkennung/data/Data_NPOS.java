@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import GUI.GuiElements;
 import advanced.ABufferedImage;
+import debug.Debugger;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
@@ -27,7 +28,7 @@ public class Data_NPOS extends Data2D
 	@SuppressWarnings("unused")
 	private void setData(Data_ID data_ID)
 	{
-		System.out.println(data_ID.getMaxid());
+		Debugger.info(this, "" + data_ID.getMaxid());
 		int p = 0;
 		for (int i = 0; i <= data_ID.getMaxid(); i++)
 		{
@@ -66,7 +67,7 @@ public class Data_NPOS extends Data2D
 			if (j > p)
 			{
 				p = j;
-				System.out.println("Konvertierung bei " + (j * 5) + "%");
+				Debugger.info(this, "Konvertierung bei " + (j * 5) + "%");
 			}
 		}
 		GuiElements.MainGUI.setTab(this);

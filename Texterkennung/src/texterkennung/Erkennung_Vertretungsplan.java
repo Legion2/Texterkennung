@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.jogamp.opengl.GL4;
 
 import advanced.AColor;
+import debug.Debugger;
 import javafx.scene.layout.Pane;
 
 public class Erkennung_Vertretungsplan extends Erkennung
@@ -25,8 +26,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	@Override
 	public void run()
 	{
-		System.out.println("run");
-		
+		Debugger.info(this, "run");
 		
 		
 		

@@ -3,18 +3,20 @@ package texterkennung.data;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+import GUI.GuiElements;
 import advanced.ABufferedImage;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Data_Image extends Data_ID
 {
-	public Data_Image(int x, int y, String name)
+	public Data_Image(BufferedImage image, String string)
 	{
-		super(x, y, name);
+		super(image.getWidth(), image.getHeight(), string);
+		setBufferedImage(image);
 	}
-	
-	public void setBufferedImage(BufferedImage image)
+
+	private void setBufferedImage(BufferedImage image)
 	{
 		for (int y = 0; y < this.ylenght; y++)
 		{
@@ -23,6 +25,8 @@ public class Data_Image extends Data_ID
 				this.setInt(x, y, image.getRGB(x, y));
 			}
 		}
+		
+		GuiElements.MainGUI.setTab(this);
 	}
 	
 	@Override
@@ -34,10 +38,9 @@ public class Data_Image extends Data_ID
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				bi.setRGB(x, y, new Color(this.getInt(x, y), this.getInt(x, y), this.getInt(x, y)).getRGB());
+				bi.setRGB(x, y, this.getInt(x, y));
 			}
 		}
-		
 		
 		ImageView image = bi.getImageView();
 		pane.getChildren().add(image);

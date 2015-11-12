@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import com.jogamp.opengl.GL4;
 
 import advanced.AColor;
+import debug.Debugger;
+import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
@@ -24,59 +26,61 @@ public class Erkennung_Text extends Erkennung
 	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font, GL4 gl4)
 	{
 		super(bufferedImage, farbListe, font, gl4);
-		setName("Originalbild");
+		setName("Text");
 	}
-
-	/*@Override
-	public String getName()
-	{
-		return "Erkennung_Text";
-	}*/
 
 	@Override
 	public void run()
 	{
 		super.run();
 		if (!this.isrunning()) return;
-		System.out.println("run");
+		Debugger.info(this, "run");
 		int schwellwert = 200;
 		int vergleichsID = 0;
-		System.out.println("Start");
+		Debugger.info(this, "Start");
 		
-		
+		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
 		if (this.gpu()) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
 		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
 		if (!this.isrunning()) return;
 		OF.run();
-		System.out.println("Farbzuordnung fertig");
+		Data_ID markiertePixel = (Data_ID) OF.getData();
+		Debugger.info(this, "Farbzuordnung fertig");
 		
 		
+		/*
 		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
 		if (!this.isrunning()) return;
 		OV.run();
-		System.out.println("Verbindungen fertig");
+		Data_ID data = (Data_ID) OV.getData();
+		Debugger.info(this, "Verbindungen fertig");
+		*/
+		
+		
+		
+		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
+		Operator_Raster OR = new Operator_Raster(markiertePixel, vergleichsID);
+		if (!this.isrunning()) return;
+		OR.run();
+		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
+		Debugger.info(this, "Raster fertig");
+		
+		//Markiert die Pixel, die zu einem Zeichen gehören.
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster);
+		if (!this.isrunning()) return;
+		OZ.run();
+		Data_ID markierteZeichen = (Data_ID) ((DataList) OZ.getData()).get(0);
+		Debugger.info(this, "fertig");
 		
 		
 		Operator OI;
-		//if (this.gpu()) OI = new OperatorGPU_IDtoNPOS((Data_ID) OV.getData(), this.gl4);
-		//else OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
-		OI = new Operator_IDtoNPOS((Data_ID) OV.getData());
+		if (this.gpu()) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.gl4);
+		else OI = new Operator_IDtoNPOS(markierteZeichen);
 		if (!this.isrunning()) return;
 		OI.run();
-		System.out.println("fertig Data konvertieren");
+		Debugger.info(this, "fertig Data konvertieren");
 		
-		
-		Operator_Raster OR = new Operator_Raster((Data_ID) OV.getData(), vergleichsID);
-		if (!this.isrunning()) return;
-		OR.run();
-		System.out.println("Raster fertig");
-		
-		
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung((Data_NPOS) OI.getData(), (Data_NPOS) OR.getData());
-		if (!this.isrunning()) return;
-		OZ.run();
-		System.out.println("fertig");
 		
 		// TODO nichtfertig
 	}

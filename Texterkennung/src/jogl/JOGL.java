@@ -9,7 +9,10 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 
-public class JOGL extends JFrame implements GLEventListener
+import debug.Debugger;
+import debug.IInfo;
+
+public class JOGL extends JFrame implements GLEventListener, IInfo
 {
 	/**
 	 * 
@@ -22,8 +25,8 @@ public class JOGL extends JFrame implements GLEventListener
 	public JOGL()
 	{
 		super("Parallisierung");
-		System.out.println("new JOGL");
-		
+		this.setName("Parallisierung");
+		//Debugger.info(this, "new JOGL");
 		GLProfile profile = GLProfile.get(GLProfile.GL4);
 		GLCapabilities capabilities = new GLCapabilities(profile);
 		
@@ -43,7 +46,7 @@ public class JOGL extends JFrame implements GLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-		System.out.println("display JOGL");
+		Debugger.info(this, "display JOGL");
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class JOGL extends JFrame implements GLEventListener
 	@Override
 	public void init(GLAutoDrawable drawable)
 	{
-		System.out.println("init JOGL");
+		Debugger.info(this, "init JOGL");
 		this.gl = drawable.getGL().getGL4();
 		this.drawable = drawable;
 		

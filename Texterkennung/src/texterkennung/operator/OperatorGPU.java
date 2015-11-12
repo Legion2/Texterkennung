@@ -13,6 +13,7 @@ import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLContext;
 
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -34,9 +35,9 @@ public abstract class OperatorGPU extends Operator
 		int r = gl.getContext().makeCurrent();
 		
 		if (r == GLContext.CONTEXT_CURRENT_NEW)
-			System.out.println("CONTEXT_CURRENT_NEW");
+			Debugger.info(this, "CONTEXT_CURRENT_NEW");
 		else if (r == GLContext.CONTEXT_CURRENT)
-			System.out.println("CONTEXT_CURRENT");
+			Debugger.info(this, "CONTEXT_CURRENT");
 		
 		String vsrc = "";
 		try
@@ -50,10 +51,10 @@ public abstract class OperatorGPU extends Operator
 			}
 			brv.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Shaderdatei konnte nicht gelesen werden.");
+			Debugger.error(this, "Shaderdatei konnte nicht gelesen werden.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Fehler beim auslesen der Shaderdatei.");
+			Debugger.error(this, "Fehler beim auslesen der Shaderdatei.");
 			e.printStackTrace();
 		}
 		

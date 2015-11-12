@@ -6,6 +6,7 @@ import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
 import GUI.GuiElements;
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -42,7 +43,7 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 	public void run()
 	{
 		gl.getContext().makeCurrent();//TODO wichtig
-		System.out.println(this.data_ID_input.getMaxid());
+		Debugger.info(this, "" + this.data_ID_input.getMaxid());
 		this.begin();
 		
 		IntBuffer buffers = Buffers.newDirectIntBuffer(2);

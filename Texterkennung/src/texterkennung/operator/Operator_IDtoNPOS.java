@@ -1,6 +1,7 @@
 package texterkennung.operator;
 
 import GUI.GuiElements;
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -25,9 +26,9 @@ public class Operator_IDtoNPOS extends Operator
 	@Override
 	public void run()
 	{
-		System.out.println(this.data_ID_input.getMaxid());
+		Debugger.info(this, "" + this.data_ID_input.getMaxid());
 		int p = 0;
-		System.out.println(data_ID_input.getMaxid());
+		Debugger.info(this, "" + data_ID_input.getMaxid());
 		for (int i = 0; i <= data_ID_input.getMaxid(); i++)
 		{
 			int lastindex_x = -1, lastindex_y = -1;
@@ -63,7 +64,7 @@ public class Operator_IDtoNPOS extends Operator
 			if (j > p)
 			{
 				p = j;
-				System.out.println("Konvertierung bei " + (j * 5) + "%");
+				Debugger.info(this, "Konvertierung bei " + (j * 5) + "%");
 			}
 		}
 		GuiElements.MainGUI.setTab(this.data_NPOS_output);

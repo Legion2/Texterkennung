@@ -7,16 +7,11 @@ public abstract class Data implements IGUI
 {
 	private final String name;
 	
-	public Data()
-	{
-		GuiElements.MainGUI.addTab(this);
-		this.name = "Data";
-	}
 	
-	public Data(String name)
+	public Data(String name, boolean tab)
 	{
-		GuiElements.MainGUI.addTab(this);
 		this.name = name;
+		if (tab) GuiElements.MainGUI.addTab(this);
 	}
 	
 	@Override

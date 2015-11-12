@@ -29,7 +29,6 @@ public abstract class Erkennung extends Thread implements IGUI
 		Zeichen.setup(font);
 		this.gl4 = gl4;
 		GuiElements.MainGUI.addTab(this);
-		GuiElements.MainGUI.setTab(this);
 	}
 	
 	@Override

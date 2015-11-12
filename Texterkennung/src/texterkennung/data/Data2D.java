@@ -7,7 +7,7 @@ public abstract class Data2D extends Data
 	
 	public Data2D(int x, int y, String name)
 	{
-		super(name);
+		super(name, true);
 		this.xlenght = x;
 		this.ylenght = y;
 		init();
@@ -15,7 +15,7 @@ public abstract class Data2D extends Data
 	
 	public Data2D(Data2D data, String name)
 	{
-		super(name);
+		super(name, true);
 		this.xlenght = data.xlenght;
 		this.ylenght = data.ylenght;
 		init();
