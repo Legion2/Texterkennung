@@ -1,6 +1,5 @@
 package texterkennung.data;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import GUI.GuiElements;

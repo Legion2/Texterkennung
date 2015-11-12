@@ -70,7 +70,9 @@ public class Erkennung_Text extends Erkennung
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster);
 		if (!this.isrunning()) return;
 		OZ.run();
-		Data_ID markierteZeichen = (Data_ID) ((DataList) OZ.getData()).get(0);
+		DataList dataList = (DataList) OZ.getData();
+		Data_ID markierteZeichen = (Data_ID) dataList.get(0);
+		DataList zeichenListe = (DataList) dataList.get(1);
 		Debugger.info(this, "fertig");
 		
 		

@@ -3,7 +3,6 @@ package texterkennung.data;
 import java.util.ArrayList;
 
 import GUI.IGUI;
-import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +19,12 @@ public class DataList extends Data
 		this.data = new ArrayList<Data>();
 	}
 	
+	public DataList(String name, boolean b)
+	{
+		super(name, b);
+		this.data = new ArrayList<Data>();
+	}
+
 	public void add(Data data)
 	{
 		this.data.add(data);

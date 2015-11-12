@@ -3,7 +3,6 @@ package texterkennung.data;
 import java.awt.Color;
 
 import advanced.ABufferedImage;
-import debug.Debugger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -20,7 +19,6 @@ public class Data_Zeichen extends Data
 	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, String name)
 	{
 		super(name, false);
-		Debugger.info(this, name);
 		this.ID = iD;
 		this.xstart = xstart;
 		this.xend = xend;

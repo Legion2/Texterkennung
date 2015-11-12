@@ -25,7 +25,7 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 	{
 		super(gl4, computeShaderPath);
 		this.data_ID_input = data_ID;
-		this.data_NPOS_output = new Data_NPOS(data_ID, "Data");
+		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-NPOS");
 		
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID_input.getXlenght() * this.data_ID_input.getYlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID_input.getXlenght() * this.data_ID_input.getYlenght());

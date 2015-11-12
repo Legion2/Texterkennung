@@ -1,7 +1,6 @@
 package texterkennung.operator;
 
 import GUI.GuiElements;
-import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
@@ -32,7 +31,7 @@ public class Operator_Zeichenzuordnung extends Operator
 	@Override
 	public void run()
 	{
-		int x = 0, y = 0, ID = 0;
+		int x = 0, y = 0, ID = 1;
 		
 		for (y = 0; y < this.data_NPOS_input.getYlenght(); y++)
 		{
@@ -48,7 +47,6 @@ public class Operator_Zeichenzuordnung extends Operator
 				{
 					if (x > xend)//neuer Sektor
 					{
-						Debugger.info(this, "z: " + z);
 						if (z)
 						{
 							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ystart, yend, this.data_ID_output, ID + " Zeichen Daten"));
@@ -65,12 +63,10 @@ public class Operator_Zeichenzuordnung extends Operator
 						}
 						else
 						{
-							Debugger.error(this, "z: " + z);
 							xstart = x;
 							xend = this.data_NPOS_input.getNPOS(x, ystart)[0];
 						}
 					}
-					
 					
 					for (y = ystart; y <= yend; y++)
 					{
@@ -86,6 +82,7 @@ public class Operator_Zeichenzuordnung extends Operator
 			}
 		}
 		
+		this.data_ID_output.setMaxid(ID - 1);
 		GuiElements.MainGUI.setTab(this.dataList_output);
 		GuiElements.MainGUI.setTab(this.data_ID_output);
 	}
@@ -93,7 +90,7 @@ public class Operator_Zeichenzuordnung extends Operator
 	@Override
 	public Data getData()
 	{
-		DataList list = new DataList("return list");
+		DataList list = new DataList("return list", false);
 		list.add(this.data_ID_output);
 		list.add(this.dataList_output);
 		return list;
