@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import advanced.ABufferedImage;
 
+//TODO diese Klasse wird aufgelöst und in die anderen verteilt
 public class Zeichen 
 {
 	//Parameter
@@ -33,7 +34,7 @@ public class Zeichen
 		g.drawString(String.valueOf(c), 0, 20);
 		
 		//Summe erstellen
-		zeichenBild.prepare();
+		//zeichenBild.prepare();
 		
 		//Schneefall ausrechnen
 		snow_v = new int[v];

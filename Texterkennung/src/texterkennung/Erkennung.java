@@ -14,8 +14,11 @@ import javafx.scene.layout.Pane;
 
 public abstract class Erkennung extends Thread implements IGUI
 {
+	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	
 	protected ArrayList<AColor> farbListe;
 	protected final ABufferedImage originalBild;
+	protected final Font font;
 
 	protected GL4 gl4;
 	
@@ -26,7 +29,8 @@ public abstract class Erkennung extends Thread implements IGUI
 		this.originalBild = new ABufferedImage(bufferedImage);
 		this.originalBild.setImage(bufferedImage);
 		this.farbListe = farbListe;
-		Zeichen.setup(font);
+		this.font = font;
+		//Zeichen.setup(font);TODO move this to run()
 		this.gl4 = gl4;
 		GuiElements.MainGUI.addTab(this);
 	}

@@ -43,7 +43,7 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 	public void run()
 	{
 		gl.getContext().makeCurrent();//TODO wichtig
-		Debugger.info(this, "" + this.data_ID_input.getMaxid());
+		Debugger.info(this, "Anzahl: " + this.data_ID_input.getMaxid());
 		this.begin();
 		
 		IntBuffer buffers = Buffers.newDirectIntBuffer(2);

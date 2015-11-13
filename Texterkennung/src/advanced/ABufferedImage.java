@@ -17,7 +17,7 @@ public class ABufferedImage extends BufferedImage
 	
 	public ABufferedImage(int width, int height)
 	{
-		super(width, height, BufferedImage.TYPE_INT_ARGB);
+		super(width, height, BufferedImage.TYPE_INT_RGB);
 		
 		this.summeRot = new int[this.getWidth()] [this.getHeight()];
 		this.summeGruen = new int[this.getWidth()] [this.getHeight()];
@@ -51,9 +51,10 @@ public class ABufferedImage extends BufferedImage
 	public void setImage(BufferedImage bufferedImage)
 	{
 		this.setData(bufferedImage.getData());
-		this.prepare();
+		//this.prepare();
 	}
 	
+	/*
 	public void prepare()
 	{
 		summe();
@@ -101,7 +102,7 @@ public class ABufferedImage extends BufferedImage
 			}
 		}
 	}
-
+	
 	private void differenz()
 	{
 		this.differenzBild = new ABufferedImage(this.getWidth(), this.getHeight(), this.getType());
@@ -163,7 +164,7 @@ public class ABufferedImage extends BufferedImage
 	public ABufferedImage getDifferenzBild()
 	{
 		return differenzBild;
-	}
+	}*/
 	
 	/**
 	 * @author https://blog.idrsolutions.com/2012/11/convert-bufferedimage-to-javafx-image/

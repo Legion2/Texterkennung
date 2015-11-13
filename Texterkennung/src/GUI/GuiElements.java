@@ -41,7 +41,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	public static GuiElements MainGUI;
 	public static JOGL jogl;
 	
-	private HashMap<IGUI, Pane> list;
+	private HashMap<IGUI, Tab> list;
 	
 	private ComboBox<String> comboBox_mode;
 	private Button button_browse;
@@ -62,7 +62,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	{
 		// Init all classes for the program and add them to GUIList
 		MainGUI = this;//TODO kann man das besser lösen
-		list = new HashMap<IGUI, Pane>();
+		list = new HashMap<IGUI, Tab>();
 	}
 
 	@Override
@@ -175,10 +175,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				Tab tab=new Tab();
 				tab.setText(data.getName());
 				
-				Pane pane = new Pane();
-				tab.setContent(pane);
-				
-				list.put(data, pane);
+				list.put(data, tab);
 				
 				tabPane.getTabs().add(tab);
 			}
@@ -190,8 +187,9 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				list.get(data);
-				data.gui(list.get(data));
+				Pane pane = new Pane();
+				data.gui(pane);
+				list.get(data).setContent(pane);
 			}
 		});
 	}
@@ -211,7 +209,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	            {
 					BufferedImage image = ImageIO.read(file);
 					
-					new Data_Image(image, "Originalbild");
+					new Data_Image(image, "Originalbild", true);
 					
 					
 					ArrayList<AColor> farbListe = new ArrayList<AColor>();

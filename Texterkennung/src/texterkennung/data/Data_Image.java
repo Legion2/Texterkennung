@@ -9,13 +9,13 @@ import javafx.scene.layout.Pane;
 
 public class Data_Image extends Data_ID
 {
-	public Data_Image(BufferedImage image, String string)
+	public Data_Image(BufferedImage image, String string, boolean b)
 	{
-		super(image.getWidth(), image.getHeight(), string);
-		setBufferedImage(image);
+		super(image.getWidth(), image.getHeight(), string, b);
+		setBufferedImage(image, b);
 	}
 
-	private void setBufferedImage(BufferedImage image)
+	private void setBufferedImage(BufferedImage image, boolean b)
 	{
 		for (int y = 0; y < this.ylenght; y++)
 		{
@@ -25,13 +25,13 @@ public class Data_Image extends Data_ID
 			}
 		}
 		
-		GuiElements.MainGUI.setTab(this);
+		if (b) GuiElements.MainGUI.setTab(this);
 	}
 	
 	@Override
 	public void gui(Pane pane)
 	{
-		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght);
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{

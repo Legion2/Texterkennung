@@ -20,6 +20,7 @@ public class Operator_Zeichenzuordnung extends Operator
 		this.data_NPOS_input = data_NPOS;
 		this.dataList_output = new DataList("Zeichen Liste");
 		this.data_ID_output = new Data_ID(data_ID, "Data-Zeichen");
+		this.data_ID_output.setDefault(-1);
 	}
 
 	@Override
@@ -41,6 +42,8 @@ public class Operator_Zeichenzuordnung extends Operator
 				int xstart = 0;
 				int xend = this.data_NPOS_input.getNPOS(0, y)[0];
 				int yend = this.data_NPOS_input.getNPOS(0, y)[1];
+				int ymin = yend;
+				int ymax = ystart;
 				boolean z = false;//Ob ein Zeichen im Letzten sekor gefunden wurde
 				
 				for (x = 0; x < this.data_NPOS_input.getXlenght(); x++)
@@ -49,8 +52,11 @@ public class Operator_Zeichenzuordnung extends Operator
 					{
 						if (z)
 						{
-							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ystart, yend, this.data_ID_output, ID + " Zeichen Daten"));
+							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, "Zeichen Daten: " + ID));
 							ID++;
+							ymin = yend;
+							ymax = ystart;
+							
 							z = false;
 							x = this.data_NPOS_input.getNPOS(x, ystart)[0];
 							xstart = x + 1;
@@ -73,6 +79,10 @@ public class Operator_Zeichenzuordnung extends Operator
 						if (this.data_ID_input.getInt(x, y) != 0)
 						{
 							z = true;
+							
+							ymin = ymin > y ? y : ymin;
+							ymax = ymax < y ? y : ymax;
+							
 							this.data_ID_output.setInt(x, y, ID);
 						}
 					}
@@ -82,7 +92,7 @@ public class Operator_Zeichenzuordnung extends Operator
 			}
 		}
 		
-		this.data_ID_output.setMaxid(ID - 1);
+		this.data_ID_output.setMaxid(ID);
 		GuiElements.MainGUI.setTab(this.dataList_output);
 		GuiElements.MainGUI.setTab(this.data_ID_output);
 	}

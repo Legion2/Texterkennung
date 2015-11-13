@@ -14,19 +14,17 @@ public class Data_ID extends Data2D
 	
 	public Data_ID(int x, int y, String name)
 	{
-		super(x, y, name);
-	}
-	
-	//not used
-	public Data_ID(int x, int y, int[][] data, String name)
-	{
-		super(x, y, name);
-		this.data = data;
+		super(x, y, name, true);
 	}
 	
 	public Data_ID(Data2D data2d, String name)
 	{
 		super(data2d, name);
+	}
+
+	public Data_ID(int x, int y, String name, boolean b)
+	{
+		super(x, y, name, b);
 	}
 
 	public int getInt(int x, int y)
@@ -72,5 +70,16 @@ public class Data_ID extends Data2D
 		
 		ImageView image = bi.getImageView();
 		pane.getChildren().add(image);
+	}
+
+	public void setDefault(int d)
+	{
+		for (int y = 0; y < this.ylenght; y++)
+		{
+			for (int x = 0; x < this.xlenght; x++)
+			{
+				this.data[x][y] = d;
+			}
+		}
 	}
 }

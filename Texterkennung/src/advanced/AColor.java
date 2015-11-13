@@ -5,6 +5,9 @@ import java.awt.Color;
 @SuppressWarnings("serial")
 public class AColor extends Color
 {
+	public static final int weiﬂ = new Color(255, 255, 255).getRGB();
+	public static final int schwarz = new Color(0, 0, 0).getRGB();
+	
 
 	public AColor(int r, int g, int b)
 	{
