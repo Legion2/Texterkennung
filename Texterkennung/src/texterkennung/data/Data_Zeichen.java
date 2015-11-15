@@ -1,10 +1,7 @@
 package texterkennung.data;
 
-import java.awt.Color;
-
 import advanced.ABufferedImage;
 import advanced.AColor;
-import debug.Debugger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;

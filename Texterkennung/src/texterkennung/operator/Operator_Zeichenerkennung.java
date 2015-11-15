@@ -55,16 +55,14 @@ public class Operator_Zeichenerkennung extends Operator
 			this.erkanntertext += data_Zeichen.getchar();
 			
 			zeichen.setchar(data_Zeichen.getchar());
-			
-			
-			Debugger.info(this, "Erkanntertext: " + this.erkanntertext);
 		}
+		Debugger.info(this, "Erkanntertext: " + this.erkanntertext);
 		GuiElements.MainGUI.setTab(this.zeichenListe);
 	}
 
 	@Override
-	public Data getData() {
-		// TODO Auto-generated method stub
-		return null;
+	public Data getData()
+	{
+		return this.zeichenListe;
 	}
 }

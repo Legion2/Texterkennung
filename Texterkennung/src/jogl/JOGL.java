@@ -50,10 +50,11 @@ public class JOGL extends JFrame implements GLEventListener, IInfo
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable arg0) {
-		// TODO Auto-generated method stub
-		
+	public void dispose(GLAutoDrawable arg0)
+	{
+		Debugger.info(this, "dispose");
 	}
+	
 	@Override
 	public void init(GLAutoDrawable drawable)
 	{
@@ -65,9 +66,9 @@ public class JOGL extends JFrame implements GLEventListener, IInfo
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
-		// TODO Auto-generated method stub
-		
+	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4)
+	{
+		Debugger.info(this, "reshape");
 	}
 	
 	public GL4 getGL4()

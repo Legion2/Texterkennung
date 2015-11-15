@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 
 public abstract class Erkennung extends Thread implements IGUI
 {
-	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
 	
 	protected ArrayList<AColor> farbListe;
 	protected final ABufferedImage originalBild;
@@ -30,7 +30,6 @@ public abstract class Erkennung extends Thread implements IGUI
 		this.originalBild.setImage(bufferedImage);
 		this.farbListe = farbListe;
 		this.font = font;
-		//Zeichen.setup(font);TODO move this to run()
 		this.gl4 = gl4;
 		GuiElements.MainGUI.addTab(this);
 	}
@@ -47,11 +46,12 @@ public abstract class Erkennung extends Thread implements IGUI
 	{
 		pane.getChildren().add(this.originalBild.getImageView());
 	}
+	
 	protected boolean gpu()
 	{
 		return (this.gl4 != null);
-		
 	}
+	
 	/**
 	 * to stop the Thread when the window is closed and the application exit
 	 */
@@ -60,7 +60,7 @@ public abstract class Erkennung extends Thread implements IGUI
 		this.run = false;
 	}
 	
-	protected boolean isrunning()
+	public boolean isrunning()
 	{
 		return this.run;
 	}

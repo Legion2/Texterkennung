@@ -78,8 +78,6 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 	@Override
 	public void run()
 	{
-		gl.getContext().makeCurrent();//TODO wichtig
-		
 		this.begin();
 		
 		IntBuffer buffers = Buffers.newDirectIntBuffer(3);
@@ -118,8 +116,6 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		gl.glDeleteBuffers(3, buffers);
         
 		this.end();
-		
-		this.dispose();
 		
 		GuiElements.MainGUI.setTab(this.data_ID);
 	}

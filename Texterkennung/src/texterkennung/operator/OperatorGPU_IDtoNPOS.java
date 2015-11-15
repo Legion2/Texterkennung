@@ -42,7 +42,6 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 	@Override
 	public void run()
 	{
-		gl.getContext().makeCurrent();//TODO wichtig
 		Debugger.info(this, "Anzahl: " + this.data_ID_input.getMaxid());
 		this.begin();
 		
@@ -80,7 +79,6 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 
 		gl.glDeleteBuffers(2, buffers);
 		this.end();
-		this.dispose();
 		
 		GuiElements.MainGUI.setTab(this.data_NPOS_output);
 	}

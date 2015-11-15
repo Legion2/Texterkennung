@@ -53,15 +53,6 @@ public class Erkennung_Text extends Erkennung
 		Data_ID markiertePixel = (Data_ID) OF.getData();
 		Debugger.info(this, "Farbzuordnung fertig");
 		
-		
-		/*
-		Operator_Verbindungen OV = new Operator_Verbindungen((Data_ID) OF.getData());
-		if (!this.isrunning()) return;
-		OV.run();
-		Data_ID data = (Data_ID) OV.getData();
-		Debugger.info(this, "Verbindungen fertig");
-		*/
-		
 		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
 		Operator_Raster OR = new Operator_Raster(markiertePixel, vergleichsID);
 		if (!this.isrunning()) return;

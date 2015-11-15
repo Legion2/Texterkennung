@@ -11,10 +11,8 @@ import java.util.Map;
 
 import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
-import com.jogamp.opengl.GLContext;
 
 import debug.Debugger;
-import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 
@@ -32,12 +30,7 @@ public abstract class OperatorGPU extends Operator
 	public OperatorGPU(GL4 gl, String computePath)
 	{
 		this.gl = gl;
-		int r = gl.getContext().makeCurrent();
-		
-		if (r == GLContext.CONTEXT_CURRENT_NEW)
-			Debugger.info(this, "CONTEXT_CURRENT_NEW");
-		else if (r == GLContext.CONTEXT_CURRENT)
-			Debugger.info(this, "CONTEXT_CURRENT");
+		gl.getContext().makeCurrent();
 		
 		String vsrc = "";
 		try
@@ -46,7 +39,8 @@ public abstract class OperatorGPU extends Operator
 			brv = new BufferedReader(new FileReader(computePath));
 			
 			String line;
-			while ((line=brv.readLine()) != null) {
+			while ((line=brv.readLine()) != null)
+			{
 			  vsrc += line + "\n";
 			}
 			brv.close();
@@ -65,6 +59,8 @@ public abstract class OperatorGPU extends Operator
 		gl.glAttachShader(this.program, this.computeShader);
 		
 		gl.glLinkProgram(this.program);
+		
+		gl.getContext().release();
 	}
 	
 	public int getUniformLocation(String uniform)
@@ -138,12 +134,15 @@ public abstract class OperatorGPU extends Operator
 	
 	protected void begin()
 	{
+		gl.getContext().makeCurrent();
 		gl.glUseProgram(this.program);
 	}
 	
 	protected void end()
 	{
 		gl.glUseProgram(0);
+		this.dispose();
+		gl.getContext().release();
 	}
 	
 	protected void dispose()
@@ -189,7 +188,6 @@ public abstract class OperatorGPU extends Operator
 	
 	protected void setDatafromBuffer(Data_NPOS data_NPOS_output, IntBuffer buffer)
 	{
-		// TODO wie die daten speichern?
 		for (int y = 0; y < data_NPOS_output.getYlenght(); y++)
 		{
 			for (int x = 0; x < data_NPOS_output.getXlenght(); x++)

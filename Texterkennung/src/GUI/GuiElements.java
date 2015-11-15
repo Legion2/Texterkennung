@@ -143,7 +143,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			this.erkennung.close();
 		}
-		jogl.dispose();//TODO stop the AWT thread
+		jogl.dispose();
 		jogl.drawable.destroy();
 	}
 
@@ -238,8 +238,19 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			if (this.erkennung != null)
 	        {
-	            this.erkennung.start();
+	            if (!this.erkennung.isrunning())
+	            {
+	            	this.erkennung.start();
+	            }
+	            else
+	            {
+	            	Debugger.error(this, "Programm läuft schon!");
+	            }
 	        }
+			else
+			{
+				Debugger.error(this, "Keine Datei ausgewählt!");
+			}
 		}
 	}
 

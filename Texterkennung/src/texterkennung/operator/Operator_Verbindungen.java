@@ -29,7 +29,6 @@ public class Operator_Verbindungen extends Operator
 		int x = 0, y = 0, id = 0;
 		ArrayList<Integer> masterIDList = new ArrayList<Integer>();
 		masterIDList.add(id);
-		//HashMap<Integer, ArrayList<Integer>> zuordung = new HashMap<Integer, ArrayList<Integer>>();
 		
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
@@ -120,43 +119,7 @@ public class Operator_Verbindungen extends Operator
 								masterIDList.set(nextindex, verweise3.get(i));
 								nextindex = verweise3.get(i);
 							}
-							
 						}
-						
-						
-						
-						/* HAT FEHLER
-						if (zuordung.containsKey(key))
-						{
-							if (!zuordung.get(key).contains(value))
-							{
-								ArrayList<Integer> list = zuordung.get(key);
-								list.add(value);
-								if (zuordung.containsKey(value))
-								{
-									for (int connected_value : zuordung.get(value))
-									{
-										list.add(connected_value);
-									}
-									zuordung.remove(value);
-								}
-							}
-						}
-						else
-						{
-							ArrayList<Integer> list = new ArrayList<Integer>();
-							list.add(value);
-							if (zuordung.containsKey(value))
-							{
-								for (int connected_value : zuordung.get(value))
-								{
-									list.add(connected_value);
-								}
-								zuordung.remove(value);
-							}
-							zuordung.put(key, list);
-						}
-						*/
 					}
 					else
 					{
@@ -190,52 +153,7 @@ public class Operator_Verbindungen extends Operator
 			}
 		}
 		
-		
-		
-		//Invert HashMap
-		/*
-		int[] master_ID = new int[id + 1];
-		
-		for (Integer key : zuordung.keySet())
-		{
-			for (int value : zuordung.get(key))
-			{
-				master_ID[value] = key;
-			}
-			master_ID[key] = key;
-		}
-		*/
-		// Master ID setzen
-		/*
-		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
-		{
-			for (x = 0; x < this.data_ID_input.getXlenght(); x++)
-			{
-				this.data_ID_output.setInt(x, y, master_ID[this.data_ID_output.getInt(x, y)]);
-			}
-		}
-		*/
-		
-		/* Nicht das gewünschte resultat
-		for (y = this.data_ID_input.getYlenght()-1; y >= 0; y--)//Invertiert
-		{
-			for (x = this.data_ID_input.getXlenght()-1; x >= 0; x--)
-			{
-				if (this.data_ID_input.getInt(x + 1, y) == this.data_ID_input.getInt(x, y))
-				{
-					this.data_ID_output.setInt(x, y, this.data_ID_output.getInt(x + 1, y));
-				}
-				else if (this.data_ID_input.getInt(x, y + 1) == this.data_ID_input.getInt(x, y))
-				{
-					this.data_ID_output.setInt(x, y, this.data_ID_output.getInt(x, y + 1));
-				}
-			}
-		}*/
-		
-		
-		
 		this.data_ID_output.setMaxid(id);
-		// TODO kann man das besser machen?
 		GuiElements.MainGUI.setTab(this.data_ID_output);
 	}
 

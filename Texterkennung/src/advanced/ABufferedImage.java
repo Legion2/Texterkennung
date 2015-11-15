@@ -1,6 +1,5 @@
 package advanced;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import javafx.scene.image.ImageView;
