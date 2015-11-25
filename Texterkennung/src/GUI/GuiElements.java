@@ -78,40 +78,19 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		//DateiBrowser-Setup
 		BorderPane fileUI = browseSetup();
-
-
-
-		//Modus Auswahl
-		Label label_mode = new Label ("Modus: ");
-
-		this.comboBox_mode = new ComboBox<String>();
-		this.comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
-		this.comboBox_mode.setValue("Texterkennung");
-
-		this.button_startCalc = new Button ("Starte berechnung");
-		this.button_startCalc.setOnAction(this);
-
-
-		BorderPane modeSelection = new BorderPane(this.comboBox_mode);
-		modeSelection.setLeft(label_mode);
-		modeSelection.setRight(this.button_startCalc);
-
-		modeSelection.setPadding(new Insets (10));
-
-		BorderPane.setAlignment(label_mode, Pos.TOP_CENTER);
-		BorderPane.setAlignment(this.comboBox_mode, Pos.TOP_CENTER);
-		BorderPane.setAlignment(this.button_startCalc, Pos.TOP_CENTER);
-
-
 		
-
+		//Modus Auswahl
+		BorderPane modeSelection = modeSetup();
+		
+		//Modus Auswahl
+		BorderPane modeConfig = configSetup();
 
 		//Tab Layout
 		this.tabPane = new TabPane();
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
-		VBox UIElements = new VBox (fileUI, modeSelection, tabPane);
+		VBox UIElements = new VBox (fileUI, modeSelection, modeConfig, tabPane);
 		UIElements.setPadding(new Insets(20));
 		UIElements.setSpacing(5);
 
@@ -119,8 +98,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		pane.setTop(label_title);
 		pane.setCenter(UIElements);
-
-
 
 		// (3) Szenen erzeugen und ins Fenster setzen
 
@@ -134,7 +111,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		stage.setScene(scene);
 		stage.show();
 	}
-	
+
 	@Override
 	public void stop()
 	{
@@ -165,6 +142,39 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		this.button_browse.setOnAction(this);//EventHandler
 		
 		return fileSetup;
+	}
+	
+	private BorderPane modeSetup()
+	{
+		Label label_mode = new Label ("Modus: ");
+
+		this.comboBox_mode = new ComboBox<String>();
+		this.comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
+		this.comboBox_mode.setValue("Texterkennung");
+
+		this.button_startCalc = new Button ("Starte berechnung");
+		this.button_startCalc.setOnAction(this);
+
+
+		BorderPane modeSelection = new BorderPane(this.comboBox_mode);
+		modeSelection.setLeft(label_mode);
+		modeSelection.setRight(this.button_startCalc);
+
+		modeSelection.setPadding(new Insets (10));
+
+		BorderPane.setAlignment(label_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(this.comboBox_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(this.button_startCalc, Pos.TOP_CENTER);
+		
+		
+		return modeSelection;
+	}
+	
+	private BorderPane configSetup()
+	{
+		BorderPane borderPane = new BorderPane();
+		
+		return borderPane;
 	}
 
 	public void addTab(IGUI data)

@@ -16,11 +16,11 @@ public abstract class Erkennung extends Thread implements IGUI
 {
 	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
 	
-	protected ArrayList<AColor> farbListe;
-	protected final ABufferedImage originalBild;
+	protected final ArrayList<AColor> farbListe;
 	protected final Font font;
+	protected final ABufferedImage originalBild;
 
-	protected GL4 gl4;
+	protected final GL4 gl4;
 	
 	private boolean run = false;
 	
@@ -63,5 +63,10 @@ public abstract class Erkennung extends Thread implements IGUI
 	public boolean isrunning()
 	{
 		return this.run;
+	}
+	
+	public static void guiSetup()
+	{
+		
 	}
 }
