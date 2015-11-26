@@ -9,6 +9,8 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import com.jogamp.opengl.GL4;
+
 import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
@@ -31,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jogl.JOGL;
+import jogl.OpenGLHandler;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 import texterkennung.data.Data_Image;
@@ -39,7 +42,6 @@ import texterkennung.data.Data_Image;
 public class GuiElements extends Application implements EventHandler<ActionEvent>, IInfo
 {
 	public static GuiElements MainGUI;
-	public static JOGL jogl;
 	
 	private HashMap<IGUI, Tab> list;
 	
@@ -50,24 +52,26 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	private TabPane tabPane;
 	
 	public Erkennung erkennung;
+	private OpenGLHandler openGLHandler;
 	
 	public static void main(String[] args)
 	{
-		jogl = new JOGL();
 		Application.launch(args);
 	}
 
 	@Override
 	public void init()
 	{
-		// Init all classes for the program and add them to GUIList
 		MainGUI = this;//TODO kann man das besser lösen
+		
+		this.openGLHandler = new OpenGLHandler();
+		
 		list = new HashMap<IGUI, Tab>();
 	}
 
 	@Override
-	public void start(final Stage stage) {
-
+	public void start(final Stage stage)
+	{
 		// (1) Komponenten erzeugen
 
 		//Titel Label
@@ -143,8 +147,11 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			this.erkennung.close();
 		}
-		jogl.dispose();
-		jogl.drawable.destroy();
+		
+		if (this.openGLHandler != null)
+		{
+			this.openGLHandler.stop();
+		}
 	}
 
 	private BorderPane browseSetup()
@@ -219,14 +226,14 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	            	case "Texterkennung":
 	            		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
 	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), this.openGLHandler.getGL4());
 	            		break;
 	            	case "Stundenplan":
 	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), this.openGLHandler.getGL4());
 	            		break;
 	            	case "Vertretungsplan":
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
+	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), this.openGLHandler.getGL4());
 	            		break;
 	            	}
 	            } catch (IOException ex) {
