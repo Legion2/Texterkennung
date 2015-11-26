@@ -3,8 +3,9 @@ package texterkennung.data;
 import java.awt.image.BufferedImage;
 
 import GUI.GuiElements;
-import advanced.ABufferedImage;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 
 public class Data_Image extends Data_ID
@@ -12,7 +13,7 @@ public class Data_Image extends Data_ID
 	public Data_Image(BufferedImage image, String string, boolean b)
 	{
 		super(image.getWidth(), image.getHeight(), string, b);
-		setBufferedImage(image, b);
+		this.setBufferedImage(image, b);
 	}
 
 	private void setBufferedImage(BufferedImage image, boolean b)
@@ -28,20 +29,27 @@ public class Data_Image extends Data_ID
 		if (b) GuiElements.MainGUI.setTab(this);
 	}
 	
-	@Override
-	public void gui(Pane pane)
+	public ImageView getImageView()
 	{
-		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght);
+		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
+        PixelWriter pw = wr.getPixelWriter();
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				bi.setRGB(x, y, this.getInt(x, y));
+				 pw.setArgb(x, y, this.getInt(x, y));
 			}
 		}
 		
-		ImageView image = bi.getImageView();
+		ImageView imView = new ImageView(wr);
+	    return imView;
+	}
+	
+	@Override
+	public void gui(Pane pane)
+	{
+		ImageView image = this.getImageView();
 		pane.getChildren().add(image);
 	}
 }

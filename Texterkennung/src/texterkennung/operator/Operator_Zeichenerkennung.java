@@ -4,6 +4,7 @@ import GUI.GuiElements;
 import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
+import texterkennung.data.DataString;
 import texterkennung.data.Data_NPOS;
 import texterkennung.data.Data_Zeichen;
 
@@ -12,6 +13,8 @@ public class Operator_Zeichenerkennung extends Operator
 	private final DataList vzeichenListe;
 	private final DataList zeichenListe;
 	private final Data_NPOS data_NPOS;
+	
+	private DataString dataString;
 	private String erkanntertext;
 	
 	public Operator_Zeichenerkennung(DataList vzeichenListe, DataList zeichenListe, Data_NPOS data_NPOS)
@@ -56,6 +59,9 @@ public class Operator_Zeichenerkennung extends Operator
 			
 			zeichen.setchar(data_Zeichen.getchar());
 		}
+		
+		this.dataString = new DataString(this.erkanntertext, "erkannter Text", true);
+		GuiElements.MainGUI.setTab(this.dataString);
 		Debugger.info(this, "Erkanntertext: " + this.erkanntertext);
 		GuiElements.MainGUI.setTab(this.zeichenListe);
 	}
@@ -63,6 +69,6 @@ public class Operator_Zeichenerkennung extends Operator
 	@Override
 	public Data getData()
 	{
-		return this.zeichenListe;
+		return this.dataString;
 	}
 }

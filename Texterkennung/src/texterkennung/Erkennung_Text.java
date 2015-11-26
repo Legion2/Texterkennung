@@ -1,18 +1,15 @@
 package texterkennung;
 
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.jogamp.opengl.GL4;
 
-import GUI.GuiElements;
 import advanced.AColor;
 import debug.Debugger;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
@@ -20,19 +17,16 @@ import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
-import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenerkennung;
 import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
 
 public class Erkennung_Text extends Erkennung
 {
-	private String erkanntertext;
-
-	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font, GL4 gl4)
+	public Erkennung_Text(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, GL4 gl4)
 	{
-		super(bufferedImage, farbListe, font, gl4);
-		setName("Text");
+		super(data_Image, farbListe, font, gl4);
+		this.setName("erkannter Text");
 	}
 
 	@Override
@@ -89,16 +83,5 @@ public class Erkennung_Text extends Erkennung
 		OZE.run();
 		OZE.getData();
 		Debugger.info(this, "FERTIG!!!");
-		
-		GuiElements.MainGUI.setTab(this);
-	}
-	
-	@Override
-	public void gui(Pane pane)
-	{
-		Label l = new Label(this.erkanntertext);
-		//Font f = new Font("Arial", Font.BOLD, 100);
-		//l.setFont(f);
-		pane.getChildren().add(l);
 	}
 }

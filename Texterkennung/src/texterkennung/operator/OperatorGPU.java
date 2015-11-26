@@ -1,6 +1,5 @@
 package texterkennung.operator;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -151,18 +150,6 @@ public abstract class OperatorGPU extends Operator
         gl.glDeleteShader(this.computeShader);
         gl.glDeleteProgram(this.program);
     }
-	
-	protected void setBufferfromImage(IntBuffer buffer, BufferedImage image)
-	{
-		for (int y = 0; y < image.getHeight(); y++)
-		{
-			for (int x = 0; x < image.getWidth(); x++)
-			{
-				int loc = y * image.getWidth() + x;
-				buffer.put(loc, image.getRGB(x, y));
-			}
-		}
-	}
 	
 	protected void setBufferfromData(IntBuffer buffer, Data_ID data_ID)
 	{

@@ -1,37 +1,32 @@
 package texterkennung;
 
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.jogamp.opengl.GL4;
 
-import GUI.GuiElements;
-import GUI.IGUI;
-import advanced.ABufferedImage;
 import advanced.AColor;
-import javafx.scene.layout.Pane;
+import debug.IInfo;
+import texterkennung.data.Data_Image;
 
-public abstract class Erkennung extends Thread implements IGUI
+public abstract class Erkennung extends Thread implements IInfo
 {
 	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
 	
 	protected ArrayList<AColor> farbListe;
-	protected final ABufferedImage originalBild;
+	protected final Data_Image originalBild;
 	protected final Font font;
 
 	protected GL4 gl4;
 	
 	private boolean run = false;
 	
-	public Erkennung(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font, GL4 gl4)
+	public Erkennung(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, GL4 gl4)
 	{
-		this.originalBild = new ABufferedImage(bufferedImage);
-		this.originalBild.setImage(bufferedImage);
+		this.originalBild = data_Image;
 		this.farbListe = farbListe;
 		this.font = font;
 		this.gl4 = gl4;
-		GuiElements.MainGUI.addTab(this);
 	}
 	
 	@Override
@@ -39,12 +34,6 @@ public abstract class Erkennung extends Thread implements IGUI
 	{
 		super.run();
 		this.run = true;
-	}
-	
-	@Override
-	public void gui(Pane pane)
-	{
-		pane.getChildren().add(this.originalBild.getImageView());
 	}
 	
 	protected boolean gpu()

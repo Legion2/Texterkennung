@@ -7,10 +7,10 @@ import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
 import GUI.GuiElements;
-import advanced.ABufferedImage;
 import advanced.AColor;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_Image;
 
 /**
  * Sortiert Hintergrundfarben aus
@@ -30,15 +30,15 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 	
 	private Data_ID data_ID;
 	
-	private final ABufferedImage originalBild;
+	private final Data_Image data_Image;
 	private final int schwellwert;
 	
-	public OperatorGPU_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe, int schwellwert, GL4 gl4)
+	public OperatorGPU_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe, int schwellwert, GL4 gl4)
 	{
 		super(gl4, computeShaderPath);
-		this.originalBild = originalBild;
+		this.data_Image = data_Image;
 		this.schwellwert = schwellwert;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
+		this.data_ID = new Data_ID(this.data_Image.getXlenght(), this.data_Image.getYlenght(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
@@ -48,15 +48,15 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
 		}
 		
-		this.setBufferfromImage(this.inputBuffer, this.originalBild);
+		this.setBufferfromData(this.inputBuffer, this.data_Image);
 	}
 	
-	public OperatorGPU_Farbzuordnung(ABufferedImage originalBild, ArrayList<AColor> farbListe, GL4 gl4)
+	public OperatorGPU_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe, GL4 gl4)
 	{
 		super(gl4, computeShaderPath);
-		this.originalBild = originalBild;
+		this.data_Image = data_Image;
 		this.schwellwert = -1;
-		this.data_ID = new Data_ID(this.originalBild.getWidth(), this.originalBild.getHeight(), "Data-Farbzuordnung");
+		this.data_ID = new Data_ID(this.data_Image.getXlenght(), this.data_Image.getYlenght(), "Data-Farbzuordnung");
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
@@ -66,7 +66,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
 		}
 		
-		this.setBufferfromImage(this.inputBuffer, this.originalBild);
+		this.setBufferfromData(this.inputBuffer, this.data_Image);
 	}
 	
 	@Override
