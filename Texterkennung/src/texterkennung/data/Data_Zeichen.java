@@ -1,5 +1,7 @@
 package texterkennung.data;
 
+import java.awt.Color;
+
 import advanced.ABufferedImage;
 import advanced.AColor;
 import javafx.scene.control.Label;
@@ -148,8 +150,14 @@ public class Data_Zeichen extends Data
 			for (int x = 0; x < image.getWidth(); x++)
 			{
 				int wert = this.data_ID.getInt(xstart + x, ystart + y);
-				//image.setRGB(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
-				image.setRGB(x, y, wert);
+				if (wert == this.data_ID.getDefault())
+				{
+					image.setRGB(x, y, AColor.weiß);
+				}
+				else
+				{
+					image.setRGB(x, y, AColor.schwarz);
+				}
 			}
 		}
 		BorderPane borderPane = new BorderPane();

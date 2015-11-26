@@ -11,11 +11,11 @@ public class Operator_Raster extends Operator
 	private Data_NPOS data_NPOS_output;
 	private final int vergleichsID;
 	
-	public Operator_Raster(Data_ID data_ID, int vergleichsID)
+	public Operator_Raster(Data_ID data_ID)
 	{
 		this.data_ID_input = data_ID;
 		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-Raster");
-		this.vergleichsID = vergleichsID;
+		this.vergleichsID = this.data_ID_input.getDefault();
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class Operator_Raster extends Operator
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
 			x=0;
-			while (x < this.data_ID_input.getXlenght() && this.data_ID_input.getInt(x, y) == vergleichsID)
+			while (x < this.data_ID_input.getXlenght() && this.data_ID_input.getInt(x, y) == this.vergleichsID)
 			{
 				x++;
 			}
@@ -67,7 +67,7 @@ public class Operator_Raster extends Operator
 				for (x = 1; x < this.data_NPOS_output.getXlenght(); x++)
 				{
 					j = ystart;
-					while (j < yend && this.data_ID_input.getInt(x, j) == vergleichsID)
+					while (j < yend && this.data_ID_input.getInt(x, j) == this.vergleichsID)
 					{
 						j++;
 					}

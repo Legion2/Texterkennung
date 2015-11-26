@@ -32,7 +32,7 @@ public class Operator_Zeichenzuordnung extends Operator
 	@Override
 	public void run()
 	{
-		int x = 0, y = 0, ID = 1;
+		int x = 0, y = 0, ID = 0;
 		
 		for (y = 0; y < this.data_NPOS_input.getYlenght(); y++)
 		{
@@ -76,7 +76,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					
 					for (y = ystart; y <= yend; y++)
 					{
-						if (this.data_ID_input.getInt(x, y) != 0)
+						if (this.data_ID_input.getInt(x, y) != this.data_ID_input.getDefault())
 						{
 							z = true;
 							

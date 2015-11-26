@@ -35,7 +35,6 @@ public class Erkennung_Text extends Erkennung
 		super.run();
 		if (!this.isrunning()) return;
 		int schwellwert = 200;
-		int vergleichsID = 0;
 		Debugger.info(this, "Start");
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
@@ -48,7 +47,7 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Farbzuordnung fertig");
 		
 		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
-		Operator_Raster OR = new Operator_Raster(markiertePixel, vergleichsID);
+		Operator_Raster OR = new Operator_Raster(markiertePixel);
 		if (!this.isrunning()) return;
 		OR.run();
 		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();

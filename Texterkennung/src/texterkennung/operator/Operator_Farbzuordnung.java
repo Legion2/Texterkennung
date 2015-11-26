@@ -60,11 +60,11 @@ public class Operator_Farbzuordnung extends Operator
 				}
 				if (i != farbListe.size())
 				{
-					this.data_ID.setInt(x, y, i + 1);
+					this.data_ID.setInt(x, y, i);
 				}
 				else
 				{
-					this.data_ID.setInt(x, y, 0);
+					this.data_ID.setInt(x, y, this.data_ID.getDefault());
 				}
 			}
 		}

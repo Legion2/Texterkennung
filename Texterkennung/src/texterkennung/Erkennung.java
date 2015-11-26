@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.jogamp.opengl.GL4;
 
 import advanced.AColor;
+import debug.Debugger;
 import debug.IInfo;
 import texterkennung.data.Data_Image;
 
@@ -27,6 +28,7 @@ public abstract class Erkennung extends Thread implements IInfo
 		this.farbListe = farbListe;
 		this.font = font;
 		this.gl4 = gl4;
+		Debugger.info(this, "GPU: " + this.gl4);
 	}
 	
 	@Override
