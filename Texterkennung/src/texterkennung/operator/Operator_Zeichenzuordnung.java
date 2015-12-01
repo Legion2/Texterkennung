@@ -14,13 +14,16 @@ public class Operator_Zeichenzuordnung extends Operator
 	private DataList dataList_output;
 	private Data_ID data_ID_output;
 	
-	public Operator_Zeichenzuordnung(Data_ID data_ID, Data_NPOS data_NPOS)
+	private final boolean schwarzweiﬂ;
+	
+	public Operator_Zeichenzuordnung(Data_ID data_ID, Data_NPOS data_NPOS, boolean schwarzweiﬂ)
 	{
 		this.data_ID_input = data_ID;
 		this.data_NPOS_input = data_NPOS;
 		this.dataList_output = new DataList("Zeichen Liste");
 		this.data_ID_output = new Data_ID(data_ID, "Data-Zeichen");
 		this.data_ID_output.setDefault(-1);
+		this.schwarzweiﬂ = schwarzweiﬂ;
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					{
 						if (z)
 						{
-							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, "Zeichen Daten: " + ID));
+							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_ID_input, this.schwarzweiﬂ, "Zeichen Daten: " + ID));
 							ID++;
 							ymin = yend;
 							ymax = ystart;

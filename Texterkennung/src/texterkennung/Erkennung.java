@@ -17,16 +17,18 @@ public abstract class Erkennung extends Thread implements IInfo
 	protected ArrayList<AColor> farbListe;
 	protected final Data_Image originalBild;
 	protected final Font font;
+	protected final boolean schwarzweiﬂ;
 
 	protected GL4 gl4;
 	
 	private boolean run = false;
 	
-	public Erkennung(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, GL4 gl4)
+	public Erkennung(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, boolean schwarzweiﬂ, GL4 gl4)
 	{
 		this.originalBild = data_Image;
 		this.farbListe = farbListe;
 		this.font = font;
+		this.schwarzweiﬂ = schwarzweiﬂ;
 		this.gl4 = gl4;
 		Debugger.info(this, "GPU: " + this.gl4);
 	}
@@ -36,6 +38,7 @@ public abstract class Erkennung extends Thread implements IInfo
 	{
 		super.run();
 		this.run = true;
+		Debugger.info(this, "run");
 	}
 	
 	protected boolean gpu()

@@ -53,11 +53,11 @@ void main()
 	}
 	if (i != farben.farbe.length())
 	{
-		outputData.dataout[gl_GlobalInvocationID.x] = i + 1;
+		outputData.dataout[gl_GlobalInvocationID.x] = i;
 	}
 	else
 	{
-		outputData.dataout[gl_GlobalInvocationID.x] = 0;
+		outputData.dataout[gl_GlobalInvocationID.x] = -1;
 	}
 }
 

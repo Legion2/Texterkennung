@@ -73,7 +73,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		// (1) Komponenten erzeugen
 
 		//Titel Label
-		Label label_title = new Label ("Texterkennung Arial");
+		Label label_title = new Label ("Texterkennung");
 		label_title.setFont(GUI.LayoutElements.titleFont);
 		label_title.setAlignment(Pos.TOP_LEFT);
 		label_title.setPadding(new Insets (5));
@@ -88,7 +88,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		this.comboBox_mode = new ComboBox<String>();
 		this.comboBox_mode.getItems().addAll("Texterkennung Arial", "Texterkennung Courier", "Stundenplan", "Vertretungsplan");
-		this.comboBox_mode.setValue("Texterkennung");
+		this.comboBox_mode.setValue("Texterkennung Arial");
 
 		this.button_startCalc = new Button ("Starte berechnung");
 		this.button_startCalc.setOnAction(this);
@@ -242,15 +242,15 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	        	case "Texterkennung Arial":
 	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
 	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), this.openGLHandler.getGL4());
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
 	        		break;
 	        	case "Texterkennung Courier":
 	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Courier", Font.PLAIN, 30), this.openGLHandler.getGL4());
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Courier", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
 	        		break;
 	        	case "Stundenplan":
 	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), this.openGLHandler.getGL4());
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
 	        		break;
 	        	case "Vertretungsplan":
 	        		//TODO

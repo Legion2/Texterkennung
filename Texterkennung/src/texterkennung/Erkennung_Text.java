@@ -23,19 +23,19 @@ import texterkennung.operator.Operator_Zeichenzuordnung;
 
 public class Erkennung_Text extends Erkennung
 {
-	public Erkennung_Text(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, GL4 gl4)
+	public Erkennung_Text(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, boolean schwarzweiﬂ, GL4 gl4)
 	{
-		super(data_Image, farbListe, font, gl4);
-		this.setName("erkannter Text");
+		super(data_Image, farbListe, font, schwarzweiﬂ, gl4);
+		this.setName("Texterkennung");
 	}
 
 	@Override
 	public void run()
 	{
 		super.run();
+		
 		if (!this.isrunning()) return;
 		int schwellwert = 200;
-		Debugger.info(this, "Start");
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
@@ -54,7 +54,7 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Raster fertig");
 		
 		//Markiert die Pixel, die zu einem Zeichen gehˆren.
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster);
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, schwarzweiﬂ);
 		if (!this.isrunning()) return;
 		OZ.run();
 		DataList dataList = (DataList) OZ.getData();
@@ -73,12 +73,14 @@ public class Erkennung_Text extends Erkennung
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font);
+		if (!this.isrunning()) return;
 		OZG.run();
 		DataList generierteZeichenliste = (DataList) OZG.getData();
 		Debugger.info(this, "Zeichengenerieren fertig");
 		
 		//Erkennt die Zeichen
 		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe, data_NPOS);
+		if (!this.isrunning()) return;
 		OZE.run();
 		OZE.getData();
 		Debugger.info(this, "FERTIG!!!");
