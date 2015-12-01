@@ -38,6 +38,8 @@ public class Operator_Zeichenerkennung extends Operator
 		{
 			Data_Zeichen zeichen = (Data_Zeichen) this.zeichenListe.get(i);
 			
+			if (zeichen.getchar() != '\u0000') continue;
+			
 			float[] array = new float[this.vzeichenListe.size()];
 			
 			int best = 0;
