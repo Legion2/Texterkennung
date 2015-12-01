@@ -62,15 +62,6 @@ public class Erkennung_Text extends Erkennung
 		DataList zeichenListe = (DataList) dataList.get(1);
 		Debugger.info(this, "Zeichenzuordung fertig");
 		
-		//Konvertiert die markiertenZeichen Daten in das NPOS format
-		Operator OI;
-		if (this.gpu()) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.gl4);
-		else OI = new Operator_IDtoNPOS(markierteZeichen);
-		if (!this.isrunning()) return;
-		OI.run();
-		Data_NPOS data_NPOS = (Data_NPOS) OI.getData();
-		Debugger.info(this, "Data konvertieren fertig");
-		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font);
 		if (!this.isrunning()) return;
@@ -79,7 +70,7 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Zeichengenerieren fertig");
 		
 		//Erkennt die Zeichen
-		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe, data_NPOS);
+		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
 		if (!this.isrunning()) return;
 		OZE.run();
 		OZE.getData();
