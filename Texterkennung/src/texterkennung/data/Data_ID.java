@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import advanced.ABufferedImage;
+import advanced.AColor;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Data_ID extends Data2D
 {
 	private int[][] data;
+	private int defaultwert = -1;
 	private int maxid = 0;
 	
 	public Data_ID(int x, int y, String name)
@@ -62,11 +64,18 @@ public class Data_ID extends Data2D
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				int wert = Math.abs(this.data[x][y]);
-				bi.setRGB(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
+				int wert = this.data[x][y];
+				if (wert == this.defaultwert)
+				{
+					bi.setRGB(x, y, AColor.weiß);
+				}
+				else
+				{
+					wert = Math.abs(wert);
+					bi.setRGB(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
+				}
 			}
 		}
-		
 		
 		ImageView image = bi.getImageView();
 		pane.getChildren().add(image);
@@ -74,12 +83,18 @@ public class Data_ID extends Data2D
 
 	public void setDefault(int d)
 	{
+		this.defaultwert = d;
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				this.data[x][y] = d;
+				this.data[x][y] = this.defaultwert;
 			}
 		}
+	}
+	
+	public int getDefault()
+	{
+		return this.defaultwert;
 	}
 }

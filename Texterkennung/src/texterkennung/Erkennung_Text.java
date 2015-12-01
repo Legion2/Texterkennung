@@ -1,18 +1,15 @@
 package texterkennung;
 
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.jogamp.opengl.GL4;
 
-import GUI.GuiElements;
 import advanced.AColor;
 import debug.Debugger;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
@@ -20,29 +17,25 @@ import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
-import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenerkennung;
 import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
 
 public class Erkennung_Text extends Erkennung
 {
-	private String erkanntertext;
-
-	public Erkennung_Text(BufferedImage bufferedImage, ArrayList<AColor> farbListe, Font font, GL4 gl4)
+	public Erkennung_Text(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, boolean schwarzweiﬂ, GL4 gl4)
 	{
-		super(bufferedImage, farbListe, font, gl4);
-		setName("Text");
+		super(data_Image, farbListe, font, schwarzweiﬂ, gl4);
+		this.setName("Texterkennung");
 	}
 
 	@Override
 	public void run()
 	{
 		super.run();
+		
 		if (!this.isrunning()) return;
 		int schwellwert = 200;
-		int vergleichsID = 0;
-		Debugger.info(this, "Start");
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
@@ -54,14 +47,14 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Farbzuordnung fertig");
 		
 		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
-		Operator_Raster OR = new Operator_Raster(markiertePixel, vergleichsID);
+		Operator_Raster OR = new Operator_Raster(markiertePixel);
 		if (!this.isrunning()) return;
 		OR.run();
 		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
 		Debugger.info(this, "Raster fertig");
 		
 		//Markiert die Pixel, die zu einem Zeichen gehˆren.
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster);
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, schwarzweiﬂ);
 		if (!this.isrunning()) return;
 		OZ.run();
 		DataList dataList = (DataList) OZ.getData();
@@ -80,25 +73,16 @@ public class Erkennung_Text extends Erkennung
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font);
+		if (!this.isrunning()) return;
 		OZG.run();
 		DataList generierteZeichenliste = (DataList) OZG.getData();
 		Debugger.info(this, "Zeichengenerieren fertig");
 		
 		//Erkennt die Zeichen
 		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe, data_NPOS);
+		if (!this.isrunning()) return;
 		OZE.run();
 		OZE.getData();
 		Debugger.info(this, "FERTIG!!!");
-		
-		GuiElements.MainGUI.setTab(this);
-	}
-	
-	@Override
-	public void gui(Pane pane)
-	{
-		Label l = new Label(this.erkanntertext);
-		//Font f = new Font("Arial", Font.BOLD, 100);
-		//l.setFont(f);
-		pane.getChildren().add(l);
 	}
 }

@@ -28,7 +28,6 @@ public class Operator_IDtoNPOS extends Operator
 	{
 		Debugger.info(this, "" + this.data_ID_input.getMaxid());
 		int p = 0;
-		Debugger.info(this, "" + data_ID_input.getMaxid());
 		for (int i = 0; i <= data_ID_input.getMaxid(); i++)
 		{
 			int lastindex_x = -1, lastindex_y = -1;

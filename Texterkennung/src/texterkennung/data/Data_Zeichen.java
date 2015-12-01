@@ -2,6 +2,7 @@ package texterkennung.data;
 
 import advanced.ABufferedImage;
 import advanced.AColor;
+import debug.Debugger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -16,11 +17,12 @@ public class Data_Zeichen extends Data
 	private final int hoehe;
 	private final int breite;
 	private final Data_ID data_ID;
+	private final Data_ID data_ID2;
 	private float[] snow_Boden;
 	private float[] snow_Wand;
 	private char c;
 
-	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, String name)
+	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, Data_ID data_ID_input2, boolean schwarzweiﬂ,String name)
 	{
 		super(name, false);
 		this.ID = iD;
@@ -31,14 +33,15 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_ID = data_ID_input;
+		this.data_ID2 = data_ID_input2;
 		
-		this.snow();
+		this.snow(schwarzweiﬂ);
 	}
 	
 	public Data_Zeichen(char c, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, String name)
 	{
 		super(name, false);
-		this.ID = 1;
+		this.ID = -1;
 		this.xstart = xstart;
 		this.xend = xend;
 		this.ystart = ystart;
@@ -46,15 +49,17 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_ID = data_ID_input;
+		this.data_ID2 = data_ID_input;
 		this.c = c;
 		
-		this.snow();
+		this.snow(true);
 	}
 
 	/**
 	 * Schneefall ausrechnen
+	 * 
 	 */
-	private void snow()
+	private void snow(boolean schwarzweiﬂ)
 	{
 		this.snow_Boden = new float[this.breite];
 		this.snow_Wand = new float[this.hoehe];
@@ -64,7 +69,14 @@ public class Data_Zeichen extends Data
 			float summe = 0;
 			for (int y = 0; y < this.hoehe; y++)
 			{
-				summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+				if (schwarzweiﬂ)
+				{
+					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+				}
+				else
+				{
+					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (this.data_ID2.getInt(xstart + x, ystart + y)) : 0;
+				}
 			}
 			
 			this.snow_Boden[x] = summe / this.hoehe;
@@ -74,20 +86,33 @@ public class Data_Zeichen extends Data
 			float summe = 0;
 			for (int x = 0; x < this.breite; x++)
 			{
-				summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+				if (schwarzweiﬂ)
+				{
+					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+				}
+				else
+				{
+					
+				}
 			}
 			
 			this.snow_Wand[y] = summe / this.breite;
 		}
 	}
 	
+	/**
+	 * Vergleicht zwei Zeichen und gibt die ‰hnlichkeit als wert zur¸ck.
+	 * 
+	 * @param zeichen Das Zeichen mit dem an diese Zeichen vergleicht
+	 * @return Wert der die den Grad der ¸bereinstimmung an gibt, je kleiner dieser ist, desto ‰hnlicher sind sich die zeichen
+	 */
 	public double vergleichenmit(Data_Zeichen zeichen)
 	{
-		float summe = 0;
-		
 		float wert;
 		float vwert;
 		
+		//
+		float summe = 0;
 		for (int x = 0; x < zeichen.breite; x++)
 		{
 			wert = zeichen.getSnow_Boden(x);
@@ -98,12 +123,10 @@ public class Data_Zeichen extends Data
 			
 			summe += Math.abs(vwert - wert);
 		}
-		
 		summe /= zeichen.breite;
 		
+		//
 		float summe2 = 0;
-		
-		
 		for (int y = 0; y < zeichen.hoehe; y++)
 		{
 			wert = zeichen.getSnow_Wand(y);
@@ -115,6 +138,13 @@ public class Data_Zeichen extends Data
 			summe2 += Math.abs(vwert - wert);
 		}
 		summe2 /= zeichen.hoehe;
+		
+		//Hˆhen-Breiten Verh‰ltnis
+		float ver = (zeichen.breite * 1.0f / zeichen.hoehe) / (this.breite * 1.0f / this.hoehe);
+		
+		ver = ver < 1 ? (1 / ver) - 1 : ver - 1;
+		
+		Debugger.info(this, "Ver: " + ver);
 		
 		return summe + summe2;
 	}
@@ -148,8 +178,14 @@ public class Data_Zeichen extends Data
 			for (int x = 0; x < image.getWidth(); x++)
 			{
 				int wert = this.data_ID.getInt(xstart + x, ystart + y);
-				//image.setRGB(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
-				image.setRGB(x, y, wert);
+				if (wert == this.data_ID.getDefault())
+				{
+					image.setRGB(x, y, AColor.weiﬂ);
+				}
+				else
+				{
+					image.setRGB(x, y, AColor.schwarz);
+				}
 			}
 		}
 		BorderPane borderPane = new BorderPane();

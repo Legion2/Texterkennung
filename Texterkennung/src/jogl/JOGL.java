@@ -26,7 +26,6 @@ public class JOGL extends JFrame implements GLEventListener, IInfo
 	{
 		super("Parallisierung");
 		this.setName("Parallisierung");
-		//Debugger.info(this, "new JOGL");
 		GLProfile profile = GLProfile.get(GLProfile.GL4);
 		GLCapabilities capabilities = new GLCapabilities(profile);
 		
@@ -63,6 +62,7 @@ public class JOGL extends JFrame implements GLEventListener, IInfo
 		this.drawable = drawable;
 		
 		gl.glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
+		this.setVisible(false);
 	}
 
 	@Override

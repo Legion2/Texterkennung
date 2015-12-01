@@ -30,7 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import jogl.JOGL;
+import jogl.OpenGLHandler;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
 import texterkennung.data.Data_Image;
@@ -39,7 +39,6 @@ import texterkennung.data.Data_Image;
 public class GuiElements extends Application implements EventHandler<ActionEvent>, IInfo
 {
 	public static GuiElements MainGUI;
-	public static JOGL jogl;
 	
 	private HashMap<IGUI, Tab> list;
 	
@@ -49,25 +48,28 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	private TextField textfield_filepath;
 	private TabPane tabPane;
 	
+	private Data_Image data_Image;
 	public Erkennung erkennung;
+	private OpenGLHandler openGLHandler;
 	
 	public static void main(String[] args)
 	{
-		jogl = new JOGL();
 		Application.launch(args);
 	}
 
 	@Override
 	public void init()
 	{
-		// Init all classes for the program and add them to GUIList
 		MainGUI = this;//TODO kann man das besser lösen
+		
+		this.openGLHandler = new OpenGLHandler();
+		
 		list = new HashMap<IGUI, Tab>();
 	}
 
 	@Override
-	public void start(final Stage stage) {
-
+	public void start(final Stage stage)
+	{
 		// (1) Komponenten erzeugen
 
 		//Titel Label
@@ -120,8 +122,11 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			this.erkennung.close();
 		}
-		jogl.dispose();
-		jogl.drawable.destroy();
+		
+		if (this.openGLHandler != null)
+		{
+			this.openGLHandler.stop();
+		}
 	}
 
 	private BorderPane browseSetup()
@@ -149,8 +154,8 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		Label label_mode = new Label ("Modus: ");
 
 		this.comboBox_mode = new ComboBox<String>();
-		this.comboBox_mode.getItems().addAll("Texterkennung", "Stundenplan", "Vertretungsplan");
-		this.comboBox_mode.setValue("Texterkennung");
+		this.comboBox_mode.getItems().addAll("Texterkennung Arial", "Texterkennung Courier", "Stundenplan", "Vertretungsplan");
+		this.comboBox_mode.setValue("Texterkennung Arial");
 
 		this.button_startCalc = new Button ("Starte berechnung");
 		this.button_startCalc.setOnAction(this);
@@ -177,6 +182,11 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		return borderPane;
 	}
 
+	/**
+	 * Fügt der GUI einen neuen Tab hinzu
+	 * 
+	 * @param data Daten die im Tab angezeigt werden
+	 */
 	public void addTab(IGUI data)
 	{
 		Platform.runLater(new Runnable() {
@@ -192,6 +202,11 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		});
 	}
 	
+	/**
+	 * Aktuallisiert den Inhalt des Tabs, der zu data gehört
+	 * 
+	 * @param data Daten die im Tab angezeigt werden
+	 */
 	public void setTab(IGUI data)
 	{
 		Platform.runLater(new Runnable() {
@@ -210,6 +225,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		if (arg0.getSource() == this.button_browse)
 		{
 			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(new File("./res"));
 			File file = fileChooser.showOpenDialog(null);
 			if (file != null)
 			{
@@ -219,26 +235,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	            {
 					BufferedImage image = ImageIO.read(file);
 					
-					new Data_Image(image, "Originalbild", true);
-					
-					
-					ArrayList<AColor> farbListe = new ArrayList<AColor>();
-	            	
-	            	switch (this.comboBox_mode.getValue())
-	            	{
-	            	case "Texterkennung":
-	            		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
-	            		break;
-	            	case "Stundenplan":
-	            		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
-	            		break;
-	            	case "Vertretungsplan":
-	            		erkennung = new Erkennung_Text(image, farbListe, new Font("Arial", Font.PLAIN, 30), jogl.getGL4());
-	            		break;
-	            	}
+					this.data_Image = new Data_Image(image, "Originalbild", true);
 	            } catch (IOException ex) {
 	            	Debugger.error(this, "Fehler aufgetreten beim Lesen der Datei");
 	            }
@@ -246,17 +243,32 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		}
 		else if (arg0.getSource() == this.button_startCalc)
 		{
-			if (this.erkennung != null)
-	        {
-	            if (!this.erkennung.isrunning())
-	            {
-	            	this.erkennung.start();
-	            }
-	            else
-	            {
-	            	Debugger.error(this, "Programm läuft schon!");
-	            }
-	        }
+			if (this.data_Image != null)
+			{
+				ArrayList<AColor> farbListe = new ArrayList<AColor>();
+	        	
+	        	switch (this.comboBox_mode.getValue())
+	        	{
+	        	case "Texterkennung Arial":
+	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
+	        		break;
+	        	case "Texterkennung Courier":
+	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Courier", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
+	        		break;
+	        	case "Stundenplan":
+	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
+	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
+	        		break;
+	        	case "Vertretungsplan":
+	        		//TODO
+	        		break;
+	        	}
+				
+	        	this.erkennung.start();
+			}
 			else
 			{
 				Debugger.error(this, "Keine Datei ausgewählt!");
