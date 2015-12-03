@@ -11,8 +11,6 @@ import texterkennung.data.Data_Image;
 /**
  * Sortiert Hintergrundfarben aus
  * 
- * Kann Parallelisiert werden
- * 
  * @author Leon
  *
  */

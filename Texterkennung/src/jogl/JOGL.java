@@ -60,6 +60,7 @@ public class JOGL extends JFrame implements GLEventListener, IInfo
 		Debugger.info(this, "init JOGL");
 		this.gl = drawable.getGL().getGL4();
 		this.drawable = drawable;
+		this.notify();
 		
 		gl.glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
 		this.setVisible(false);

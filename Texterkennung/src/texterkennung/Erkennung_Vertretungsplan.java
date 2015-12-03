@@ -1,21 +1,14 @@
 package texterkennung;
 
-import java.awt.Font;
-import java.util.ArrayList;
-
-import com.jogamp.opengl.GL4;
-
-import advanced.AColor;
 import debug.Debugger;
+import jogl.OpenGLHandler;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
-import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
-import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
 import texterkennung.operator.Operator_Zeichenerkennung;
 import texterkennung.operator.Operator_Zeichengenerieren;
@@ -23,9 +16,8 @@ import texterkennung.operator.Operator_Zeichenzuordnung;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {
-	public Erkennung_Vertretungsplan(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, boolean schwarzweiﬂ, GL4 gl4)
-	{
-		super(data_Image, farbListe, font, schwarzweiﬂ, gl4);
+	public Erkennung_Vertretungsplan(Data_Image data_Image, OpenGLHandler openGLHandler, String parameter) {
+		super(data_Image, openGLHandler, parameter);
 		this.setName("Vertretungsplanerkennung");
 	}
 
@@ -90,5 +82,10 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		OZE.run();
 		OZE.getData();
 		Debugger.info(this, "FERTIG!!!");
+	}
+
+	public static String getConfigPreset()
+	{
+		return "true;true";
 	}
 }

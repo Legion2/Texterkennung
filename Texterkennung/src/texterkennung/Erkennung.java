@@ -5,31 +5,37 @@ import java.util.ArrayList;
 
 import com.jogamp.opengl.GL4;
 
+import GUI.IConfigurable;
 import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
+import jogl.OpenGLHandler;
 import texterkennung.data.Data_Image;
 
-public abstract class Erkennung extends Thread implements IInfo
+public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 {
 	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
 	
+	private final String config;
+	
 	protected ArrayList<AColor> farbListe;
 	protected final Data_Image originalBild;
-	protected final Font font;
-	protected final boolean schwarzweiﬂ;
+	protected Font font;
+	protected boolean schwarzweiﬂ;
 
-	protected final GL4 gl4;
+	protected final OpenGLHandler openGLHandler;
+	protected GL4 gl4;
 	
 	private boolean run = false;
 	
-	public Erkennung(Data_Image data_Image, ArrayList<AColor> farbListe, Font font, boolean schwarzweiﬂ, GL4 gl4)
+	
+	
+	public Erkennung(Data_Image data_Image, OpenGLHandler openGLHandler, String parameter)
 	{
 		this.originalBild = data_Image;
-		this.farbListe = farbListe;
-		this.font = font;
-		this.schwarzweiﬂ = schwarzweiﬂ;
-		this.gl4 = gl4;
+		this.openGLHandler = openGLHandler;
+		this.config = parameter;
+		this.setConfig(parameter);
 		Debugger.info(this, "GPU: " + this.gl4);
 	}
 	
@@ -59,8 +65,29 @@ public abstract class Erkennung extends Thread implements IInfo
 		return this.run;
 	}
 	
-	public static void guiSetup()
+	@Override
+	public void setConfig(String parameter)
 	{
-		
+		String[] par = parameter.split(";");
+		for (int i = 0; i < par.length; i++)
+		{
+			String s = par[i];
+			switch (i)
+			{
+			case 0:
+				this.schwarzweiﬂ = s == "true";
+				break;
+
+			default:
+				break;
+			}
+			
+		}
+	}
+	
+	@Override
+	public String getConfig()
+	{
+		return this.config;
 	}
 }

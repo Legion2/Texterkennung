@@ -4,28 +4,37 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+
+import com.sun.deploy.uitoolkit.impl.fx.ui.FXConsole;
 
 import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -33,20 +42,27 @@ import javafx.stage.Stage;
 import jogl.OpenGLHandler;
 import texterkennung.Erkennung;
 import texterkennung.Erkennung_Text;
+import texterkennung.Erkennung_Vertretungsplan;
 import texterkennung.data.Data_Image;
 
 //TODO Rename this class
-public class GuiElements extends Application implements EventHandler<ActionEvent>, IInfo
+public class GuiElements extends Application implements EventHandler<ActionEvent>, ChangeListener<String>, IInfo, IConfigurable
 {
 	public static GuiElements MainGUI;
 	
 	private HashMap<IGUI, Tab> list;
 	
-	private ComboBox<String> comboBox_mode;
 	private Button button_browse;
 	private Button button_startCalc;
 	private TextField textfield_filepath;
+	private BorderPane borderPane;
 	private TabPane tabPane;
+	
+	@SuppressWarnings("rawtypes")
+	private HashMap<String, Class> modes;
+	ObservableList<String> modesString;
+	private String sectedMode = "Texterkennung";//TODO test
+	private BorderPane modeConfig;
 	
 	private Data_Image data_Image;
 	public Erkennung erkennung;
@@ -57,6 +73,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		Application.launch(args);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void init()
 	{
@@ -65,6 +82,20 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		this.openGLHandler = new OpenGLHandler();
 		
 		list = new HashMap<IGUI, Tab>();
+		this.modes = new HashMap<String, Class>();
+		
+		//Add Erkennungs Modes
+		this.modesString = FXCollections.observableArrayList();
+		this.addMode("Texterkennung", Erkennung_Text.class);
+		this.addMode("Vertretungsplan", Erkennung_Vertretungsplan.class);
+		//this.addMode("Stundenplan", Erkennung_Text.class);
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void addMode(String string, Class erkennung)
+	{
+		this.modes.put(string, erkennung);
+		this.modesString.add(string);
 	}
 
 	@Override
@@ -85,14 +116,14 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		BorderPane modeSelection = modeSetup();
 		
 		//Modus Auswahl
-		BorderPane modeConfig = configSetup();
+		this.modeConfig = configSetup();
 
 		//Tab Layout
 		this.tabPane = new TabPane();
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
 
-		VBox UIElements = new VBox (fileUI, modeSelection, modeConfig, tabPane);
+		VBox UIElements = new VBox(fileUI, modeSelection, this.modeConfig, tabPane);
 		UIElements.setPadding(new Insets(20));
 		UIElements.setSpacing(5);
 
@@ -153,22 +184,22 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	{
 		Label label_mode = new Label ("Modus: ");
 
-		this.comboBox_mode = new ComboBox<String>();
-		this.comboBox_mode.getItems().addAll("Texterkennung Arial", "Texterkennung Courier", "Stundenplan", "Vertretungsplan");
-		this.comboBox_mode.setValue("Texterkennung Arial");
+		ComboBox<String> comboBox_mode = new ComboBox<String>(this.modesString);
+		comboBox_mode.valueProperty().addListener(this);
+		comboBox_mode.setPromptText("Texterkennungs Modus");
 
 		this.button_startCalc = new Button ("Starte berechnung");
 		this.button_startCalc.setOnAction(this);
 
 
-		BorderPane modeSelection = new BorderPane(this.comboBox_mode);
+		BorderPane modeSelection = new BorderPane(comboBox_mode);
 		modeSelection.setLeft(label_mode);
 		modeSelection.setRight(this.button_startCalc);
 
 		modeSelection.setPadding(new Insets (10));
 
 		BorderPane.setAlignment(label_mode, Pos.TOP_CENTER);
-		BorderPane.setAlignment(this.comboBox_mode, Pos.TOP_CENTER);
+		BorderPane.setAlignment(comboBox_mode, Pos.TOP_CENTER);
 		BorderPane.setAlignment(this.button_startCalc, Pos.TOP_CENTER);
 		
 		
@@ -177,9 +208,50 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	
 	private BorderPane configSetup()
 	{
-		BorderPane borderPane = new BorderPane();
+		this.borderPane = new BorderPane();
 		
 		return borderPane;
+	}
+	
+	private void updateModeConfig()
+	{
+		String s = "";
+		try {
+			s = (String) this.modes.get(this.sectedMode).getMethod("getConfigPreset").invoke(null);
+			Debugger.info(this, "Confug: " + s);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
+			Debugger.error(this, e.getMessage());
+			e.printStackTrace();
+		}
+		
+		VBox vBox = new VBox();
+		String[] par = s.split(";");
+		for (int i = 0; i < par.length; i++)
+		{
+			switch (i) {
+			case 0:
+				BorderPane pane = new BorderPane();
+				CheckBox checkBox = new CheckBox("Schwarzweiß");
+				checkBox.setSelected(par[i] == "true");
+				pane.setLeft(checkBox);
+				vBox.getChildren().add(pane);
+				break;
+			case 1:
+				BorderPane pane1 = new BorderPane();
+				CheckBox checkBox1 = new CheckBox("GPU");
+				checkBox1.setSelected(par[i] == "true");
+				pane1.setLeft(checkBox1);
+				vBox.getChildren().add(pane1);
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+		
+		this.borderPane.setCenter(vBox);;
 	}
 
 	/**
@@ -219,6 +291,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent arg0)
 	{
@@ -245,27 +318,14 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			if (this.data_Image != null)
 			{
-				ArrayList<AColor> farbListe = new ArrayList<AColor>();
-	        	
-	        	switch (this.comboBox_mode.getValue())
-	        	{
-	        	case "Texterkennung Arial":
-	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
-	        		break;
-	        	case "Texterkennung Courier":
-	        		farbListe.add(new AColor(0, 0, 0));//Farbe Schwarz
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Courier", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
-	        		break;
-	        	case "Stundenplan":
-	        		farbListe.add(new AColor(255, 0, 0));//Farbe rot
-	        		this.erkennung = new Erkennung_Text(this.data_Image, farbListe, new Font("Arial", Font.PLAIN, 30), true, this.openGLHandler.getGL4());
-	        		break;
-	        	case "Vertretungsplan":
-	        		//TODO
-	        		break;
-	        	}
+				Class erkennung = this.modes.get(this.sectedMode);
+				try {
+					this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 	        	this.erkennung.start();
 			}
@@ -275,10 +335,32 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 			}
 		}
 	}
+	
+	@Override
+	public void changed(ObservableValue<? extends String> arg0, String arg1, String newString)
+	{
+		this.sectedMode = newString;
+		this.updateModeConfig();
+		
+		Debugger.info(this, "SelectedMode: " + this.sectedMode);
+	}
 
 	@Override
 	public String getName()
 	{
 		return "GuiElements";
+	}
+
+	@Override
+	public void setConfig(String parameter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getConfig()
+	{
+		String config = "";
+		return config;
 	}
 }
