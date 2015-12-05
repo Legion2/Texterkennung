@@ -46,16 +46,15 @@ public class DataList extends Data
 	}
 
 	@Override
-	public void gui(Pane pane)
+	public void gui(BorderPane pane)
 	{
 		TabPane tabPane = new TabPane();
-		VBox UIElements = new VBox (tabPane);
 		for (IGUI iGUI : this.data)
 		{
 			Tab tab = new Tab();
 			tab.setText(iGUI.getName());
 			
-			Pane pane2 = new Pane();
+			BorderPane pane2 = new BorderPane();
 			
 			iGUI.gui(pane2);
 			
@@ -63,8 +62,7 @@ public class DataList extends Data
 			tabPane.getTabs().add(tab);
 		}
 		
-		pane.getChildren().add(new BorderPane(UIElements));
-		
+		pane.setCenter(tabPane);
 	}
 
 }

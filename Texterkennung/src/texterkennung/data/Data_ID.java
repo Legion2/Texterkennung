@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 
 public class Data_ID extends Data2D
 {
@@ -56,7 +56,7 @@ public class Data_ID extends Data2D
 	}
 
 	@Override
-	public void gui(Pane pane)
+	public void gui(BorderPane pane)
 	{
 		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
 		
@@ -78,7 +78,7 @@ public class Data_ID extends Data2D
 		}
 		
 		ImageView image = bi.getImageView();
-		pane.getChildren().add(image);
+		pane.setCenter(image);
 	}
 
 	public void setDefault(int d)

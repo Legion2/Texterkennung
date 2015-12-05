@@ -6,6 +6,7 @@ import GUI.GuiElements;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 public class Data_Image extends Data_ID
@@ -47,9 +48,9 @@ public class Data_Image extends Data_ID
 	}
 	
 	@Override
-	public void gui(Pane pane)
+	public void gui(BorderPane pane)
 	{
 		ImageView image = this.getImageView();
-		pane.getChildren().add(image);
+		pane.setCenter(image);
 	}
 }

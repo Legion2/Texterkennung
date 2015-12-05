@@ -5,7 +5,6 @@ import advanced.AColor;
 import debug.Debugger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 public class Data_Zeichen extends Data
 {
@@ -170,7 +169,7 @@ public class Data_Zeichen extends Data
 	}
 
 	@Override
-	public void gui(Pane pane)
+	public void gui(BorderPane pane)
 	{
 		ABufferedImage image = new ABufferedImage(this.breite, this.hoehe);
 		for (int y = 0; y < image.getHeight(); y++)
@@ -192,6 +191,6 @@ public class Data_Zeichen extends Data
 		borderPane.setTop(new Label("xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend));
 		borderPane.setCenter(image.getImageView());
 		borderPane.setBottom(new Label("Zeichen: " + this.c));
-		pane.getChildren().add(borderPane);
+		pane.setCenter(borderPane);//TODO 
 	}
 }

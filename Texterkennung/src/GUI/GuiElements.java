@@ -114,7 +114,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
-		VBox UIElements = new VBox(fileUI, modeSelection, this.modeConfig, tabPane);
+		VBox UIElements = new VBox(fileUI, modeSelection, this.modeConfig, this.tabPane);
 		UIElements.setPadding(new Insets(20));
 		UIElements.setSpacing(5);
 
@@ -247,6 +247,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		pane5.setLeft(textField2);
 		
 		VBox vBox = new VBox(pane, pane2, pane3, pane4, pane5);
+		vBox.setSpacing(5);
 		this.borderPane = new BorderPane(vBox);
 		return borderPane;
 	}
@@ -321,7 +322,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Tab tab=new Tab();
+				Tab tab = new Tab();
 				tab.setText(data.getName());
 				
 				list.put(data, tab);
@@ -341,7 +342,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Pane pane = new Pane();
+				BorderPane pane = new BorderPane();
 				data.gui(pane);
 				list.get(data).setContent(pane);
 			}

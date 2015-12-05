@@ -1,11 +1,13 @@
 package texterkennung.data;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
 public class DataString extends Data
 {
 	private final String data;
+	private Font font;
 	
 	public DataString(String data, String name, boolean tab)
 	{
@@ -17,13 +19,17 @@ public class DataString extends Data
 	{
 		return this.data;
 	}
-
+	
+	public void setFont(Font font)
+	{
+		this.font = font;
+	}
+	
 	@Override
-	public void gui(Pane pane)
+	public void gui(BorderPane pane)
 	{
 		Label l = new Label(this.data);
-		//Font f = new Font("Arial", Font.BOLD, 100);
-		//l.setFont(f);
-		pane.getChildren().add(l);
+		if (this.font != null) l.setFont(this.font);
+		pane.setCenter(l);
 	}
 }
