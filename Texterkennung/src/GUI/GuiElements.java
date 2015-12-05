@@ -376,14 +376,21 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			if (this.data_Image != null)
 			{
-				Class erkennung = this.modes.get(this.sectedMode);
-				try {
-					this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					e.printStackTrace();
+				if (this.sectedMode != null)
+				{
+					Class erkennung = this.modes.get(this.sectedMode);
+					try {
+						this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+						e.printStackTrace();
+					}
+					
+		        	this.erkennung.start();
 				}
-				
-	        	this.erkennung.start();
+				else
+				{
+					Debugger.error(this, "Keine Modus ausgewählt!");
+				}
 			}
 			else
 			{
