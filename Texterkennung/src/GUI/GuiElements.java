@@ -5,18 +5,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-import com.sun.deploy.uitoolkit.impl.fx.ui.FXConsole;
-
-import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,7 +31,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -61,7 +57,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	@SuppressWarnings("rawtypes")
 	private HashMap<String, Class> modes;
 	ObservableList<String> modesString;
-	private String sectedMode = "Texterkennung";//TODO test
+	private String sectedMode;
 	private BorderPane modeConfig;
 	
 	private Data_Image data_Image;
@@ -91,13 +87,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		//this.addMode("Stundenplan", Erkennung_Text.class);
 	}
 
-	@SuppressWarnings("rawtypes")
-	private void addMode(String string, Class erkennung)
-	{
-		this.modes.put(string, erkennung);
-		this.modesString.add(string);
-	}
-
 	@Override
 	public void start(final Stage stage)
 	{
@@ -115,14 +104,15 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		//Modus Auswahl
 		BorderPane modeSelection = modeSetup();
 		
-		//Modus Auswahl
+		//Modus Config
 		this.modeConfig = configSetup();
 
+		
 		//Tab Layout
 		this.tabPane = new TabPane();
+		
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
-
 		VBox UIElements = new VBox(fileUI, modeSelection, this.modeConfig, tabPane);
 		UIElements.setPadding(new Insets(20));
 		UIElements.setSpacing(5);
@@ -133,13 +123,10 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		pane.setCenter(UIElements);
 
 		// (3) Szenen erzeugen und ins Fenster setzen
-
-		Scene scene = new Scene(pane, 800, 500);
+		Scene scene = new Scene(pane, 800, 800);
 
 
 		// (4) Fenster konfigurieren und anzeigen
-
-
 		stage.setTitle("Informatik Projekt: Texterkennung");
 		stage.setScene(scene);
 		stage.show();
@@ -158,6 +145,18 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		{
 			this.openGLHandler.stop();
 		}
+	}
+	
+	/**
+	 * Adds an Erkennugs Mode to List
+	 * @param string showName
+	 * @param erkennung Erkennungs class
+	 */
+	@SuppressWarnings("rawtypes")
+	private void addMode(String string, Class erkennung)
+	{
+		this.modes.put(string, erkennung);
+		this.modesString.add(string);
 	}
 
 	private BorderPane browseSetup()
@@ -180,6 +179,10 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		return fileSetup;
 	}
 	
+	/**
+	 * Setup Modus Auswahl
+	 * @return BorderPane
+	 */
 	private BorderPane modeSetup()
 	{
 		Label label_mode = new Label ("Modus: ");
@@ -206,13 +209,52 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		return modeSelection;
 	}
 	
+	/**
+	 * 
+	 * @return BorderPane with Options
+	 */
 	private BorderPane configSetup()
 	{
-		this.borderPane = new BorderPane();
+		BorderPane pane = new BorderPane();
+		BorderPane pane2 = new BorderPane();
+		BorderPane pane3 = new BorderPane();
+		BorderPane pane4 = new BorderPane();
+		BorderPane pane5 = new BorderPane();
 		
+		CheckBox checkBox = new CheckBox("Schwarzweiß");
+		CheckBox checkBox2 = new CheckBox("GPU");
+		ObservableList<String> observableList = FXCollections.observableArrayList();
+		observableList.add("Arial");
+		observableList.add("Verdana");
+		ComboBox<String> comboBox = new ComboBox<String>(observableList);
+		//comboBox.setPromptText("Schriftart");
+		comboBox.setEditable(true);
+		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				Debugger.info(null, "change");
+				GuiElements.MainGUI.updateFont(arg2);
+			}
+		});
+		TextField textField = new TextField();
+		textField.setPromptText("Schwellwert");
+		TextField textField2 = new TextField();
+		textField2.setPromptText("Farben");
+		pane.setLeft(checkBox);
+		pane2.setLeft(checkBox2);
+		pane3.setLeft(comboBox);
+		pane4.setLeft(textField);
+		pane5.setLeft(textField2);
+		
+		VBox vBox = new VBox(pane, pane2, pane3, pane4, pane5);
+		this.borderPane = new BorderPane(vBox);
 		return borderPane;
 	}
 	
+	/**
+	 * Update the Mode Config Borderpane with the presetconfig
+	 */
+	@SuppressWarnings("unchecked")
 	private void updateModeConfig()
 	{
 		String s = "";
@@ -225,33 +267,48 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 			e.printStackTrace();
 		}
 		
-		VBox vBox = new VBox();
+		VBox vBox = (VBox) this.borderPane.getCenter();
+		
 		String[] par = s.split(";");
-		for (int i = 0; i < par.length; i++)
+		for (int i = 0; i < par.length && i < vBox.getChildren().size(); i++)
 		{
-			switch (i) {
+			BorderPane pane = (BorderPane) vBox.getChildren().get(i);
+			
+			switch (i)
+			{
 			case 0:
-				BorderPane pane = new BorderPane();
-				CheckBox checkBox = new CheckBox("Schwarzweiß");
-				checkBox.setSelected(par[i] == "true");
-				pane.setLeft(checkBox);
-				vBox.getChildren().add(pane);
+				((CheckBox) pane.getLeft()).setSelected(par[i].equals("true"));
 				break;
 			case 1:
-				BorderPane pane1 = new BorderPane();
-				CheckBox checkBox1 = new CheckBox("GPU");
-				checkBox1.setSelected(par[i] == "true");
-				pane1.setLeft(checkBox1);
-				vBox.getChildren().add(pane1);
+				((CheckBox) pane.getLeft()).setSelected(par[i].equals("true"));
 				break;
-
+			case 2:
+				((ComboBox<String>) pane.getLeft()).getEditor().setText(par[i]);
+				break;
+			case 3:
+				((TextField) pane.getLeft()).setText(par[i]);
+				break;
+			case 4:
+				((TextField) pane.getLeft()).setText(par[i]);
+				break;
 			default:
 				break;
 			}
 		}
-		
-		
-		this.borderPane.setCenter(vBox);;
+	}
+	
+	/**
+	 * Update the Font of the Font-selection Textfield
+	 * @param font
+	 */
+	@SuppressWarnings("unchecked")
+	public void updateFont(String font)
+	{
+		Debugger.info(this, "Font name: " + javafx.scene.text.Font.font(font).getName());
+		if (this.borderPane != null && javafx.scene.text.Font.font(font) != null)
+		{
+			((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().setFont(new javafx.scene.text.Font(javafx.scene.text.Font.font(font).getName(), ((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().getFont().getSize()));
+		}
 	}
 
 	/**
@@ -321,9 +378,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				Class erkennung = this.modes.get(this.sectedMode);
 				try {
 					this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					// TODO Auto-generated catch block
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					e.printStackTrace();
 				}
 				
@@ -341,7 +396,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	{
 		this.sectedMode = newString;
 		this.updateModeConfig();
-		
 		Debugger.info(this, "SelectedMode: " + this.sectedMode);
 	}
 
@@ -352,15 +406,44 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	}
 
 	@Override
-	public void setConfig(String parameter) {
-		// TODO Auto-generated method stub
-		
+	public void setConfig(String parameter)
+	{
+		//TODO
 	}
 
 	@Override
 	public String getConfig()
 	{
 		String config = "";
+		VBox vBox = (VBox) this.borderPane.getCenter();
+		for (int i = 0; i < vBox.getChildren().size(); i++)
+		{
+			if (i > 0) config += ";";
+			BorderPane pane = (BorderPane) vBox.getChildren().get(i);
+			
+			switch (i)
+			{
+			case 0:
+				config += ((CheckBox) pane.getLeft()).isSelected() ? "true" : "false";
+				break;
+			case 1:
+				config += ((CheckBox) pane.getLeft()).isSelected() ? "true" : "false";
+				break;
+			case 2:
+				config += ((ComboBox<String>) pane.getLeft()).getEditor().getText();
+				break;
+			case 3:
+				config += ((TextField) pane.getLeft()).getText();
+				break;
+			case 4:
+				config += ((TextField) pane.getLeft()).getText();
+				break;
+			default:
+				break;
+			}
+		}
+		
+		Debugger.info(this, "Config Parameter: " + config);
 		return config;
 	}
 }

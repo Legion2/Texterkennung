@@ -27,12 +27,11 @@ public class Erkennung_Text extends Erkennung
 		super.run();
 		
 		if (!this.isrunning()) return;
-		int schwellwert = 200;
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
-		if (this.gpu()) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
-		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
+		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(this.originalBild, this.farbListe, this.schwellwert, this.openGLHandler.getGL4());
+		else OF = new Operator_Farbzuordnung(this.originalBild, this.farbListe, this.schwellwert);
 		if (!this.isrunning()) return;
 		OF.run();
 		Data_ID markiertePixel = (Data_ID) OF.getData();
@@ -46,7 +45,7 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Raster fertig");
 		
 		//Markiert die Pixel, die zu einem Zeichen gehˆren.
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, schwarzweiﬂ);
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, this.schwarzweiﬂ);
 		if (!this.isrunning()) return;
 		OZ.run();
 		DataList dataList = (DataList) OZ.getData();
@@ -69,8 +68,12 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "FERTIG!!!");
 	}
 	
+	/**
+	 * 
+	 * @return Schwarzweiﬂ GPU Schriftart Schwellwert Farben
+	 */
 	public static String getConfigPreset()
 	{
-		return "true;true";
+		return "true;true;Arial;150;0";
 	}
 }

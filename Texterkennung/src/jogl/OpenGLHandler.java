@@ -39,12 +39,15 @@ public class OpenGLHandler implements IInfo
 			if (this.jogl == null)
 			{
 				this.jogl = new JOGL();
-				try {
-					this.jogl.wait();
-				} catch (InterruptedException e)
+				synchronized (this.jogl)
 				{
-					Debugger.error(this, "Kann nicht auf JOGL Thread Warten!");
-					e.printStackTrace();
+					try
+					{
+						this.jogl.wait();
+					} catch (InterruptedException e) {
+						Debugger.error(this, "Kann nicht auf JOGL Thread Warten!");
+						e.printStackTrace();
+					}
 				}
 			}
 			return this.jogl.getGL4();

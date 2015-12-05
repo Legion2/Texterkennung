@@ -9,26 +9,32 @@ import GUI.IConfigurable;
 import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import jogl.OpenGLHandler;
 import texterkennung.data.Data_Image;
 
 public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 {
-	public static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
+	protected static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
 	
+	//Config
 	private final String config;
-	
-	protected ArrayList<AColor> farbListe;
-	protected final Data_Image originalBild;
-	protected Font font;
 	protected boolean schwarzweiﬂ;
-
+	protected boolean gpu;
+	protected Font font;
+	protected int schwellwert;
+	protected ArrayList<AColor> farbListe;
+	
+	
+	protected final Data_Image originalBild;
 	protected final OpenGLHandler openGLHandler;
-	protected GL4 gl4;
 	
+	/**
+	 * indicates whether the Thread is running
+	 */
 	private boolean run = false;
-	
-	
 	
 	public Erkennung(Data_Image data_Image, OpenGLHandler openGLHandler, String parameter)
 	{
@@ -36,7 +42,6 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 		this.openGLHandler = openGLHandler;
 		this.config = parameter;
 		this.setConfig(parameter);
-		Debugger.info(this, "GPU: " + this.gl4);
 	}
 	
 	@Override
@@ -45,11 +50,7 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 		super.run();
 		this.run = true;
 		Debugger.info(this, "run");
-	}
-	
-	protected boolean gpu()
-	{
-		return (this.gl4 != null);
+		if (this.gpu) this.openGLHandler.getGL4();
 	}
 	
 	/**
@@ -71,17 +72,32 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 		String[] par = parameter.split(";");
 		for (int i = 0; i < par.length; i++)
 		{
-			String s = par[i];
 			switch (i)
 			{
 			case 0:
-				this.schwarzweiﬂ = s == "true";
+				this.schwarzweiﬂ = par[i].equals("true");
 				break;
-
+			case 1:
+				this.gpu = par[i].equals("true");
+				break;
+			case 2:
+				this.font = new Font(par[i], Font.PLAIN, 30);
+				break;
+			case 3:
+				this.schwellwert = Integer.valueOf(par[i]);
+				break;
+			case 4:
+				String[] s = par[i].split(":");
+				this.farbListe = new ArrayList<AColor>();
+				for (int j = 0; j < s.length; j++)
+				{
+					this.farbListe.add(new AColor(Integer.valueOf(s[j])));
+				}
+				break;
 			default:
+				Debugger.error(this, "Config out of range. i = " + i);
 				break;
 			}
-			
 		}
 	}
 	

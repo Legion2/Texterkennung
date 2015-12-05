@@ -144,9 +144,9 @@ public class Data_Zeichen extends Data
 		
 		ver = ver < 1 ? (1 / ver) - 1 : ver - 1;
 		
-		Debugger.info(this, "Ver: " + ver);
+		if (ver < 0.1f) Debugger.info(this, "Ver: " + ver);
 		
-		return summe + summe2;
+		return summe + summe2 + ver;
 	}
 	
 	private float getSnow_Wand(int index)

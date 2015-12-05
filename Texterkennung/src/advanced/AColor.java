@@ -14,6 +14,11 @@ public class AColor extends Color
 		super(r, g, b);
 	}
 	
+	public AColor(int argb)
+	{
+		super(argb);
+	}
+	
 	public boolean isColor(int argb2, int schwellwert)
 	{
 		int argb = this.getRGB();

@@ -27,11 +27,10 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		super.run();
 		
 		if (!this.isrunning()) return;
-		int schwellwert = 200;
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
-		if (this.gpu()) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.gl4);
+		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.openGLHandler.getGL4());
 		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
 		if (!this.isrunning()) return;
 		OF.run();
@@ -84,8 +83,12 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		Debugger.info(this, "FERTIG!!!");
 	}
 
+	/**
+	 * 
+	 * @return Schwarzweiﬂ GPU Schriftart Schwellwert Farben
+	 */
 	public static String getConfigPreset()
 	{
-		return "true;true";
+		return "true;true;Arial;200;0";
 	}
 }
