@@ -28,6 +28,10 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		
 		if (!this.isrunning()) return;
 		
+		//TODO Skalierung des Bildes 
+		//of bekommt skalliertes Bild
+		
+		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
 		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.openGLHandler.getGL4());
@@ -39,6 +43,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		
 		//Teilt den Vertretungsplan in seine zwei hälften
 		
+		//TODO Fabio
 		
 		
 		
