@@ -1,6 +1,7 @@
 package texterkennung.operator;
 
 import GUI.GuiElements;
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
@@ -41,6 +42,11 @@ public class Operator_Zeichenzuordnung extends Operator
 		{
 			if (this.data_NPOS_input.getNPOS(0, y)[0] != this.data_NPOS_input.getXlenght() - 1)
 			{
+				//neue Zeile
+				DataList zeile = new DataList("Zeile", false);
+				this.dataList_output.add(zeile);
+				DataList wort = new DataList("Wort", false);
+				
 				int ystart = y;
 				int xstart = 0;
 				int xend = this.data_NPOS_input.getNPOS(0, y)[0];
@@ -55,13 +61,21 @@ public class Operator_Zeichenzuordnung extends Operator
 					{
 						if (z)
 						{
-							this.dataList_output.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_ID_input, this.schwarzweiß, "Zeichen Daten: " + ID));
+							wort.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_ID_input, this.schwarzweiß, "Zeichen Daten: " + ID));
 							ID++;
 							ymin = yend;
 							ymax = ystart;
 							
 							z = false;
-							x = this.data_NPOS_input.getNPOS(x, ystart)[0];
+							int nextx = this.data_NPOS_input.getNPOS(x, ystart)[0];
+							if (nextx - x > (yend - ystart) / 3)//leerzeichen
+							{
+								zeile.add(wort);
+								Debugger.info(this, "leerzeichen");
+								wort = new DataList("Wort", false);
+							}
+							
+							x = nextx;
 							xstart = x + 1;
 							if (xstart < this.data_NPOS_input.getXlenght())
 							{

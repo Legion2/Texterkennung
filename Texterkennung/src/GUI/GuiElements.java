@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import debug.Debugger;
 import debug.IInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,6 +44,9 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 {
 	public static GuiElements MainGUI;
 	
+	/**
+	 * Liste mit allen Tabs
+	 */
 	private HashMap<IGUI, Tab> list;
 	
 	private Button button_browse;
@@ -205,7 +206,6 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		BorderPane.setAlignment(comboBox_mode, Pos.TOP_CENTER);
 		BorderPane.setAlignment(this.button_startCalc, Pos.TOP_CENTER);
 		
-		
 		return modeSelection;
 	}
 	
@@ -226,13 +226,13 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		observableList.add("Arial");
 		observableList.add("Verdana");
+		observableList.add("Courier New");
 		ComboBox<String> comboBox = new ComboBox<String>(observableList);
 		//comboBox.setPromptText("Schriftart");
 		comboBox.setEditable(true);
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				Debugger.info(null, "change");
 				GuiElements.MainGUI.updateFont(arg2);
 			}
 		});
@@ -304,9 +304,9 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	@SuppressWarnings("unchecked")
 	public void updateFont(String font)
 	{
-		Debugger.info(this, "Font name: " + javafx.scene.text.Font.font(font).getName());
 		if (this.borderPane != null && javafx.scene.text.Font.font(font) != null)
 		{
+			Debugger.info(this, "Font name: " + javafx.scene.text.Font.font(font).getName());
 			((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().setFont(new javafx.scene.text.Font(javafx.scene.text.Font.font(font).getName(), ((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().getFont().getSize()));
 		}
 	}
