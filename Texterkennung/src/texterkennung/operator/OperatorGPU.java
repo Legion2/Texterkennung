@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
 
 import debug.Debugger;
+import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 
@@ -184,6 +186,17 @@ public abstract class OperatorGPU extends Operator
 				int yset = (data - xset) / data_NPOS_output.getYlenght();
 				
 				data_NPOS_output.setNPOS(x, y, xset, yset);
+			}
+		}
+	}
+	
+	protected void setDatafromBuffer(Data_F data_F, FloatBuffer bufferf)
+	{
+		for (int y = 0; y < data_F.getYlenght(); y++)
+		{
+			for (int x = 0; x < data_F.getXlenght(); x++)
+			{
+				data_F.setFloat(x, y, bufferf.get(y * data_F.getXlenght() + x));
 			}
 		}
 	}

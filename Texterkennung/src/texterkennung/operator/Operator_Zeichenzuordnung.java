@@ -4,25 +4,26 @@ import GUI.GuiElements;
 import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
+import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 import texterkennung.data.Data_Zeichen;
 
 public class Operator_Zeichenzuordnung extends Operator
 {
-	private Data_ID data_ID_input;
+	private Data_F data_F_input;
 	private Data_NPOS data_NPOS_input;
 	private DataList dataList_output;
 	private Data_ID data_ID_output;
 	
 	private final boolean schwarzweiﬂ;
 	
-	public Operator_Zeichenzuordnung(Data_ID data_ID, Data_NPOS data_NPOS, boolean schwarzweiﬂ)
+	public Operator_Zeichenzuordnung(Data_F data_F, Data_NPOS data_NPOS, boolean schwarzweiﬂ)
 	{
-		this.data_ID_input = data_ID;
+		this.data_F_input = data_F;
 		this.data_NPOS_input = data_NPOS;
 		this.dataList_output = new DataList("Zeichen Liste");
-		this.data_ID_output = new Data_ID(data_ID, "Data-Zeichen");
+		this.data_ID_output = new Data_ID(data_F, "Data-Zeichen");
 		this.data_ID_output.setDefault(-1);
 		this.schwarzweiﬂ = schwarzweiﬂ;
 	}
@@ -36,14 +37,15 @@ public class Operator_Zeichenzuordnung extends Operator
 	@Override
 	public void run()
 	{
-		int x = 0, y = 0, ID = 0;
+		int x = 0, y = 0, ID = 0, zeilennummer = 0;
 		
 		for (y = 0; y < this.data_NPOS_input.getYlenght(); y++)
 		{
 			if (this.data_NPOS_input.getNPOS(0, y)[0] != this.data_NPOS_input.getXlenght() - 1)
 			{
 				//neue Zeile
-				DataList zeile = new DataList("Zeile", false);
+				DataList zeile = new DataList("Zeile " + zeilennummer, false);
+				zeilennummer++;
 				this.dataList_output.add(zeile);
 				DataList wort = new DataList("Wort", false);
 				
@@ -61,7 +63,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					{
 						if (z)
 						{
-							wort.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_ID_input, this.schwarzweiﬂ, "Zeichen Daten: " + ID));
+							wort.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_F_input, this.schwarzweiﬂ, "Zeichen Daten: " + ID));
 							ID++;
 							ymin = yend;
 							ymax = ystart;
@@ -93,7 +95,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					
 					for (y = ystart; y <= yend; y++)
 					{
-						if (this.data_ID_input.getInt(x, y) != this.data_ID_input.getDefault())
+						if (this.data_F_input.getFloat(x, y) != this.data_F_input.getDefault())
 						{
 							z = true;
 							

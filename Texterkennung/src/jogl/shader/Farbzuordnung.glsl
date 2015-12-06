@@ -21,13 +21,17 @@ layout (binding = 2) writeonly buffer OutputData {
 int dataout[];
 } outputData;
 
+layout (binding = 3) writeonly buffer OutputDataF {
+float dataoutF[];
+} outputDataF;
+
 
 // Set the number of invocations in the work group.
 layout (local_size_x = 1024) in;
 
 uniform int schwellwert;
 
-bool isColor(int color, int vcolor)
+float fColor(int color, int vcolor)
 {
 	int rot = (color >> 16) & 0xff;
 	int gruen = (color >> 8)  & 0xff;
@@ -37,27 +41,27 @@ bool isColor(int color, int vcolor)
 	int gruen2 = (vcolor >> 8)  & 0xff;
 	int blau2 = (vcolor) & 0xff;
 	
-	double l = pow(rot - rot2, 2) + pow(gruen - gruen2, 2) + pow(blau - blau2, 2);
+	float l = pow(rot - rot2, 2) + pow(gruen - gruen2, 2) + pow(blau - blau2, 2);
 	
-	return l < pow(schwellwert, 2);
+	return l / pow(schwellwert, 2);
 }
 
 void main()
 {
 	if (gl_GlobalInvocationID.x > inputData.datain.length()) return;
 	
-	int i = 0;
-	while ((i < farben.farbe.length()) && !isColor(farben.farbe[i], inputData.datain[gl_GlobalInvocationID.x]))
+	float f = 1.0f;
+	outputData.dataout[gl_GlobalInvocationID.x] = -1;
+	for (int i = 0; i < farben.farbe.length(); i++)
 	{
-		i++;
+		float f0 = fColor(farben.farbe[i], inputData.datain[gl_GlobalInvocationID.x]);
+		if (f0 < f)
+		{
+			f = f0;
+			outputData.dataout[gl_GlobalInvocationID.x] = i;
+		}
 	}
-	if (i != farben.farbe.length())
-	{
-		outputData.dataout[gl_GlobalInvocationID.x] = i;
-	}
-	else
-	{
-		outputData.dataout[gl_GlobalInvocationID.x] = -1;
-	}
+	
+	outputDataF.dataoutF[gl_GlobalInvocationID.x] = f;
 }
 

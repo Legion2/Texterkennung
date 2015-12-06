@@ -31,7 +31,7 @@ public class Data_ID extends Data2D
 
 	public int getInt(int x, int y)
 	{
-		return (x < 0 || y < 0 || x >= this.xlenght || y >= this.ylenght) ? 0 : this.data[x][y];
+		return (x < 0 || y < 0 || x >= this.xlenght || y >= this.ylenght) ? this.defaultwert : this.data[x][y];
 	}
 	
 	public void setInt(int x, int y, int wert)
@@ -47,6 +47,23 @@ public class Data_ID extends Data2D
 	public void setMaxid(int maxid)
 	{
 		this.maxid = maxid;
+	}
+	
+	public void setDefault(int d)
+	{
+		this.defaultwert = d;
+		for (int y = 0; y < this.ylenght; y++)
+		{
+			for (int x = 0; x < this.xlenght; x++)
+			{
+				this.data[x][y] = this.defaultwert;
+			}
+		}
+	}
+	
+	public int getDefault()
+	{
+		return this.defaultwert;
 	}
 
 	@Override
@@ -79,22 +96,5 @@ public class Data_ID extends Data2D
 		
 		ImageView image = bi.getImageView();
 		pane.setCenter(image);
-	}
-
-	public void setDefault(int d)
-	{
-		this.defaultwert = d;
-		for (int y = 0; y < this.ylenght; y++)
-		{
-			for (int x = 0; x < this.xlenght; x++)
-			{
-				this.data[x][y] = this.defaultwert;
-			}
-		}
-	}
-	
-	public int getDefault()
-	{
-		return this.defaultwert;
 	}
 }

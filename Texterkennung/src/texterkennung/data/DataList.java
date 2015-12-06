@@ -6,8 +6,6 @@ import GUI.IGUI;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 public class DataList extends Data
 {

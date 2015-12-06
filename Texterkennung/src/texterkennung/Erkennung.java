@@ -3,15 +3,10 @@ package texterkennung;
 import java.awt.Font;
 import java.util.ArrayList;
 
-import com.jogamp.opengl.GL4;
-
 import GUI.IConfigurable;
 import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import jogl.OpenGLHandler;
 import texterkennung.data.Data_Image;
 

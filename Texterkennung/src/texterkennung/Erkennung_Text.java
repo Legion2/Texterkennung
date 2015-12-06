@@ -3,6 +3,7 @@ package texterkennung;
 import debug.Debugger;
 import jogl.OpenGLHandler;
 import texterkennung.data.DataList;
+import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
@@ -34,7 +35,9 @@ public class Erkennung_Text extends Erkennung
 		else OF = new Operator_Farbzuordnung(this.originalBild, this.farbListe, this.schwellwert);
 		if (!this.isrunning()) return;
 		OF.run();
-		Data_ID markiertePixel = (Data_ID) OF.getData();
+		DataList dataList = (DataList) OF.getData();
+		Data_ID markiertePixel = (Data_ID) dataList.get(0);
+		Data_F data_F = (Data_F) dataList.get(1);
 		Debugger.info(this, "Farbzuordnung fertig");
 		
 		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
@@ -45,12 +48,12 @@ public class Erkennung_Text extends Erkennung
 		Debugger.info(this, "Raster fertig");
 		
 		//Markiert die Pixel, die zu einem Zeichen gehören.
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, this.schwarzweiß);
+		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_F, sektorenRaster, this.schwarzweiß);
 		if (!this.isrunning()) return;
 		OZ.run();
-		DataList dataList = (DataList) OZ.getData();
-		Data_ID markierteZeichen = (Data_ID) dataList.get(0);
-		DataList zeichenListe = (DataList) dataList.get(1);
+		DataList dataList2 = (DataList) OZ.getData();
+		Data_ID markierteZeichen = (Data_ID) dataList2.get(0);
+		DataList zeichenListe = (DataList) dataList2.get(1);
 		Debugger.info(this, "Zeichenzuordung fertig");
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
@@ -74,6 +77,6 @@ public class Erkennung_Text extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "true;true;Arial;150;0";
+		return "true;true;Arial;200;0";
 	}
 }

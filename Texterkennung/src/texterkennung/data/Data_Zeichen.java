@@ -16,12 +16,12 @@ public class Data_Zeichen extends Data
 	private final int hoehe;
 	private final int breite;
 	private final Data_ID data_ID;
-	private final Data_ID data_ID2;
+	private final Data_F data_F;
 	private float[] snow_Boden;
 	private float[] snow_Wand;
 	private char c;
 
-	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, Data_ID data_ID_input2, boolean schwarzweiﬂ,String name)
+	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, Data_F data_F_input, boolean schwarzweiﬂ, String name)
 	{
 		super(name, false);
 		this.ID = iD;
@@ -32,7 +32,7 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_ID = data_ID_input;
-		this.data_ID2 = data_ID_input2;
+		this.data_F = data_F_input;
 		
 		this.snow(schwarzweiﬂ);
 	}
@@ -48,7 +48,7 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_ID = data_ID_input;
-		this.data_ID2 = data_ID_input;
+		this.data_F = null;
 		this.c = c;
 		
 		this.snow(true);
@@ -74,7 +74,7 @@ public class Data_Zeichen extends Data
 				}
 				else
 				{
-					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (this.data_ID2.getInt(xstart + x, ystart + y)) : 0;
+					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (1 - this.data_F.getFloat(xstart + x, ystart + y)) : 0;
 				}
 			}
 			
@@ -91,7 +91,7 @@ public class Data_Zeichen extends Data
 				}
 				else
 				{
-					
+					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (1 - this.data_F.getFloat(xstart + x, ystart + y)) : 0;
 				}
 			}
 			
