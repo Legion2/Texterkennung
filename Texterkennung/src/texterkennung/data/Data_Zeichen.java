@@ -115,10 +115,7 @@ public class Data_Zeichen extends Data
 		for (int x = 0; x < zeichen.breite; x++)
 		{
 			wert = zeichen.getSnow_Boden(x);
-			float x2 = ((x + 0.5f) / zeichen.breite) * this.breite - 0.5f;
-			int x2i = (int) x2;
-			
-			vwert = this.getSnow_Boden(x2i) + (this.getSnow_Boden(x2i + 1) - this.getSnow_Boden(x2i)) * (x2 - x2i);
+			vwert = this.getIntegralnormal(this.snow_Boden, x * 1.0f / zeichen.breite, (x + 1.0f) / zeichen.breite);
 			
 			summe += Math.abs(vwert - wert);
 		}
@@ -129,10 +126,7 @@ public class Data_Zeichen extends Data
 		for (int y = 0; y < zeichen.hoehe; y++)
 		{
 			wert = zeichen.getSnow_Wand(y);
-			float y2 = ((y + 0.5f) / zeichen.hoehe) * this.hoehe - 0.5f;
-			int y2i = (int) y2;
-			
-			vwert = this.getSnow_Wand(y2i) + (this.getSnow_Wand(y2i + 1) - this.getSnow_Wand(y2i)) * (y2 - y2i);
+			vwert = this.getIntegralnormal(this.snow_Wand, y * 1.0f / zeichen.hoehe, (y + 1.0f) / zeichen.hoehe);
 			
 			summe2 += Math.abs(vwert - wert);
 		}
@@ -148,6 +142,88 @@ public class Data_Zeichen extends Data
 		return summe + summe2 + ver;
 	}
 	
+	/**
+	 * 
+	 * @param snow_array
+	 * @param xmin range 0.0F - 1.0F
+	 * @param xmax range 0.0F - 1.0F
+	 * @return range 0.0F - 1.0F
+	 */
+	private float getIntegralnormal(float[] snow_array, float xmin, float xmax)
+	{
+		float min = xmin * snow_array.length;
+		float max = xmax * snow_array.length;
+		
+		return this.getIntegral(snow_array, min, max) / (max - min);
+	}
+
+	/**
+	 * 
+	 * @param snow_array
+	 * @param xmin range 0.0F - snow_array.length
+	 * @param xmax range 0.0F - snow_array.length
+	 * @return integral from xmin to xmax over snow_array
+	 */
+	private float getIntegral(float[] snow_array, float xmin, float xmax)
+	{
+		float summe = 0.0f;
+		
+		int min = (int) xmin;
+		int max = (int) xmax;
+		for (int i = min + 1; i < max; i++)
+		{
+			summe += snow_array[i];
+		}
+		
+		summe += snow_array[min] - this.lineareInterpolation(snow_array, xmin, this.getoffset(snow_array, min));
+		
+		
+		if (max != xmax)
+		{
+			summe += this.lineareInterpolation(snow_array, xmax, this.getoffset(snow_array, max));
+		}
+		
+		
+		
+		return summe;
+	}
+	
+	private float getoffset(float[] snow_array, int mitte)
+	{
+		if (mitte == 0 || mitte == (snow_array.length - 1)) return 0;
+		
+		return (snow_array[mitte - 1] + snow_array[mitte + 1] - 2 * snow_array[mitte]) / 6;
+	}
+
+	private float lineareInterpolation(float[] snow_array, float f, float offset)
+	{
+		int min = (int) f;
+		float koma = f - min;
+		if (offset == 0)
+		{
+			if (min == 0)
+			{
+				return (snow_array[min + 1] + (snow_array[min] - snow_array[min + 1]) * (koma + 1) / 2) * koma;
+			}
+			else
+			{
+				return (snow_array[min - 1] + (snow_array[min] - snow_array[min - 1]) * (koma + 1) / 2) * koma;
+			}
+		}
+		else
+		{
+			
+			if (koma < 0.5)
+			{
+				return (snow_array[min - 1] + (snow_array[min] + offset - snow_array[min - 1]) * (koma + 1) / 2) * koma;
+			}
+			else
+			{
+				return snow_array[min] - (snow_array[min + 1] + (snow_array[min] + offset - snow_array[min + 1]) * (2 - koma) / 2) * (1 - koma);
+			}
+		}
+	}
+
 	private float getSnow_Wand(int index)
 	{
 		return index < 0 ? this.snow_Wand[0] : (index < this.snow_Wand.length ? this.snow_Wand[index] : this.snow_Wand[this.snow_Wand.length - 1]);
