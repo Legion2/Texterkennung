@@ -25,13 +25,15 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	public void run()
 	{
 		super.run();
-		
+
 		if (!this.isrunning()) return;
-		
-		//TODO Skalierung des Bildes 
+
+		//TODO Skalierung des Bildes
 		//of bekommt skalliertes Bild
-		
-		
+
+
+
+
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
 		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.openGLHandler.getGL4());
@@ -40,21 +42,23 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		OF.run();
 		Data_ID markiertePixel = (Data_ID) OF.getData();
 		Debugger.info(this, "Farbzuordnung fertig");
-		
+
+
+
 		//Teilt den Vertretungsplan in seine zwei hälften
-		
+
 		//TODO Fabio
-		
-		
-		
-		
+
+
+
+
 		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
 		Operator_Raster OR = new Operator_Raster(markiertePixel);
 		if (!this.isrunning()) return;
 		OR.run();
 		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
 		Debugger.info(this, "Raster fertig");
-		
+
 		//Markiert die Pixel, die zu einem Zeichen gehören.
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(markiertePixel, sektorenRaster, this.schwarzweiß);
 		if (!this.isrunning()) return;
@@ -63,7 +67,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		Data_ID markierteZeichen = (Data_ID) dataList.get(0);
 		DataList zeichenListe = (DataList) dataList.get(1);
 		Debugger.info(this, "Zeichenzuordung fertig");
-		
+
 		/*//Konvertiert die markiertenZeichen Daten in das NPOS format
 		Operator OI;
 		if (this.gpu()) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.gl4);
@@ -72,14 +76,14 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		OI.run();
 		Data_NPOS data_NPOS = (Data_NPOS) OI.getData();
 		Debugger.info(this, "Data konvertieren fertig");*/
-		
+
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font);
 		if (!this.isrunning()) return;
 		OZG.run();
 		DataList generierteZeichenliste = (DataList) OZG.getData();
 		Debugger.info(this, "Zeichengenerieren fertig");
-		
+
 		//Erkennt die Zeichen
 		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
 		if (!this.isrunning()) return;
@@ -89,7 +93,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Schwarzweiß GPU Schriftart Schwellwert Farben
 	 */
 	public static String getConfigPreset()

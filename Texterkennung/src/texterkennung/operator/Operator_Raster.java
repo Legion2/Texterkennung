@@ -10,7 +10,7 @@ public class Operator_Raster extends Operator
 	private Data_ID data_ID_input;
 	private Data_NPOS data_NPOS_output;
 	private final int vergleichsID;
-	
+
 	public Operator_Raster(Data_ID data_ID)
 	{
 		this.data_ID_input = data_ID;
@@ -28,7 +28,7 @@ public class Operator_Raster extends Operator
 	public void run()
 	{
 		int x,y;
-		
+
 		//Waagerecht
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
@@ -37,7 +37,7 @@ public class Operator_Raster extends Operator
 			{
 				x++;
 			}
-			
+
 			if (x == this.data_ID_input.getXlenght())
 			{
 				for (int i = 0; i < this.data_NPOS_output.getXlenght() - 1; i++)
@@ -47,7 +47,7 @@ public class Operator_Raster extends Operator
 				this.data_NPOS_output.setNPOS(this.data_NPOS_output.getXlenght() - 1, y, 0, y);
 			}
 		}
-		
+
 		//Senkrecht
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
@@ -61,9 +61,9 @@ public class Operator_Raster extends Operator
 			{
 				int xstart = 0;
 				int j;
-				
+
 				boolean box = false;
-				
+
 				for (x = 1; x < this.data_NPOS_output.getXlenght(); x++)
 				{
 					j = ystart;
@@ -71,7 +71,7 @@ public class Operator_Raster extends Operator
 					{
 						j++;
 					}
-					
+
 					if (j == yend)
 					{
 						if (box)
@@ -83,9 +83,9 @@ public class Operator_Raster extends Operator
 									this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
 								}
 							}
-							
+
 							this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
-							
+
 							box = false;
 							xstart = x;
 						}
@@ -101,15 +101,15 @@ public class Operator_Raster extends Operator
 									this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
 								}
 							}
-							
+
 							this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
-							
+
 							box = true;
 							xstart = x;
 						}
 					}
 				}
-				
+
 				for (j = ystart; j < yend; j++)
 				{
 					for (int k = xstart; k < x; k++)
@@ -117,11 +117,11 @@ public class Operator_Raster extends Operator
 						this.data_NPOS_output.setNPOS(k, j, x - 1, yend - 1);
 					}
 				}
-				
+
 				this.data_NPOS_output.setNPOS(x - 1, yend - 1, xstart, ystart);
 			}
 		}
-		
+
 		GuiElements.MainGUI.setTab(this.data_NPOS_output);
 	}
 
