@@ -14,7 +14,7 @@ public class Operator_Raster extends Operator
 	public Operator_Raster(Data_ID data_ID)
 	{
 		this.data_ID_input = data_ID;
-		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-Raster");
+		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-Raster", true);
 		this.vergleichsID = this.data_ID_input.getDefault();
 	}
 

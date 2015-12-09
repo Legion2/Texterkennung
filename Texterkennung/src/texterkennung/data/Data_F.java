@@ -4,17 +4,47 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import advanced.ABufferedImage;
+import advanced.AColor;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * 2D float Array Data
+ * @author Leon
+ *
+ */
 public class Data_F extends Data2D
 {
 	private float[][] data;
 	private float defaultwert = 1.0f;
 	
-	public Data_F(Data2D data, String name)
+	public Data_F(Data2D data, String name, boolean b)
 	{
-		super(data, name);
+		super(data, name, b);
+	}
+	
+	/**
+	 * 
+	 * @param data_Image Bild mit weiﬂem Hintergrund und schwarzer Schrift
+	 * @param name
+	 */
+	public Data_F(Data_Image data_Image, String name, boolean b)
+	{
+		super(data_Image, name, b);
+		this.setDatafromImage(data_Image);
+	}
+	
+	private void setDatafromImage(Data_Image data_Image)
+	{
+		for (int y = 0; y < this.ylenght; y++)
+		{
+			for (int x = 0; x < this.xlenght; x++)
+			{
+				this.setFloat(x, y, new AColor(data_Image.getInt(x, y)).getBlue() / 255.0f);
+			}
+		}
 	}
 	
 	public float getFloat(int x, int y)
@@ -47,7 +77,8 @@ public class Data_F extends Data2D
 	@Override
 	public void gui(BorderPane pane)
 	{
-		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
+        PixelWriter pw = wr.getPixelWriter();
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{
@@ -55,11 +86,11 @@ public class Data_F extends Data2D
 			{
 				float wert = this.data[x][y];
 				
-				bi.setRGB(x, y, new Color(wert, wert, wert).getRGB());
+				pw.setArgb(x, y, new Color(wert, wert, wert).getRGB());
 			}
 		}
 		
-		ImageView image = bi.getImageView();
+		ImageView image = new ImageView(wr);
 		pane.setCenter(image);
 	}
 

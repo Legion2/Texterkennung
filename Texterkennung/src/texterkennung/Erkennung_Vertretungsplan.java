@@ -72,7 +72,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		Debugger.info(this, "Data konvertieren fertig");*/
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
-		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font);
+		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiﬂ);
 		if (!this.isrunning()) return;
 		OZG.run();
 		DataList generierteZeichenliste = (DataList) OZG.getData();

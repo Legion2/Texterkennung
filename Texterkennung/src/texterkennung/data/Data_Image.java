@@ -10,6 +10,12 @@ import javafx.scene.layout.BorderPane;
 
 public class Data_Image extends Data_ID
 {
+	/**
+	 * 
+	 * @param image BufferedImage, dessen farbwerte als int in Data_ID strucktur geschreiben werden
+	 * @param string Anzeigename in der Gui
+	 * @param b
+	 */
 	public Data_Image(BufferedImage image, String string, boolean b)
 	{
 		super(image.getWidth(), image.getHeight(), string, b);

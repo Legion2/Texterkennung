@@ -16,9 +16,9 @@ import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
 
 /**
- * Sortiert Hintergrundfarben aus
+ * Sortiert Hintergrundfarben aus und speichert den Grad der übereinstimmung als float (0.0 - 1.0f)
  * 
- * Kann Parallelisiert werden
+ * Wird auf der GPU berechnet.
  * 
  * @author Leon
  *
@@ -43,28 +43,8 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		super(gl4, computeShaderPath);
 		this.data_Image = data_Image;
 		this.schwellwert = schwellwert;
-		this.data_ID = new Data_ID(this.data_Image, "Data-Farbzuordnung");
-		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung");
-		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
-		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
-		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
-		this.outputBufferf = Buffers.newDirectFloatBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
-		
-		for (int i = 0; i < farbListe.size(); i++)
-		{
-			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
-		}
-		
-		this.setBufferfromData(this.inputBuffer, this.data_Image);
-	}
-	
-	public OperatorGPU_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe, GL4 gl4)
-	{
-		super(gl4, computeShaderPath);
-		this.data_Image = data_Image;
-		this.schwellwert = -1;
-		this.data_ID = new Data_ID(this.data_Image, "Data-Farbzuordnung");
-		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung");
+		this.data_ID = new Data_ID(this.data_Image, "Data-Farbzuordnung", true);
+		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung", true);
 		this.farbenBuffer = Buffers.newDirectIntBuffer(farbListe.size());
 		this.inputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());
 		this.outputBuffer = Buffers.newDirectIntBuffer(this.data_ID.getXlenght() * this.data_ID.getYlenght());

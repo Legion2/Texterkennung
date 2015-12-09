@@ -22,8 +22,8 @@ public class Operator_Zeichenzuordnung extends Operator
 	{
 		this.data_F_input = data_F;
 		this.data_NPOS_input = data_NPOS;
-		this.dataList_output = new DataList("Zeichen Liste");
-		this.data_ID_output = new Data_ID(data_F, "Data-Zeichen");
+		this.dataList_output = new DataList("Zeichen Liste", true);
+		this.data_ID_output = new Data_ID(data_F, "Data-Zeichen", true);
 		this.data_ID_output.setDefault(-1);
 		this.schwarzweiß = schwarzweiß;
 	}
@@ -63,7 +63,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					{
 						if (z)
 						{
-							wort.add(new Data_Zeichen(ID, xstart, xend, ymin, ymax, this.data_ID_output, this.data_F_input, this.schwarzweiß, "Zeichen Daten: " + ID));
+							wort.add(new Data_Zeichen('\u0000', xstart, xend, ymin, ymax, this.data_F_input, this.schwarzweiß, "Zeichen Daten: " + ID));
 							ID++;
 							ymin = yend;
 							ymax = ystart;
@@ -102,7 +102,7 @@ public class Operator_Zeichenzuordnung extends Operator
 							ymin = ymin > y ? y : ymin;
 							ymax = ymax < y ? y : ymax;
 							
-							this.data_ID_output.setInt(x, y, ID);
+							this.data_ID_output.setInt(x, y, ID);//TODO braucht man das?
 						}
 					}
 				}

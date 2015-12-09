@@ -30,17 +30,8 @@ public class Operator_Farbzuordnung extends Operator
 		this.data_Image = data_Image;
 		this.farbListe = farbListe;
 		this.schwellwert = schwellwert;
-		this.data_ID = new Data_ID(data_Image, "Data-Farbzuordnung");
-		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung");
-	}
-	
-	public Operator_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe)
-	{
-		this.data_Image = data_Image;
-		this.farbListe = farbListe;
-		this.schwellwert = -1;
-		this.data_ID = new Data_ID(this.data_Image, "Data-Farbzuordnung");
-		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung");
+		this.data_ID = new Data_ID(data_Image, "Data-Farbzuordnung", true);
+		this.data_F = new Data_F(data_Image, "Data-Farbübereinstimmung", true);
 	}
 	
 	@Override

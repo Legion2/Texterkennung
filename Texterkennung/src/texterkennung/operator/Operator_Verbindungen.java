@@ -14,7 +14,7 @@ public class Operator_Verbindungen extends Operator
 	public Operator_Verbindungen(Data_ID data_int)
 	{
 		this.data_ID_input = data_int;
-		this.data_ID_output = new Data_ID(data_ID_input, "Data-Verbindungen");
+		this.data_ID_output = new Data_ID(data_ID_input, "Data-Verbindungen", true);
 	}
 	
 	@Override

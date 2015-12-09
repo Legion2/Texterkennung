@@ -13,9 +13,9 @@ public abstract class Data2D extends Data
 		init();
 	}
 	
-	public Data2D(Data2D data, String name)
+	public Data2D(Data2D data, String name, boolean b)
 	{
-		super(name, true);
+		super(name, b);
 		this.xlenght = data.xlenght;
 		this.ylenght = data.ylenght;
 		init();

@@ -1,62 +1,56 @@
 package texterkennung.data;
 
-import advanced.ABufferedImage;
-import advanced.AColor;
+import java.awt.Color;
+
 import debug.Debugger;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
 public class Data_Zeichen extends Data
 {
-	private final int ID;
 	private final int xstart;
 	private final int ystart;
 	private final int xend;
 	private final int yend;
 	private final int hoehe;
 	private final int breite;
-	private final Data_ID data_ID;
 	private final Data_F data_F;
 	private float[] snow_Boden;
 	private float[] snow_Wand;
 	private char c;
 
-	public Data_Zeichen(int iD, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, Data_F data_F_input, boolean schwarzweiﬂ, String name)
+	/**
+	 * Zeichen Data beinhaltete Zeichen Informationen
+	 * @param c 
+	 * @param xstart
+	 * @param xend
+	 * @param ystart
+	 * @param yend
+	 * @param data_F_input
+	 * @param schwarzweiﬂ AA
+	 * @param name Anzeige name in der Gui
+	 */
+	public Data_Zeichen(char c, int xstart, int xend, int ystart, int yend, Data_F data_F_input, boolean schwarzweiﬂ, String name)
 	{
 		super(name, false);
-		this.ID = iD;
+		this.c = c;
 		this.xstart = xstart;
 		this.xend = xend;
 		this.ystart = ystart;
 		this.yend = yend;
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
-		this.data_ID = data_ID_input;
 		this.data_F = data_F_input;
 		
 		this.snow(schwarzweiﬂ);
 	}
-	
-	public Data_Zeichen(char c, int xstart, int xend, int ystart, int yend, Data_ID data_ID_input, String name)
-	{
-		super(name, false);
-		this.ID = -1;
-		this.xstart = xstart;
-		this.xend = xend;
-		this.ystart = ystart;
-		this.yend = yend;
-		this.hoehe = yend - ystart + 1;
-		this.breite = xend - xstart + 1;
-		this.data_ID = data_ID_input;
-		this.data_F = null;
-		this.c = c;
-		
-		this.snow(true);
-	}
 
 	/**
 	 * Schneefall ausrechnen
-	 * 
+	 * @param schwarzweiﬂ AA an oder aus
 	 */
 	private void snow(boolean schwarzweiﬂ)
 	{
@@ -70,11 +64,11 @@ public class Data_Zeichen extends Data
 			{
 				if (schwarzweiﬂ)
 				{
-					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+					summe += this.data_F.getFloat(xstart + x, ystart + y) < 0.5f ? 1 : 0;
 				}
 				else
 				{
-					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (1 - this.data_F.getFloat(xstart + x, ystart + y)) : 0;
+					summe += 1 - this.data_F.getFloat(xstart + x, ystart + y);
 				}
 			}
 			
@@ -87,11 +81,11 @@ public class Data_Zeichen extends Data
 			{
 				if (schwarzweiﬂ)
 				{
-					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? 1 : 0;
+					summe += this.data_F.getFloat(xstart + x, ystart + y) < 0.5f ? 1 : 0;
 				}
 				else
 				{
-					summe += this.data_ID.getInt(xstart + x, ystart + y) != AColor.weiﬂ ? (1 - this.data_F.getFloat(xstart + x, ystart + y)) : 0;
+					summe += 1 - this.data_F.getFloat(xstart + x, ystart + y);
 				}
 			}
 			
@@ -148,11 +142,21 @@ public class Data_Zeichen extends Data
 		return summe + summe2 + ver;
 	}
 	
+	/**
+	 * 
+	 * @param index 
+	 * @return float 0.0 - 1.0f
+	 */
 	private float getSnow_Wand(int index)
 	{
 		return index < 0 ? this.snow_Wand[0] : (index < this.snow_Wand.length ? this.snow_Wand[index] : this.snow_Wand[this.snow_Wand.length - 1]);
 	}
 	
+	/**
+	 * 
+	 * @param index 
+	 * @return float 0.0 - 1.0f
+	 */
 	private float getSnow_Boden(int index)
 	{
 		return index < 0 ? this.snow_Boden[0] : (index < this.snow_Boden.length ? this.snow_Boden[index] : this.snow_Boden[this.snow_Boden.length - 1]);
@@ -171,25 +175,24 @@ public class Data_Zeichen extends Data
 	@Override
 	public void gui(BorderPane pane)
 	{
-		ABufferedImage image = new ABufferedImage(this.breite, this.hoehe);
-		for (int y = 0; y < image.getHeight(); y++)
-		{
-			for (int x = 0; x < image.getWidth(); x++)
-			{
-				int wert = this.data_ID.getInt(xstart + x, ystart + y);
-				if (wert == this.data_ID.getDefault())
-				{
-					image.setRGB(x, y, AColor.weiﬂ);
-				}
-				else
-				{
-					image.setRGB(x, y, AColor.schwarz);
-				}
-			}
-		}
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(new Label("xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend));
-		borderPane.setCenter(image.getImageView());
+		
+		WritableImage wr = new WritableImage(this.breite, this.hoehe);
+        PixelWriter pw = wr.getPixelWriter();
+		
+		for (int y = 0; y < this.hoehe; y++)
+		{
+			for (int x = 0; x < this.breite; x++)
+			{
+				float wert = this.data_F.getFloat(this.xstart + x, this.ystart + y);
+				
+				pw.setArgb(x, y, new Color(wert, wert, wert).getRGB());
+			}
+		}
+		
+		ImageView image = new ImageView(wr);
+		borderPane.setCenter(image);
 		borderPane.setBottom(new Label("Zeichen: " + this.c));
 		pane.setCenter(borderPane);//TODO 
 	}

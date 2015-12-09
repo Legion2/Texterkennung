@@ -6,29 +6,50 @@ import java.awt.image.BufferedImage;
 import advanced.ABufferedImage;
 import advanced.AColor;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
+/**
+ * 2D int Array Data
+ * @author Leon
+ *
+ */
 public class Data_ID extends Data2D
 {
 	private int[][] data;
 	private int defaultwert = -1;
 	private int maxid = 0;
 	
-	public Data_ID(int x, int y, String name)
+	/**
+	 * 
+	 * @param data2d anderes Data2D object, dessen größe für das neue Object übernommen wird
+	 * @param name Anzeigename in der Gui
+	 * @param b
+	 */
+	public Data_ID(Data2D data2d, String name, boolean b)
 	{
-		super(x, y, name, true);
-	}
-	
-	public Data_ID(Data2D data2d, String name)
-	{
-		super(data2d, name);
+		super(data2d, name, b);
 	}
 
+	/**
+	 * 
+	 * @param x Größe in x Richtung
+	 * @param y Größe in y Richtung
+	 * @param name Anzeigename in der Gui
+	 * @param b
+	 */
 	public Data_ID(int x, int y, String name, boolean b)
 	{
 		super(x, y, name, b);
 	}
 
+	/**
+	 * Gibt den gespeicherten int wert zurück
+	 * @param x
+	 * @param y
+	 * @return gespeicherter int wert
+	 */
 	public int getInt(int x, int y)
 	{
 		return (x < 0 || y < 0 || x >= this.xlenght || y >= this.ylenght) ? this.defaultwert : this.data[x][y];
@@ -44,11 +65,18 @@ public class Data_ID extends Data2D
 		return maxid;
 	}
 
+	/**
+	 * Setzt den größten int wert der gespeichert wurde.
+	 * @param maxid
+	 */
 	public void setMaxid(int maxid)
 	{
 		this.maxid = maxid;
 	}
-	
+	/**
+	 * Setzt alle Werte auf den Wert d
+	 * @param d
+	 */
 	public void setDefault(int d)
 	{
 		this.defaultwert = d;
@@ -75,7 +103,8 @@ public class Data_ID extends Data2D
 	@Override
 	public void gui(BorderPane pane)
 	{
-		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
+        PixelWriter pw = wr.getPixelWriter();
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{
@@ -84,17 +113,17 @@ public class Data_ID extends Data2D
 				int wert = this.data[x][y];
 				if (wert == this.defaultwert)
 				{
-					bi.setRGB(x, y, AColor.weiß);
+					pw.setArgb(x, y, AColor.weiß);
 				}
 				else
 				{
 					wert = Math.abs(wert);
-					bi.setRGB(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
+					pw.setArgb(x, y, new Color((wert*17)%255, 255 - (wert*47)%255, (wert*23)%255).getRGB());
 				}
 			}
 		}
 		
-		ImageView image = bi.getImageView();
+		ImageView image = new ImageView(wr);
 		pane.setCenter(image);
 	}
 }

@@ -14,9 +14,9 @@ public class Data_NPOS extends Data2D
 	private int[][] xPOS;
 	private int[][] yPOS;
 
-	public Data_NPOS(Data2D data2d, String name)
+	public Data_NPOS(Data2D data2d, String name, boolean b)
 	{
-		super(data2d, name);
+		super(data2d, name, b);
 	}
 
 	protected void init()

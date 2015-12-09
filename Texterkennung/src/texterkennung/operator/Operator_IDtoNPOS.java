@@ -14,7 +14,7 @@ public class Operator_IDtoNPOS extends Operator
 	public Operator_IDtoNPOS(Data_ID data_ID)
 	{
 		this.data_ID_input = data_ID;
-		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-NPOS");
+		this.data_NPOS_output = new Data_NPOS(data_ID, "Data-NPOS", true);
 	}
 
 	@Override

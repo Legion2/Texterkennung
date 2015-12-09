@@ -17,6 +17,11 @@ import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 
+/**
+ * 
+ * @author Leon
+ *
+ */
 public abstract class OperatorGPU extends Operator
 {
 	protected GL4 gl;

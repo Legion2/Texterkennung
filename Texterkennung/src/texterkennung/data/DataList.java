@@ -11,12 +11,6 @@ public class DataList extends Data
 {
 	private ArrayList<Data> data;
 	
-	public DataList(String name)
-	{
-		super(name, true);
-		this.data = new ArrayList<Data>();
-	}
-	
 	public DataList(String name, boolean b)
 	{
 		super(name, b);
