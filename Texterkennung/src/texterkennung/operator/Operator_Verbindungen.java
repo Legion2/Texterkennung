@@ -26,10 +26,9 @@ public class Operator_Verbindungen extends Operator
 	@Override
 	public void run()
 	{
-		int x = 0, y = 0, id = 0;
+		int x = 0, y = 0, id = -1;
 		ArrayList<Integer> masterIDList = new ArrayList<Integer>();
 		masterIDList.add(id);
-		
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
 			for (x = 0; x < this.data_ID_input.getXlenght(); x++)

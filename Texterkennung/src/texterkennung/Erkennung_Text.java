@@ -9,8 +9,11 @@ import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
+import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
+import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
+import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenerkennung;
 import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
@@ -46,6 +49,19 @@ public class Erkennung_Text extends Erkennung
 		OR.run();
 		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
 		Debugger.info(this, "Raster fertig");
+		
+		Operator_Verbindungen OV = new Operator_Verbindungen(markiertePixel);
+		OV.run();
+		Data_ID verbundenePixel = (Data_ID) OV.getData();
+		
+		/*//Konvertiert die markiertenZeichen Daten in das NPOS format
+		Operator OI;
+		if (this.gpu) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.openGLHandler.getGL4());
+		else OI = new Operator_IDtoNPOS(markierteZeichen);
+		if (!this.isrunning()) return;
+		OI.run();
+		Data_NPOS data_NPOS = (Data_NPOS) OI.getData();
+		Debugger.info(this, "Data konvertieren fertig");*/
 		
 		//Markiert die Pixel, die zu einem Zeichen gehören.
 		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_F, sektorenRaster, this.schwarzweiß);
