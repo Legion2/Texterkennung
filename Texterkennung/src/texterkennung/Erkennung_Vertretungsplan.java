@@ -98,6 +98,6 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "true;true;Arial;200;0";
+		return "true;true;Arial;200;0;200";
 	}
 }

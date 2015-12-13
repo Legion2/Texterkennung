@@ -2,6 +2,10 @@ package texterkennung.data;
 
 import java.awt.Color;
 
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -20,6 +24,7 @@ public class Data_Zeichen extends Data
 	private float[] snow_Boden;
 	private float[] snow_Wand;
 	private char c;
+	private Data_Zeichen gData_Zeichen;
 	
 	private String s = "";//Debug
 
@@ -45,7 +50,7 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_F = data_F_input;
-		
+		if (this.c != '\u0000') this.gData_Zeichen = this;
 		this.snow(schwarzweiﬂ);
 	}
 
@@ -163,9 +168,10 @@ public class Data_Zeichen extends Data
 		return index < 0 ? this.snow_Boden[0] : (index < this.snow_Boden.length ? this.snow_Boden[index] : this.snow_Boden[this.snow_Boden.length - 1]);
 	}
 	
-	public void setchar(char c)
+	public void setchar(Data_Zeichen data_Zeichen)
 	{
-		this.c = c;
+		this.c = data_Zeichen.c;
+		this.gData_Zeichen = data_Zeichen;
 	}
 	
 	public char getchar()
@@ -174,10 +180,9 @@ public class Data_Zeichen extends Data
 	}
 
 	@Override
-	public void gui(BorderPane pane)
+	public void gui(BorderPane borderPane)
 	{
-		BorderPane borderPane = new BorderPane();
-		borderPane.setTop(new Label("xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend));
+		borderPane.setTop(new Label("Zeichen: " + this.c +"   xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend));
 		
 		WritableImage wr = new WritableImage(this.breite, this.hoehe);
         PixelWriter pw = wr.getPixelWriter();
@@ -194,8 +199,56 @@ public class Data_Zeichen extends Data
 		
 		ImageView image = new ImageView(wr);
 		borderPane.setCenter(image);
-		borderPane.setBottom(new Label("Zeichen: " + this.c));
-		borderPane.setRight(new javafx.scene.control.TextArea(this.s));
-		pane.setCenter(borderPane);//TODO 
+		borderPane.setLeft(new javafx.scene.control.TextArea(this.s));
+		
+		
+        final NumberAxis xAxis = new NumberAxis(0, 1, 0.1);
+        final NumberAxis yAxis = new NumberAxis(0, 1, 0.1);
+        final AreaChart<Number,Number> ac = new AreaChart<Number,Number>(xAxis,yAxis);
+        ac.setTitle("Snow_Boden");
+ 
+        Series<Number, Number> series = new XYChart.Series<Number, Number>();
+        series.setName("this");
+        for (int i = 0; i < this.breite; i++)
+        {
+        	series.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.breite, this.getSnow_Boden(i)));
+        }
+        ac.getData().add(series);
+        if (this.gData_Zeichen != null)
+        {
+        	Series<Number, Number> vseries = new XYChart.Series<Number, Number>();
+            vseries.setName("Zeichen: " + this.gData_Zeichen.c);
+            for (int i = 0; i < this.gData_Zeichen.breite; i++)
+            {
+            	vseries.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.gData_Zeichen.breite, this.gData_Zeichen.getSnow_Boden(i)));
+            }
+            ac.getData().add(vseries);
+        }
+        borderPane.setBottom(ac);
+        
+        final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
+        final NumberAxis yAxis2 = new NumberAxis(0, 1, 0.1);
+        final AreaChart<Number,Number> ac2 = new AreaChart<Number,Number>(xAxis2,yAxis2);
+        ac2.setTitle("Snow_Wand");
+ 
+        XYChart.Series<Number,Number> series2 = new XYChart.Series<Number,Number>();
+        series2.setName("this");
+        for (int i = 0; i < this.hoehe; i++)
+        {
+        	series2.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.hoehe, this.getSnow_Wand(i)));
+        }
+        ac2.getData().add(series2);
+        if (this.gData_Zeichen != null)
+        {
+        	Series<Number, Number> vseries = new XYChart.Series<Number, Number>();
+            vseries.setName("Zeichen: " + this.gData_Zeichen.c);
+            for (int i = 0; i < this.gData_Zeichen.hoehe; i++)
+            {
+            	vseries.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.gData_Zeichen.hoehe, this.gData_Zeichen.getSnow_Wand(i)));
+            }
+            ac2.getData().add(vseries);
+        }
+        borderPane.setRight(ac2);
+        
 	}
 }

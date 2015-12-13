@@ -65,7 +65,7 @@ public class Operator_Zeichenerkennung extends Operator
 					
 					Debugger.info(this, "Beste Übereinstimmung: " + array[best] + " " + c);
 					this.erkanntertext += c;
-					zeichen.setchar(c);
+					zeichen.setchar(data_Zeichen);
 				}
 				this.erkanntertext += ' ';
 			}

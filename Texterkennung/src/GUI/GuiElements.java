@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -59,9 +60,10 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	ObservableList<String> modesString;
 	private String sectedMode;
 	private BorderPane modeConfig;
+	private ArrayList<String> fonts;
 	
 	private Data_Image data_Image;
-	public Erkennung erkennung;
+	private Erkennung erkennung;
 	private OpenGLHandler openGLHandler;
 	
 	public static void main(String[] args)
@@ -85,6 +87,13 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		this.addMode("Texterkennung", Erkennung_Text.class);
 		this.addMode("Vertretungsplan", Erkennung_Vertretungsplan.class);
 		//this.addMode("Stundenplan", Erkennung_Text.class);
+		
+		//Add Fonts
+		this.fonts = new ArrayList<String>();
+		this.fonts.add("Arial");
+		this.fonts.add("Verdana");
+		this.fonts.add("Courier New");
+		this.fonts.add("Times New Roman");
 	}
 
 	@Override
@@ -214,21 +223,24 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	 */
 	private BorderPane configSetup()
 	{
-		BorderPane pane = new BorderPane();
-		BorderPane pane2 = new BorderPane();
-		BorderPane pane3 = new BorderPane();
-		BorderPane pane4 = new BorderPane();
-		BorderPane pane5 = new BorderPane();
+		BorderPane pane = new BorderPane();//AA
+		BorderPane pane2 = new BorderPane();//GPU
+		BorderPane pane3 = new BorderPane();//Schriftart
+		BorderPane pane4 = new BorderPane();//Schwellwert
+		BorderPane pane5 = new BorderPane();//Farben
+		BorderPane pane6 = new BorderPane();//Skalierung
 		
 		CheckBox checkBox = new CheckBox("Schwarzweiß");
 		CheckBox checkBox2 = new CheckBox("GPU");
+		checkBox2.setIndeterminate(!this.openGLHandler.supportOpenGL());
+		checkBox2.setDisable(!this.openGLHandler.supportOpenGL());
 		ObservableList<String> observableList = FXCollections.observableArrayList();
-		observableList.add("Arial");
-		observableList.add("Verdana");
-		observableList.add("Courier New");
-		observableList.add("Times New Roman");
+		for (String font : this.fonts)
+		{
+			observableList.add(font);
+		}
 		ComboBox<String> comboBox = new ComboBox<String>(observableList);
-		//comboBox.setPromptText("Schriftart");
+		comboBox.setPromptText("Schriftart");
 		comboBox.setEditable(true);
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -240,13 +252,16 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		textField.setPromptText("Schwellwert");
 		TextField textField2 = new TextField();
 		textField2.setPromptText("Farben");
+		TextField textField3 = new TextField();
+		textField3.setPromptText("Skalierung in %");
 		pane.setLeft(checkBox);
 		pane2.setLeft(checkBox2);
 		pane3.setLeft(comboBox);
 		pane4.setLeft(textField);
 		pane5.setLeft(textField2);
+		pane6.setLeft(textField3);
 		
-		VBox vBox = new VBox(pane, pane2, pane3, pane4, pane5);
+		VBox vBox = new VBox(pane, pane2, pane3, pane4, pane5, pane6);
 		vBox.setSpacing(5);
 		this.borderPane = new BorderPane(vBox);
 		return borderPane;
@@ -300,7 +315,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	
 	/**
 	 * Update the Font of the Font-selection Textfield
-	 * @param font
+	 * @param font Neue Schriftart
 	 */
 	@SuppressWarnings("unchecked")
 	public void updateFont(String font)
@@ -399,6 +414,12 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		}
 	}
 	
+	/**
+	 * wird aufgerufen, wenn die Schriftart geändert wird.
+	 * @param arg0 Liste mit allen Schriftarten
+	 * @param arg1 Alte Schriftart
+	 * @param newString Nun ausgewählte Schrift
+	 */
 	@Override
 	public void changed(ObservableValue<? extends String> arg0, String arg1, String newString)
 	{
@@ -435,7 +456,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				config += ((CheckBox) pane.getLeft()).isSelected() ? "true" : "false";
 				break;
 			case 1:
-				config += ((CheckBox) pane.getLeft()).isSelected() ? "true" : "false";
+				config += (((CheckBox) pane.getLeft()).isDisabled() || !((CheckBox) pane.getLeft()).isSelected()) ? "false" : "true";
 				break;
 			case 2:
 				config += ((ComboBox<String>) pane.getLeft()).getEditor().getText();
@@ -444,6 +465,9 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				config += ((TextField) pane.getLeft()).getText();
 				break;
 			case 4:
+				config += ((TextField) pane.getLeft()).getText();
+				break;
+			case 5:
 				config += ((TextField) pane.getLeft()).getText();
 				break;
 			default:

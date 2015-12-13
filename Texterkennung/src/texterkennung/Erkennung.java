@@ -21,7 +21,7 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 	protected Font font;
 	protected int schwellwert;
 	protected ArrayList<AColor> farbListe;
-	
+	protected float scale;
 	
 	protected final Data_Image originalBild;
 	protected final OpenGLHandler openGLHandler;
@@ -88,6 +88,9 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 				{
 					this.farbListe.add(new AColor(Integer.valueOf(s[j])));
 				}
+				break;
+			case 5:
+				this.scale = Integer.valueOf(par[i]) / 100.0f;
 				break;
 			default:
 				Debugger.error(this, "Config out of range. i = " + i);

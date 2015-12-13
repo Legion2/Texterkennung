@@ -72,7 +72,6 @@ public class Operator_Zeichenzuordnung extends Operator
 							if (nextx - x > (yend - ystart) / 3)//leerzeichen
 							{
 								zeile.add(wort);
-								Debugger.info(this, "leerzeichen");
 								wort = new DataList("Wort", false);
 							}
 							
