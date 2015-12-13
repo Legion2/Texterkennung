@@ -18,7 +18,7 @@ import javafx.scene.layout.BorderPane;
 public class Data_ID extends Data2D
 {
 	private int[][] data;
-	private int defaultwert = -1;
+	private final int defaultwert = -1;
 	private int maxid = 0;
 	
 	/**
@@ -73,13 +73,17 @@ public class Data_ID extends Data2D
 	{
 		this.maxid = maxid;
 	}
-	/**
-	 * Setzt alle Werte auf den Wert d
-	 * @param d
-	 */
-	public void setDefault(int d)
+	public int getDefault()
 	{
-		this.defaultwert = d;
+		return this.defaultwert;
+	}
+	
+	/**
+	 * Setzt alle Werte auf den defaultwert Wert.
+	 */
+	@Override
+	public void setDefault()
+	{
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
@@ -87,11 +91,6 @@ public class Data_ID extends Data2D
 				this.data[x][y] = this.defaultwert;
 			}
 		}
-	}
-	
-	public int getDefault()
-	{
-		return this.defaultwert;
 	}
 
 	@Override

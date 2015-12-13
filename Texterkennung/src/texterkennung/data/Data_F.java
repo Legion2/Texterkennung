@@ -18,7 +18,7 @@ import javafx.scene.layout.BorderPane;
 public class Data_F extends Data2D
 {
 	private float[][] data;
-	private float defaultwert = 1.0f;
+	private final float defaultwert = 1.0f;
 	
 	public Data_F(Data2D data, String name, boolean b)
 	{
@@ -57,9 +57,8 @@ public class Data_F extends Data2D
 		this.data[x][y] = wert;
 	}
 	
-	public void setDefault(float d)
+	public void setDefault()
 	{
-		this.defaultwert = d;
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)

@@ -2,7 +2,6 @@ package texterkennung.data;
 
 import java.awt.Color;
 
-import debug.Debugger;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -21,6 +20,8 @@ public class Data_Zeichen extends Data
 	private float[] snow_Boden;
 	private float[] snow_Wand;
 	private char c;
+	
+	private String s = "";//Debug
 
 	/**
 	 * Zeichen Data beinhaltete Zeichen Informationen
@@ -137,9 +138,9 @@ public class Data_Zeichen extends Data
 		
 		ver = ver < 1 ? (1 / ver) - 1 : ver - 1;
 		
-		if (ver < 0.1f) Debugger.info(this, "Ver: " + ver);
+		zeichen.s += this.c + " s1: " + summe + " s2: " + summe2 + " v: " + ver + " " + (summe + summe2 + ver) + "\n";
 		
-		return summe + summe2 + ver;
+		return summe + summe2 + ver / 10;
 	}
 	
 	/**
@@ -194,6 +195,7 @@ public class Data_Zeichen extends Data
 		ImageView image = new ImageView(wr);
 		borderPane.setCenter(image);
 		borderPane.setBottom(new Label("Zeichen: " + this.c));
+		borderPane.setRight(new javafx.scene.control.TextArea(this.s));
 		pane.setCenter(borderPane);//TODO 
 	}
 }

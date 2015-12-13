@@ -10,7 +10,8 @@ public abstract class Data2D extends Data
 		super(name, b);
 		this.xlenght = x;
 		this.ylenght = y;
-		init();
+		this.init();
+		this.setDefault();
 	}
 	
 	public Data2D(Data2D data, String name, boolean b)
@@ -18,10 +19,13 @@ public abstract class Data2D extends Data
 		super(name, b);
 		this.xlenght = data.xlenght;
 		this.ylenght = data.ylenght;
-		init();
+		this.init();
+		this.setDefault();
 	}
 	
 	protected abstract void init();
+	
+	public abstract void setDefault();
 	
 	public int getXlenght()
 	{

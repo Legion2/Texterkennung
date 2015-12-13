@@ -226,6 +226,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		observableList.add("Arial");
 		observableList.add("Verdana");
 		observableList.add("Courier New");
+		observableList.add("Times New Roman");
 		ComboBox<String> comboBox = new ComboBox<String>(observableList);
 		//comboBox.setPromptText("Schriftart");
 		comboBox.setEditable(true);

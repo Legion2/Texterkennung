@@ -35,10 +35,10 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 	private final Data_ID data_ID;
 	private final Data_F data_F;
 	
-	private final Data_Image data_Image;
+	private final Data_ID data_Image;
 	private final int schwellwert;
 	
-	public OperatorGPU_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe, int schwellwert, GL4 gl4)
+	public OperatorGPU_Farbzuordnung(Data_ID data_Image, ArrayList<AColor> farbListe, int schwellwert, GL4 gl4)
 	{
 		super(gl4, computeShaderPath);
 		this.data_Image = data_Image;

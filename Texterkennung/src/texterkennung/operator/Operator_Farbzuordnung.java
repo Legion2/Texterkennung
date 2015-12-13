@@ -8,7 +8,6 @@ import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
-import texterkennung.data.Data_Image;
 
 /**
  * Sortiert Hintergrundfarben aus
@@ -21,11 +20,11 @@ public class Operator_Farbzuordnung extends Operator
 	private final Data_ID data_ID;
 	private final Data_F data_F;
 	
-	private final Data_Image data_Image;
+	private final Data_ID data_Image;
 	private final ArrayList<AColor> farbListe;
 	private final int schwellwert;
 	
-	public Operator_Farbzuordnung(Data_Image data_Image, ArrayList<AColor> farbListe, int schwellwert)
+	public Operator_Farbzuordnung(Data_ID data_Image, ArrayList<AColor> farbListe, int schwellwert)
 	{
 		this.data_Image = data_Image;
 		this.farbListe = farbListe;
@@ -43,8 +42,6 @@ public class Operator_Farbzuordnung extends Operator
 	@Override
 	public void run()
 	{
-		this.data_ID.setDefault(-1);
-		
 		for (int y = 0; y < this.data_Image.getYlenght(); y++)
 		{
 			for (int x = 0; x < this.data_Image.getXlenght(); x++)

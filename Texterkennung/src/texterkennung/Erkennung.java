@@ -12,7 +12,7 @@ import texterkennung.data.Data_Image;
 
 public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 {
-	protected static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?";
+	protected static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?‰ˆ¸ƒ÷‹ﬂ-";
 	
 	//Config
 	private final String config;

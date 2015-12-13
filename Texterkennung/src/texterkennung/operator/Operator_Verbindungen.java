@@ -28,11 +28,11 @@ public class Operator_Verbindungen extends Operator
 	{
 		int x = 0, y = 0, id = -1;
 		ArrayList<Integer> masterIDList = new ArrayList<Integer>();
-		masterIDList.add(id);
 		for (y = 0; y < this.data_ID_input.getYlenght(); y++)
 		{
 			for (x = 0; x < this.data_ID_input.getXlenght(); x++)
 			{
+				if (this.data_ID_input.getInt(x, y) == this.data_ID_input.getDefault()) continue;//Wenn das pixel ein Hintergrundpixel ist nicht beachten und mit dem nächsten weiter machen
 				boolean both = false;
 				if (this.data_ID_input.getInt(x - 1, y) == this.data_ID_input.getInt(x, y))
 				{
@@ -148,6 +148,7 @@ public class Operator_Verbindungen extends Operator
 		{
 			for (x = 0; x < this.data_ID_input.getXlenght(); x++)
 			{
+				if (this.data_ID_input.getInt(x, y) == this.data_ID_input.getDefault()) continue;//Wenn das pixel ein Hintergrundpixel ist nicht beachten und mit dem nächsten weiter machen
 				this.data_ID_output.setInt(x, y, masterIDList.get(this.data_ID_output.getInt(x, y)));
 			}
 		}

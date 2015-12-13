@@ -9,6 +9,7 @@ import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
+import texterkennung.operator.Operator_Bildteilen;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_Raster;
 import texterkennung.operator.Operator_Zeichenerkennung;
@@ -26,50 +27,13 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	public void run()
 	{
 		super.run();
-		
 		if (!this.isrunning()) return;
-		
-		//Markiert die Pixel, die die richtige Farbe haben.
-		Operator OF;
-		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(originalBild, farbListe, schwellwert, this.openGLHandler.getGL4());
-		else OF = new Operator_Farbzuordnung(originalBild, farbListe, schwellwert);
-		if (!this.isrunning()) return;
-		OF.run();
-		DataList dataList = (DataList) OF.getData();
-		Data_ID markiertePixel = (Data_ID) dataList.get(0);
-		Data_F data_F = (Data_F) dataList.get(1);
-		Debugger.info(this, "Farbzuordnung fertig");
 		
 		//Teilt den Vertretungsplan in seine zwei hälften
-		
-		
-		
-		
-		
-		//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
-		Operator_Raster OR = new Operator_Raster(markiertePixel);
+		Operator_Bildteilen OB = new Operator_Bildteilen(this.originalBild);
 		if (!this.isrunning()) return;
-		OR.run();
-		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
-		Debugger.info(this, "Raster fertig");
-		
-		//Markiert die Pixel, die zu einem Zeichen gehören.
-		Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_F, sektorenRaster, this.schwarzweiß);
-		if (!this.isrunning()) return;
-		OZ.run();
-		DataList dataList2 = (DataList) OZ.getData();
-		Data_ID markierteZeichen = (Data_ID) dataList2.get(0);
-		DataList zeichenListe = (DataList) dataList2.get(1);
-		Debugger.info(this, "Zeichenzuordung fertig");
-		
-		/*//Konvertiert die markiertenZeichen Daten in das NPOS format
-		Operator OI;
-		if (this.gpu()) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.gl4);
-		else OI = new Operator_IDtoNPOS(markierteZeichen);
-		if (!this.isrunning()) return;
-		OI.run();
-		Data_NPOS data_NPOS = (Data_NPOS) OI.getData();
-		Debugger.info(this, "Data konvertieren fertig");*/
+		OB.run();
+		DataList dataList0 = (DataList) OB.getData();
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiß);
@@ -78,11 +42,53 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		DataList generierteZeichenliste = (DataList) OZG.getData();
 		Debugger.info(this, "Zeichengenerieren fertig");
 		
-		//Erkennt die Zeichen
-		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
-		if (!this.isrunning()) return;
-		OZE.run();
-		OZE.getData();
+		for (int i = 0; i < dataList0.size(); i++)
+		{
+			Data_ID teilBild = (Data_ID) dataList0.get(i);
+			
+			//Markiert die Pixel, die die richtige Farbe haben.
+			Operator OF;
+			if (this.gpu) OF = new OperatorGPU_Farbzuordnung(teilBild, farbListe, schwellwert, this.openGLHandler.getGL4());
+			else OF = new Operator_Farbzuordnung(teilBild, farbListe, schwellwert);
+			if (!this.isrunning()) return;
+			OF.run();
+			DataList dataList = (DataList) OF.getData();
+			Data_ID markiertePixel = (Data_ID) dataList.get(0);
+			Data_F data_F = (Data_F) dataList.get(1);
+			Debugger.info(this, "Farbzuordnung fertig");
+			
+			//Unterteilt das Bild in Sektoren, in dene jeweils ein Zeichen ist
+			Operator_Raster OR = new Operator_Raster(markiertePixel);
+			if (!this.isrunning()) return;
+			OR.run();
+			Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
+			Debugger.info(this, "Raster fertig");
+			
+			//Markiert die Pixel, die zu einem Zeichen gehören.
+			Operator_Zeichenzuordnung OZ = new Operator_Zeichenzuordnung(data_F, sektorenRaster, this.schwarzweiß);
+			if (!this.isrunning()) return;
+			OZ.run();
+			DataList dataList2 = (DataList) OZ.getData();
+			Data_ID markierteZeichen = (Data_ID) dataList2.get(0);
+			DataList zeichenListe = (DataList) dataList2.get(1);
+			Debugger.info(this, "Zeichenzuordung fertig");
+			
+			/*//Konvertiert die markiertenZeichen Daten in das NPOS format
+			Operator OI;
+			if (this.gpu()) OI = new OperatorGPU_IDtoNPOS(markierteZeichen, this.gl4);
+			else OI = new Operator_IDtoNPOS(markierteZeichen);
+			if (!this.isrunning()) return;
+			OI.run();
+			Data_NPOS data_NPOS = (Data_NPOS) OI.getData();
+			Debugger.info(this, "Data konvertieren fertig");*/
+			
+			//Erkennt die Zeichen
+			Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
+			if (!this.isrunning()) return;
+			OZE.run();
+			OZE.getData();
+		}
+		
 		Debugger.info(this, "FERTIG!!!");
 	}
 

@@ -24,7 +24,6 @@ public class Operator_Zeichenzuordnung extends Operator
 		this.data_NPOS_input = data_NPOS;
 		this.dataList_output = new DataList("Zeichen Liste", true);
 		this.data_ID_output = new Data_ID(data_F, "Data-Zeichen", true);
-		this.data_ID_output.setDefault(-1);
 		this.schwarzweiﬂ = schwarzweiﬂ;
 	}
 
@@ -95,7 +94,7 @@ public class Operator_Zeichenzuordnung extends Operator
 					
 					for (y = ystart; y <= yend; y++)
 					{
-						if (this.data_F_input.getFloat(x, y) != this.data_F_input.getDefault())
+						if (this.data_F_input.getFloat(x, y) < 0.5f)
 						{
 							z = true;
 							

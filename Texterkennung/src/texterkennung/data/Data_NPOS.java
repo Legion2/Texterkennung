@@ -104,4 +104,10 @@ public class Data_NPOS extends Data2D
 		ImageView image = bi.getImageView();
 		pane.setCenter(image);
 	}
+
+	@Override
+	public void setDefault() {
+		// TODO Auto-generated method stub
+		
+	}
 }
