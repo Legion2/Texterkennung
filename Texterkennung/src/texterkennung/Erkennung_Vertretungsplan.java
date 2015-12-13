@@ -35,13 +35,6 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		OB.run();
 		DataList dataList0 = (DataList) OB.getData();
 		
-		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
-		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiﬂ);
-		if (!this.isrunning()) return;
-		OZG.run();
-		DataList generierteZeichenliste = (DataList) OZG.getData();
-		Debugger.info(this, "Zeichengenerieren fertig");
-		
 		for (int i = 0; i < dataList0.size(); i++)
 		{
 			Data_ID teilBild = (Data_ID) dataList0.get(i);
@@ -83,7 +76,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 			Debugger.info(this, "Data konvertieren fertig");*/
 			
 			//Erkennt die Zeichen
-			Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
+			Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(this.generierteZeichenliste, zeichenListe);
 			if (!this.isrunning()) return;
 			OZE.run();
 			OZE.getData();
@@ -98,6 +91,6 @@ public class Erkennung_Vertretungsplan extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "true;true;Arial;200;0;200";
+		return "false;true;Arial;200;0;200";
 	}
 }

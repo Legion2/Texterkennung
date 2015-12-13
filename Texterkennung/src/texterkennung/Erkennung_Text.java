@@ -72,15 +72,8 @@ public class Erkennung_Text extends Erkennung
 		DataList zeichenListe = (DataList) dataList2.get(1);
 		Debugger.info(this, "Zeichenzuordung fertig");
 		
-		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
-		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiﬂ);
-		if (!this.isrunning()) return;
-		OZG.run();
-		DataList generierteZeichenliste = (DataList) OZG.getData();
-		Debugger.info(this, "Zeichengenerieren fertig");
-		
 		//Erkennt die Zeichen
-		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(generierteZeichenliste, zeichenListe);
+		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(this.generierteZeichenliste, zeichenListe);
 		if (!this.isrunning()) return;
 		OZE.run();
 		OZE.getData();
@@ -93,6 +86,6 @@ public class Erkennung_Text extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "true;true;Arial;200;0;100";
+		return "false;true;Arial;200;0;100";
 	}
 }

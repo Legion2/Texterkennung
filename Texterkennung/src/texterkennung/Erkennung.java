@@ -8,7 +8,9 @@ import advanced.AColor;
 import debug.Debugger;
 import debug.IInfo;
 import jogl.OpenGLHandler;
+import texterkennung.data.DataList;
 import texterkennung.data.Data_Image;
+import texterkennung.operator.Operator_Zeichengenerieren;
 
 public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 {
@@ -25,6 +27,11 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 	
 	protected final Data_Image originalBild;
 	protected final OpenGLHandler openGLHandler;
+	
+	/**
+	 * Liste mit den generierten vergleichs Zeichen
+	 */
+	protected DataList generierteZeichenliste;
 	
 	/**
 	 * indicates whether the Thread is running
@@ -45,7 +52,13 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 		super.run();
 		this.run = true;
 		Debugger.info(this, "run");
-		if (this.gpu) this.openGLHandler.getGL4();
+		
+		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
+		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiﬂ);
+		if (!this.isrunning()) return;
+		OZG.run();
+		this.generierteZeichenliste = (DataList) OZG.getData();
+		Debugger.info(this, "Zeichengenerieren fertig");
 	}
 	
 	/**

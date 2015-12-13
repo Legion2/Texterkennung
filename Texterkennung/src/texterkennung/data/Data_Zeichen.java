@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
 public class Data_Zeichen extends Data
 {
@@ -23,6 +24,8 @@ public class Data_Zeichen extends Data
 	private final Data_F data_F;
 	private float[] snow_Boden;
 	private float[] snow_Wand;
+	private Series<Number, Number> xseries = new XYChart.Series<Number, Number>();
+	private Series<Number, Number> yseries = new XYChart.Series<Number, Number>();
 	private char c;
 	private Data_Zeichen gData_Zeichen;
 	
@@ -50,7 +53,11 @@ public class Data_Zeichen extends Data
 		this.hoehe = yend - ystart + 1;
 		this.breite = xend - xstart + 1;
 		this.data_F = data_F_input;
-		if (this.c != '\u0000') this.gData_Zeichen = this;
+		
+		this.xseries = new XYChart.Series<Number, Number>();
+		this.yseries = new XYChart.Series<Number, Number>();
+		this.xseries.setName("Zeichen: " + this.gData_Zeichen.c);
+		this.yseries.setName("Zeichen: " + this.gData_Zeichen.c);
 		this.snow(schwarzweiﬂ);
 	}
 
@@ -79,6 +86,7 @@ public class Data_Zeichen extends Data
 			}
 			
 			this.snow_Boden[x] = summe / this.hoehe;
+			this.xseries.getData().add(new XYChart.Data<Number,Number>((x + 0.5f) / this.breite, this.snow_Boden[x]));
 		}
 		for (int y = 0; y < this.hoehe; y++)
 		{
@@ -96,6 +104,7 @@ public class Data_Zeichen extends Data
 			}
 			
 			this.snow_Wand[y] = summe / this.breite;
+			this.yseries.getData().add(new XYChart.Data<Number,Number>((y + 0.5f) / this.hoehe, this.snow_Wand[y]));
 		}
 	}
 	
@@ -178,11 +187,23 @@ public class Data_Zeichen extends Data
 	{
 		return this.c;
 	}
+	
+	public Series<Number, Number> getxSeries()
+	{
+		return this.xseries;
+	}
+	
+	public Series<Number, Number> getySeries()
+	{
+		return this.yseries;
+	}
 
 	@Override
 	public void gui(BorderPane borderPane)
 	{
-		borderPane.setTop(new Label("Zeichen: " + this.c +"   xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend));
+		Label l = new Label("Zeichen: " + this.c +"   xstart: " + this.xstart + " xend: " + this.xend + " ystart: " + this.ystart + " yend: " + this.yend);
+		l.setFont(new Font(20));
+		borderPane.setTop(l);
 		
 		WritableImage wr = new WritableImage(this.breite, this.hoehe);
         PixelWriter pw = wr.getPixelWriter();
@@ -206,49 +227,25 @@ public class Data_Zeichen extends Data
         final NumberAxis yAxis = new NumberAxis(0, 1, 0.1);
         final AreaChart<Number,Number> ac = new AreaChart<Number,Number>(xAxis,yAxis);
         ac.setTitle("Snow_Boden");
- 
-        Series<Number, Number> series = new XYChart.Series<Number, Number>();
-        series.setName("this");
-        for (int i = 0; i < this.breite; i++)
-        {
-        	series.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.breite, this.getSnow_Boden(i)));
-        }
-        ac.getData().add(series);
+        
+        ac.getData().add(this.xseries);
         if (this.gData_Zeichen != null)
         {
-        	Series<Number, Number> vseries = new XYChart.Series<Number, Number>();
-            vseries.setName("Zeichen: " + this.gData_Zeichen.c);
-            for (int i = 0; i < this.gData_Zeichen.breite; i++)
-            {
-            	vseries.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.gData_Zeichen.breite, this.gData_Zeichen.getSnow_Boden(i)));
-            }
-            ac.getData().add(vseries);
+        	
+            ac.getData().add(this.gData_Zeichen.getySeries());
         }
         borderPane.setBottom(ac);
         
-        final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
-        final NumberAxis yAxis2 = new NumberAxis(0, 1, 0.1);
-        final AreaChart<Number,Number> ac2 = new AreaChart<Number,Number>(xAxis2,yAxis2);
+        //final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
+        //final NumberAxis yAxis2 = new NumberAxis(0, 1, 0.1);
+        final AreaChart<Number,Number> ac2 = new AreaChart<Number,Number>(xAxis,yAxis);
         ac2.setTitle("Snow_Wand");
- 
-        XYChart.Series<Number,Number> series2 = new XYChart.Series<Number,Number>();
-        series2.setName("this");
-        for (int i = 0; i < this.hoehe; i++)
-        {
-        	series2.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.hoehe, this.getSnow_Wand(i)));
-        }
-        ac2.getData().add(series2);
+        
+        ac2.getData().add(this.yseries);
         if (this.gData_Zeichen != null)
         {
-        	Series<Number, Number> vseries = new XYChart.Series<Number, Number>();
-            vseries.setName("Zeichen: " + this.gData_Zeichen.c);
-            for (int i = 0; i < this.gData_Zeichen.hoehe; i++)
-            {
-            	vseries.getData().add(new XYChart.Data<Number,Number>((i + 0.5f) / this.gData_Zeichen.hoehe, this.gData_Zeichen.getSnow_Wand(i)));
-            }
-            ac2.getData().add(vseries);
+            ac2.getData().add(this.gData_Zeichen.getySeries());
         }
         borderPane.setRight(ac2);
-        
 	}
 }
