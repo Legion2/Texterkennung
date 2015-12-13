@@ -31,15 +31,15 @@ public class Data_Image extends Data_ID
 				this.setInt(x, y, image.getRGB(x, y));
 			}
 		}
-		
+
 		if (b) GuiElements.MainGUI.setTab(this);
 	}
-	
+
 	public ImageView getImageView()
 	{
 		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
         PixelWriter pw = wr.getPixelWriter();
-		
+
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
@@ -47,11 +47,11 @@ public class Data_Image extends Data_ID
 				 pw.setArgb(x, y, this.getInt(x, y));
 			}
 		}
-		
+
 		ImageView imView = new ImageView(wr);
 	    return imView;
 	}
-	
+
 	@Override
 	public void gui(BorderPane pane)
 	{

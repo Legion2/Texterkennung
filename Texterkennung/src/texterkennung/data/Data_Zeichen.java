@@ -56,8 +56,8 @@ public class Data_Zeichen extends Data
 		
 		this.xseries = new XYChart.Series<Number, Number>();
 		this.yseries = new XYChart.Series<Number, Number>();
-		this.xseries.setName("Zeichen: " + this.gData_Zeichen.c);
-		this.yseries.setName("Zeichen: " + this.gData_Zeichen.c);
+		this.xseries.setName("Zeichen: " + this.c);
+		this.yseries.setName("Zeichen: " + this.c);
 		this.snow(schwarzweiﬂ);
 	}
 

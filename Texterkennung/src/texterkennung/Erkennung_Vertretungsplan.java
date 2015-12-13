@@ -13,8 +13,9 @@ import texterkennung.operator.Operator_Bildteilen;
 import texterkennung.operator.Operator_Farbzuordnung;
 import texterkennung.operator.Operator_Raster;
 import texterkennung.operator.Operator_Zeichenerkennung;
-import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
+import texterkennung.operator.ImageScaling.Operator_BilinearImageScaling;
+import texterkennung.operator.ImageScaling.Operator_ImageScaling;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {
@@ -29,8 +30,14 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		super.run();
 		if (!this.isrunning()) return;
 		
+		//ob bekommt skalliertes Bild
+		Operator_ImageScaling OI = new Operator_BilinearImageScaling(this.originalBild, this.scale);
+		if (!this.isrunning()) return;
+		OI.run();
+		Data_ID scaledImage = (Data_ID) OI.getData();
+		
 		//Teilt den Vertretungsplan in seine zwei h‰lften
-		Operator_Bildteilen OB = new Operator_Bildteilen(this.originalBild);
+		Operator_Bildteilen OB = new Operator_Bildteilen(scaledImage);
 		if (!this.isrunning()) return;
 		OB.run();
 		DataList dataList0 = (DataList) OB.getData();
@@ -81,12 +88,11 @@ public class Erkennung_Vertretungsplan extends Erkennung
 			OZE.run();
 			OZE.getData();
 		}
-		
 		Debugger.info(this, "FERTIG!!!");
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Schwarzweiﬂ GPU Schriftart Schwellwert Farben
 	 */
 	public static String getConfigPreset()
