@@ -13,7 +13,7 @@ import texterkennung.operator.Operator;
  *	This Image can be accessed through the method getData()
  *
  */
-abstract public class Operator_ImageScaling extends Operator implements IData2dScalar
+abstract public class Operator_ImageScaling extends Operator
 {
 
 	Data_ID originalImage;
@@ -43,7 +43,8 @@ abstract public class Operator_ImageScaling extends Operator implements IData2dS
 	}
 
 
-	
+
+	abstract public Data_ID scale ();
 
 
 	@Override
