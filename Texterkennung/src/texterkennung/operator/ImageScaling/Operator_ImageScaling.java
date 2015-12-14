@@ -16,10 +16,10 @@ import texterkennung.operator.Operator;
  */
 abstract public class Operator_ImageScaling extends Operator
 {
-    Data_ID originalImage;
-    Data_ID scaledImage;
+    protected final Data_ID originalImage;
+    protected final Data_ID scaledImage;
 
-    float scaleFaktor;
+    protected final float scaleFaktor;
 
     /**
      *
@@ -64,25 +64,22 @@ abstract public class Operator_ImageScaling extends Operator
 
     	return rgbValue;
     }
-
-
-    @Override
+    
     /**
      * @return Name of the Class
      */
+    @Override
     public String getName()
     {
         return "Operator_ImageScaling";
     }
-
-    @Override
+    
     /**
      * @return returns the scaled Image
      */
+    @Override
     public Data getData()
     {
         return this.scaledImage;
     }
-
-
 }

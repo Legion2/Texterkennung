@@ -9,21 +9,17 @@ import texterkennung.data.Data_ID;
  * @author Fabio Schmidberger
  *
  */
-public class Operator_BilinearImageScaling extends Operator_ImageScaling {
-
+public class Operator_BilinearImageScaling extends Operator_ImageScaling
+{
 	/**
 	 * @param originalImage
 	 * @param scaleFaktor
 	 */
-	public Operator_BilinearImageScaling(Data_ID originalImage, float scaleFaktor) {
+	public Operator_BilinearImageScaling(Data_ID originalImage, float scaleFaktor)
+	{
 		super(originalImage, scaleFaktor);
-		// TODO Auto-generated constructor stub
 	}
-
-	/* (non-Javadoc)
-	 * @see texterkennung.operator.ImageScaling.IData2dScalar#scale()
-	 */
-
+	
 	@Override
 	public void scale()
 	{
@@ -50,7 +46,7 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 			for (int yPos=0; yPos<this.scaledImage.getYlenght(); yPos++) {
 
 				//current x-Pos relative to the originalImage
-				float x = xPos/scaleFaktor;
+				float x = xPos / this.scaleFaktor;
 
 				//closest X-Pos of pixel in Original Image (left)
 				float x1 = (int) (x);
@@ -60,7 +56,7 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 
 
 				//current y-Pos relative to the originalImage
-				float y = yPos/scaleFaktor;
+				float y = yPos / this.scaleFaktor;
 
 				//closest y-Pos of pixel in Original Image (top)
 				float y2 = (int) (y);
@@ -96,17 +92,14 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 			}
 		}
 	}
-
-
-	/* (non-Javadoc)
-	 * @see texterkennung.operator.Operator#run()
-	 */
+	
 	@Override
 	public void run()
 	{
 		if (this.scaleFaktor == 1.0f)
 		{
-			this.scaledImage = originalImage;
+			//this.scaledImage = originalImage;
+			
 			return;
 		}
 
