@@ -69,20 +69,29 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 				float y1 = (int) (y+1);
 
 
-				//known Points
-				float Q11=originalImage.getInt( (int) x1	, (int) y1);
-				float Q12=originalImage.getInt( (int) x1	, (int) y2);
-				float Q21=originalImage.getInt( (int) x2	, (int) y1);
-				float Q22=originalImage.getInt( (int) x2	, (int) y2);
+
+				//known Points with rgb values
+				int [] Q11 = getRGB(originalImage.getInt( (int) x1	, (int) y1));
+				int [] Q12 = getRGB(originalImage.getInt( (int) x1	, (int) y2));
+				int [] Q21 = getRGB(originalImage.getInt( (int) x2	, (int) y1));
+				int [] Q22 = getRGB(originalImage.getInt( (int) x2	, (int) y2));
+
+				int [] P_rgb = new int [3];
+
+				for (int colour=0; colour<3; colour++) {
+					//linear Interpolation in x-direction
+					float R1 = ((x2 - x)/(x2 - x1))*Q11[colour] + ((x - x1)/(x2 - x1))*Q21[colour];
+					float R2 = ((x2 - x)/(x2 - x1))*Q12[colour] + ((x - x1)/(x2 - x1))*Q22[colour];
+
+					//linear Interpolation in y-direction
+					float P = ((y2 - y)/(y2 - y1))*R1 + ((y - y1)/(y2 - y1))*R2;
+
+					P_rgb[colour]=(int) P;
+				}
 
 
-				//linear Interpolation in x-direction
-				float R1 = ((x2 - x)/(x2 - x1))*Q11 + ((x - x1)/(x2 - x1))*Q21;
-				float R2 = ((x2 - x)/(x2 - x1))*Q12 + ((x - x1)/(x2 - x1))*Q22;
 
-				float P = ((y2 - y)/(y2 - y1))*R1 + ((y - y1)/(y2 - y1))*R2;
-
-				this.scaledImage.setInt(xPos, yPos, (int)(P));
+				this.scaledImage.setInt(xPos, yPos, RGBtoInt(P_rgb));
 
 			}
 		}
@@ -100,7 +109,7 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 			this.scaledImage = originalImage;
 			return;
 		}
-			
+
 		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
 		scale();
 
