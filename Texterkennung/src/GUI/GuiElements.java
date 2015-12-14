@@ -21,16 +21,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jogl.OpenGLHandler;
@@ -248,18 +253,22 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				GuiElements.MainGUI.updateFont(arg2);
 			}
 		});
+		Label label = new Label("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?äöüÄÖÜß-");
 		TextField textField = new TextField();
 		textField.setPromptText("Schwellwert");
+		HBox hBox = new HBox();
+		ColorPicker colorPicker = new ColorPicker(Color.BLACK);
+		hBox.getChildren().add(colorPicker);
+		Button removeButton = new Button("Farbe entfernen");
+		Button addButton = new Button("Farbe hinzufügen");
 		TextField textField2 = new TextField();
-		textField2.setPromptText("Farben");
-		TextField textField3 = new TextField();
-		textField3.setPromptText("Skalierung in %");
+		textField2.setPromptText("Skalierung in %");
 		pane.setLeft(checkBox);
 		pane2.setLeft(checkBox2);
-		pane3.setLeft(comboBox);
+		pane3.setLeft(comboBox); pane3.setRight(label);
 		pane4.setLeft(textField);
-		pane5.setLeft(textField2);
-		pane6.setLeft(textField3);
+		pane5.setLeft(hBox); pane5.setCenter(removeButton); pane5.setRight(addButton);
+		pane6.setLeft(textField2);
 		
 		VBox vBox = new VBox(pane, pane2, pane3, pane4, pane5, pane6);
 		vBox.setSpacing(5);
@@ -305,7 +314,16 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				((TextField) pane.getLeft()).setText(par[i]);
 				break;
 			case 4:
-				((TextField) pane.getLeft()).setText(par[i]);
+				HBox hBox = new HBox();
+				String[] c = par[i].split(":");
+				for (String color : c)
+				{
+					ColorPicker colorPicker = new ColorPicker();
+					java.awt.Color color2 = new java.awt.Color(Integer.valueOf(color));
+					colorPicker.setValue(Color.rgb(color2.getRed(), color2.getGreen(), color2.getBlue()));
+					hBox.getChildren().add(colorPicker);
+				}
+				pane.setLeft(hBox);
 				break;
 			case 5:
 				((TextField) pane.getLeft()).setText(par[i]);
@@ -325,8 +343,10 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 	{
 		if (this.borderPane != null && javafx.scene.text.Font.font(font) != null)
 		{
-			Debugger.info(this, "Font name: " + javafx.scene.text.Font.font(font).getName());
-			((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().setFont(new javafx.scene.text.Font(javafx.scene.text.Font.font(font).getName(), ((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().getFont().getSize()));
+			Font newfont = new javafx.scene.text.Font(javafx.scene.text.Font.font(font).getName(), ((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().getFont().getSize());
+			Debugger.info(this, "Font name: " + newfont.getName());
+			((ComboBox<String>) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getLeft()).getEditor().setFont(newfont);
+			((Label) ((BorderPane)((VBox) this.borderPane.getCenter()).getChildren().get(2)).getRight()).setFont(newfont);
 		}
 	}
 
@@ -468,7 +488,12 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 				config += ((TextField) pane.getLeft()).getText();
 				break;
 			case 4:
-				config += ((TextField) pane.getLeft()).getText();
+				for (Node colorPicker : ((HBox) pane.getLeft()).getChildren())
+				{
+					Color color = ((ColorPicker) colorPicker).getValue();
+					config += new java.awt.Color((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue()).getRGB() + ":";
+				}
+				config = config.substring(0, config.length() - 1);
 				break;
 			case 5:
 				config += ((TextField) pane.getLeft()).getText();

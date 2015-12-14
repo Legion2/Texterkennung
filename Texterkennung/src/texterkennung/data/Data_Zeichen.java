@@ -24,8 +24,8 @@ public class Data_Zeichen extends Data
 	private final Data_F data_F;
 	private float[] snow_Boden;
 	private float[] snow_Wand;
-	private Series<Number, Number> xseries = new XYChart.Series<Number, Number>();
-	private Series<Number, Number> yseries = new XYChart.Series<Number, Number>();
+	private Series<Number, Number> xseries;
+	private Series<Number, Number> yseries;
 	private char c;
 	private Data_Zeichen gData_Zeichen;
 	
@@ -231,20 +231,31 @@ public class Data_Zeichen extends Data
         ac.getData().add(this.xseries);
         if (this.gData_Zeichen != null)
         {
-        	
-            ac.getData().add(this.gData_Zeichen.getySeries());
+        	XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+        	series.setName(this.gData_Zeichen.getxSeries().getName());
+        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : this.gData_Zeichen.getxSeries().getData())
+        	{
+        		series.getData().add(new javafx.scene.chart.XYChart.Data<Number, Number>(data.getXValue(), data.getYValue()));
+        	}
+        	ac.getData().add(series);
         }
         borderPane.setBottom(ac);
         
-        //final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
-        //final NumberAxis yAxis2 = new NumberAxis(0, 1, 0.1);
-        final AreaChart<Number,Number> ac2 = new AreaChart<Number,Number>(xAxis,yAxis);
+        final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
+        final NumberAxis yAxis2 = new NumberAxis(0, 1, 0.1);
+        final AreaChart<Number,Number> ac2 = new AreaChart<Number,Number>(xAxis2,yAxis2);
         ac2.setTitle("Snow_Wand");
         
         ac2.getData().add(this.yseries);
         if (this.gData_Zeichen != null)
         {
-            ac2.getData().add(this.gData_Zeichen.getySeries());
+        	XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+        	series.setName(this.gData_Zeichen.getySeries().getName());
+        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : this.gData_Zeichen.getySeries().getData())
+        	{
+        		series.getData().add(new javafx.scene.chart.XYChart.Data<Number, Number>(data.getXValue(), data.getYValue()));
+        	}
+        	ac2.getData().add(series);
         }
         borderPane.setRight(ac2);
 	}

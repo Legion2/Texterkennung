@@ -2,6 +2,7 @@ package texterkennung.operator.ImageScaling;
 
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_Image;
 import texterkennung.operator.Operator;
 
 /**
@@ -27,11 +28,12 @@ abstract public class Operator_ImageScaling extends Operator
 	 */
 	public Operator_ImageScaling(Data_ID originalImage, float scaleFaktor)
 	{
-		this.originalImage=originalImage;
-		this.scaleFaktor=scaleFaktor;
+		this.originalImage = originalImage;
+		this.scaleFaktor = scaleFaktor;
+		this.scaledImage = new Data_Image((int) (originalImage.getXlenght() * scaleFaktor), (int) (originalImage.getYlenght() * scaleFaktor), "scaledImage", true);
 	}
 	
-	abstract public Data_ID scale ();
+	abstract public void scale();
 
 	@Override
 	/**

@@ -21,6 +21,11 @@ public class Data_Image extends Data_ID
 		super(image.getWidth(), image.getHeight(), string, b);
 		this.setBufferedImage(image, b);
 	}
+	
+	public Data_Image(int x, int y, String string, boolean b)
+	{
+		super(x, y, string, b);
+	}
 
 	private void setBufferedImage(BufferedImage image, boolean b)
 	{

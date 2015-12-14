@@ -14,8 +14,8 @@ public class Operator_Bildteilen extends Operator
 	public Operator_Bildteilen(Data_ID data_ID)
 	{
 		this.data_ID_input = data_ID;
-		this.data_ID_output1 = new Data_ID(this.data_ID_input.getXlenght() / 2, this.data_ID_input.getYlenght(), "", true);
-		this.data_ID_output2 = new Data_ID(this.data_ID_input.getXlenght() - this.data_ID_output1.getXlenght(), this.data_ID_input.getYlenght(), "", true);
+		this.data_ID_output1 = new Data_ID(this.data_ID_input.getXlenght() / 2, this.data_ID_input.getYlenght(), "linke Seite", true);
+		this.data_ID_output2 = new Data_ID(this.data_ID_input.getXlenght() - this.data_ID_output1.getXlenght(), this.data_ID_input.getYlenght(), "rechte Seite", true);
 	}
 	
 	@Override

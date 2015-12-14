@@ -2,6 +2,7 @@
 package texterkennung.operator.ImageScaling;
 
 import GUI.GuiElements;
+import debug.Debugger;
 import texterkennung.data.Data_ID;
 
 /**
@@ -24,13 +25,8 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 	 */
 
 	@Override
-	public Data_ID scale() {
-
-		int newXLength= (int) (originalImage.getXlenght()*scaleFaktor);
-		int newYLength= (int) (originalImage.getYlenght()*scaleFaktor);
-
-		Data_ID newImage = new Data_ID(newXLength, newYLength, getName(), true);
-
+	public void scale()
+	{
 
 		/*
 		 * Bilinear Interpolation
@@ -48,10 +44,10 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 
 
 		//iterate over all xPos
-		for (int xPos=0; xPos<newXLength; xPos++) {
+		for (int xPos=0; xPos < this.scaledImage.getXlenght(); xPos++) {
 
 			//iterate over yPos
-			for (int yPos=0; yPos<newYLength; yPos++) {
+			for (int yPos=0; yPos<this.scaledImage.getYlenght(); yPos++) {
 
 				//current x-Pos relative to the originalImage
 				float x = xPos/scaleFaktor;
@@ -86,15 +82,11 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 
 				float P = ((y2 - y)/(y2 - y1))*R1 + ((y - y1)/(y2 - y1))*R2;
 
-				newImage.setInt(xPos, yPos, (int)(P));
+				this.scaledImage.setInt(xPos, yPos, (int)(P));
 
 			}
 		}
-
-		return newImage;
-
 	}
-
 
 
 	/* (non-Javadoc)
@@ -103,7 +95,14 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling {
 	@Override
 	public void run()
 	{
-		scaledImage = scale();
+		if (this.scaleFaktor == 1.0f)
+		{
+			this.scaledImage = originalImage;
+			return;
+		}
+			
+		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
+		scale();
 
 		GuiElements.MainGUI.setTab(this.scaledImage);
 	}
