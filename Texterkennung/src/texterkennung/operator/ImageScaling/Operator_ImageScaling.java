@@ -57,6 +57,8 @@ abstract public class Operator_ImageScaling extends Operator
     	rgba[1] = c.getGreen();
     	rgba[2] = c.getBlue();
     	rgba[3] = c.getAlpha();
+    	
+    	//Debugger.info(this, "red: " + rgba[0] + " green: " + rgba[1] + " blue: " +rgba[2] + " alpha: " + rgba[3] );
 
     	return rgba;
 
@@ -73,9 +75,9 @@ abstract public class Operator_ImageScaling extends Operator
     }
 
     /**
-     * converts rgb array to int
-     * @param rgb array with [0]=red; [1]=green; [2]=blue
-     * @return returns int value
+     * converts rgba array to int
+     * @param rgba array with [0]=red; [1]=green; [2]=blue [3]=alpha
+     * @return returns int value with rgba information
      */
     public int RGBAtoInt (int [] rgba) {
 
