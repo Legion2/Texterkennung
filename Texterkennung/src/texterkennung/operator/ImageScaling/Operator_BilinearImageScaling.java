@@ -1,7 +1,7 @@
 
 package texterkennung.operator.ImageScaling;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import debug.Debugger;
 import texterkennung.data.Data_ID;
 
@@ -100,6 +100,6 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
 		scale();
 
-		GuiElements.MainGUI.setTab(this.scaledImage);
+		GUI.MainGUI.setTab(this.scaledImage);
 	}
 }

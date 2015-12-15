@@ -2,8 +2,7 @@ package texterkennung.data;
 
 import java.awt.image.BufferedImage;
 
-import GUI.GuiElements;
-import debug.Debugger;
+import GUI.GUI;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -38,15 +37,13 @@ public class Data_Image extends Data_ID
 			}
 		}
 
-		if (b) GuiElements.MainGUI.setTab(this);
+		if (b) GUI.MainGUI.setTab(this);
 	}
 
 	public ImageView getImageView()
 	{
 		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
         PixelWriter pw = wr.getPixelWriter();
-
-        Debugger.info(this, "draw image" + this.getName());
         
 		for (int y = 0; y < this.ylenght; y++)
 		{

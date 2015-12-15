@@ -1,6 +1,6 @@
 package texterkennung.operator;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
@@ -42,8 +42,8 @@ public class Operator_Bildteilen extends Operator
 				this.data_ID_output2.setInt(x, y, this.data_ID_input.getInt(this.data_ID_output1.getXlenght() + x, y));
 			}
 		}
-		GuiElements.MainGUI.setTab(this.data_ID_output1);
-		GuiElements.MainGUI.setTab(this.data_ID_output2);
+		GUI.MainGUI.setTab(this.data_ID_output1);
+		GUI.MainGUI.setTab(this.data_ID_output2);
 	}
 
 	@Override

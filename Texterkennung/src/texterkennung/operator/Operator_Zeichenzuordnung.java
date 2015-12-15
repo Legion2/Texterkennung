@@ -1,7 +1,6 @@
 package texterkennung.operator;
 
-import GUI.GuiElements;
-import debug.Debugger;
+import GUI.GUI;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
@@ -110,8 +109,8 @@ public class Operator_Zeichenzuordnung extends Operator
 		}
 		
 		this.data_ID_output.setMaxid(ID);
-		GuiElements.MainGUI.setTab(this.dataList_output);
-		GuiElements.MainGUI.setTab(this.data_ID_output);
+		GUI.MainGUI.setTab(this.dataList_output);
+		GUI.MainGUI.setTab(this.data_ID_output);
 	}
 
 	@Override

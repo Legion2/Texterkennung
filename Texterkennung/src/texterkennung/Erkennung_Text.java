@@ -9,13 +9,9 @@ import texterkennung.data.Data_Image;
 import texterkennung.data.Data_NPOS;
 import texterkennung.operator.Operator;
 import texterkennung.operator.OperatorGPU_Farbzuordnung;
-import texterkennung.operator.OperatorGPU_IDtoNPOS;
 import texterkennung.operator.Operator_Farbzuordnung;
-import texterkennung.operator.Operator_IDtoNPOS;
 import texterkennung.operator.Operator_Raster;
-import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenerkennung;
-import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
 import texterkennung.operator.ImageScaling.Operator_BilinearImageScaling;
 import texterkennung.operator.ImageScaling.Operator_ImageScaling;
@@ -38,6 +34,7 @@ public class Erkennung_Text extends Erkennung
 		if (!this.isrunning()) return;
 		OI.run();
 		Data_ID scaledImage = (Data_ID) OI.getData();
+		Debugger.info(this, "Skalierung fertig");
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
@@ -57,9 +54,11 @@ public class Erkennung_Text extends Erkennung
 		Data_NPOS sektorenRaster = (Data_NPOS) OR.getData();
 		Debugger.info(this, "Raster fertig");
 		
+		/*//
 		Operator_Verbindungen OV = new Operator_Verbindungen(markiertePixel);
+		if (!this.isrunning()) return;
 		OV.run();
-		Data_ID verbundenePixel = (Data_ID) OV.getData();
+		Data_ID verbundenePixel = (Data_ID) OV.getData();*/
 		
 		/*//Konvertiert die markiertenZeichen Daten in das NPOS format
 		Operator OI;

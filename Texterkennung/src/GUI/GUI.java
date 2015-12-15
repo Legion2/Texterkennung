@@ -44,10 +44,10 @@ import texterkennung.Erkennung_Text;
 import texterkennung.Erkennung_Vertretungsplan;
 import texterkennung.data.Data_Image;
 
-//TODO Rename this class
-public class GuiElements extends Application implements EventHandler<ActionEvent>, ChangeListener<String>, IInfo, IConfigurable
+
+public class GUI extends Application implements EventHandler<ActionEvent>, ChangeListener<String>, IInfo, IConfigurable
 {
-	public static GuiElements MainGUI;
+	public static GUI MainGUI;
 	
 	/**
 	 * Liste mit allen Tabs
@@ -108,7 +108,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 
 		//Titel Label
 		Label label_title = new Label ("Texterkennung");
-		label_title.setFont(GUI.LayoutElements.titleFont);
+		label_title.setFont(new Font ("Arial", 24));
 		label_title.setAlignment(Pos.TOP_LEFT);
 		label_title.setPadding(new Insets (5));
 
@@ -250,7 +250,7 @@ public class GuiElements extends Application implements EventHandler<ActionEvent
 		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				GuiElements.MainGUI.updateFont(arg2);
+				GUI.MainGUI.updateFont(arg2);
 			}
 		});
 		Label label = new Label("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?‰ˆ¸ƒ÷‹ﬂ-");

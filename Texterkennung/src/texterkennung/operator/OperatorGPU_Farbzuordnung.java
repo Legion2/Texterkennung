@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import advanced.AColor;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
-import texterkennung.data.Data_Image;
 
 /**
  * Sortiert Hintergrundfarben aus und speichert den Grad der übereinstimmung als float (0.0 - 1.0f)
@@ -115,8 +114,8 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
         
 		this.end();
 		
-		GuiElements.MainGUI.setTab(this.data_ID);
-		GuiElements.MainGUI.setTab(this.data_F);
+		GUI.MainGUI.setTab(this.data_ID);
+		GUI.MainGUI.setTab(this.data_F);
 	}
 
 	

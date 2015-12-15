@@ -1,9 +1,7 @@
 package texterkennung.data;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 
-import advanced.ABufferedImage;
 import advanced.AColor;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;

@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
@@ -85,7 +85,7 @@ public class Operator_Zeichengenerieren extends Operator
 			this.zeichen.add(new Data_Zeichen(c, xmin, xmax, ymin, ymax, data_F, this.schwarzweiﬂ, "generiertes Zeichen: " + c));
 		}
 		
-		GuiElements.MainGUI.setTab(this.zeichen);
+		GUI.MainGUI.setTab(this.zeichen);
 	}
 
 	@Override

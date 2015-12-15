@@ -1,6 +1,6 @@
 package texterkennung.operator;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
@@ -66,7 +66,7 @@ public class Operator_IDtoNPOS extends Operator
 				Debugger.info(this, "Konvertierung bei " + (j * 5) + "%");
 			}
 		}
-		GuiElements.MainGUI.setTab(this.data_NPOS_output);
+		GUI.MainGUI.setTab(this.data_NPOS_output);
 	}
 
 	@Override

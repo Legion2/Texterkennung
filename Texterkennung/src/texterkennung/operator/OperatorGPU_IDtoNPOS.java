@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL4;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
@@ -85,7 +85,7 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 		gl.glDeleteBuffers(2, buffers);
 		this.end();
 		
-		GuiElements.MainGUI.setTab(this.data_NPOS_output);
+		GUI.MainGUI.setTab(this.data_NPOS_output);
 	}
 
 	

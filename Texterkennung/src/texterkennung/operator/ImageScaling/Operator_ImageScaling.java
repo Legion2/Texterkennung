@@ -1,8 +1,5 @@
 package texterkennung.operator.ImageScaling;
 
-import java.awt.Color;
-
-import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;

@@ -1,6 +1,6 @@
 package texterkennung.operator;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
@@ -73,9 +73,9 @@ public class Operator_Zeichenerkennung extends Operator
 		}
 		
 		this.dataString = new DataString(this.erkanntertext, "erkannter Text", true);
-		GuiElements.MainGUI.setTab(this.dataString);
+		GUI.MainGUI.setTab(this.dataString);
 		Debugger.info(this, "Erkanntertext: " + this.erkanntertext);
-		GuiElements.MainGUI.setTab(this.zeichenListe);
+		GUI.MainGUI.setTab(this.zeichenListe);
 	}
 
 	@Override

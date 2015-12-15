@@ -1,6 +1,6 @@
 package texterkennung.data;
 
-import GUI.GuiElements;
+import GUI.GUI;
 import GUI.IGUI;
 
 public abstract class Data implements IGUI
@@ -15,7 +15,7 @@ public abstract class Data implements IGUI
 	public Data(String name, boolean tab)
 	{
 		this.name = name;
-		if (tab) GuiElements.MainGUI.addTab(this);
+		if (tab) GUI.MainGUI.addTab(this);
 	}
 	
 	@Override

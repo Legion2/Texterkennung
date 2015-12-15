@@ -19,7 +19,8 @@ import texterkennung.operator.ImageScaling.Operator_ImageScaling;
 
 public class Erkennung_Vertretungsplan extends Erkennung
 {
-	public Erkennung_Vertretungsplan(Data_Image data_Image, OpenGLHandler openGLHandler, String parameter) {
+	public Erkennung_Vertretungsplan(Data_Image data_Image, OpenGLHandler openGLHandler, String parameter)
+	{
 		super(data_Image, openGLHandler, parameter);
 		this.setName("Vertretungsplanerkennung");
 	}
@@ -35,6 +36,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		if (!this.isrunning()) return;
 		OI.run();
 		Data_ID scaledImage = (Data_ID) OI.getData();
+		Debugger.info(this, "Skalierung fertig");
 		
 		//Teilt den Vertretungsplan in seine zwei hälften
 		Operator_Bildteilen OB = new Operator_Bildteilen(scaledImage);

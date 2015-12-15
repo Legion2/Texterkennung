@@ -1,12 +1,12 @@
 package texterkennung.data;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 
-import GUI.GuiElements;
-import advanced.ABufferedImage;
+import GUI.GUI;
 import debug.Debugger;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 
 public class Data_NPOS extends Data2D
@@ -70,7 +70,7 @@ public class Data_NPOS extends Data2D
 				Debugger.info(this, "Konvertierung bei " + (j * 5) + "%");
 			}
 		}
-		GuiElements.MainGUI.setTab(this);
+		GUI.MainGUI.setTab(this);
 	}
 
 	
@@ -90,24 +90,24 @@ public class Data_NPOS extends Data2D
 	@Override
 	public void gui(BorderPane pane)
 	{
-		ABufferedImage bi = new ABufferedImage(this.xlenght, this.ylenght, BufferedImage.TYPE_INT_RGB);
+		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
+        PixelWriter pw = wr.getPixelWriter();
 		
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				bi.setRGB(x, y, new Color(((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 1)%255, 255 - ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255, ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255).getRGB());
+				pw.setArgb(x, y, new Color(((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 1)%255, 255 - ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255, ((this.yPOS[x][y] * this.xlenght + this.xPOS[x][y]) * 2)%255).getRGB());
 			}
 		}
 		
-		
-		ImageView image = bi.getImageView();
+		ImageView image = new ImageView(wr);
 		pane.setCenter(image);
 	}
 
 	@Override
-	public void setDefault() {
-		// TODO Auto-generated method stub
+	public void setDefault()
+	{
 		
 	}
 }
