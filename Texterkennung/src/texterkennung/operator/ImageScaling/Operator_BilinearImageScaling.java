@@ -19,7 +19,7 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 	{
 		super(originalImage, scaleFaktor);
 	}
-	
+
 	@Override
 	public void scale()
 	{
@@ -67,12 +67,16 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 
 
 				//known Points with rgb values
-				int [] Q11 = getRGB(originalImage.getInt( (int) x1	, (int) y1));
-				int [] Q12 = getRGB(originalImage.getInt( (int) x1	, (int) y2));
-				int [] Q21 = getRGB(originalImage.getInt( (int) x2	, (int) y1));
-				int [] Q22 = getRGB(originalImage.getInt( (int) x2	, (int) y2));
+				int [] Q11 = getRGBA(originalImage.getInt( (int) x1	, (int) y1));
+				int [] Q12 = getRGBA(originalImage.getInt( (int) x1	, (int) y2));
+				int [] Q21 = getRGBA(originalImage.getInt( (int) x2	, (int) y1));
+				int [] Q22 = getRGBA(originalImage.getInt( (int) x2	, (int) y2));
 
-				int [] P_rgb = new int [3];
+
+				/**
+				 * Colour array with [0] = red; [1] = green; [2] = blue; [3]= alpha
+				 */
+				int [] P_rgba = new int [4];
 
 				for (int colour=0; colour<3; colour++) {
 					//linear Interpolation in x-direction
@@ -82,24 +86,24 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 					//linear Interpolation in y-direction
 					float P = ((y2 - y)/(y2 - y1))*R1 + ((y - y1)/(y2 - y1))*R2;
 
-					P_rgb[colour]=(int) P;
+					P_rgba[colour]=(int) P;
 				}
 
 
 
-				this.scaledImage.setInt(xPos, yPos, RGBtoInt(P_rgb));
+				this.scaledImage.setInt(xPos, yPos, RGBAtoInt(P_rgba));
 
 			}
 		}
 	}
-	
+
 	@Override
 	public void run()
 	{
 		if (this.scaleFaktor == 1.0f)
 		{
 			//this.scaledImage = originalImage;
-			
+
 			return;
 		}
 

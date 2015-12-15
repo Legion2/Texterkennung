@@ -1,5 +1,8 @@
 package texterkennung.operator.ImageScaling;
 
+import java.awt.Color;
+
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
@@ -42,14 +45,31 @@ abstract public class Operator_ImageScaling extends Operator
      * @return [0]=red; [1]=green; [2]=blue
      */
 
-    public int [] getRGB (int colourNum)
+    public int [] getRGBA (int colourNum)
     {
-    	int [] rgb = new int [3];
+    	int [] rgba = new int [4];
 
-    	rgb[0] = (colourNum >> 16) & 0xff;			//red
-		rgb[1] = (colourNum >> 8)  & 0xff;			//green
-		rgb[2] = (colourNum) & 0xff;				//blue
-    	return rgb;
+    	//Debugger.error(scaledImage, ""+colourNum);
+
+    	Color c = new Color(colourNum, true);
+
+    	rgba[0] = c.getRed();
+    	rgba[1] = c.getGreen();
+    	rgba[2] = c.getBlue();
+    	rgba[3] = c.getAlpha();
+
+    	return rgba;
+
+    	/*
+
+    	//int to rgb with error correction -> no values over 255 allowed
+    	rgba[0] = (((colourNum >> 16) & 0xff) > 255) ? 255 : ((colourNum >> 16) & 0xff) ;		//red
+		rgba[1] = (((colourNum >> 8) & 0xff) > 255) ? 255 : ((colourNum >> 8) & 0xff);			//green
+		rgba[2] = (((colourNum) & 0xff) > 255) ? 255 : ((colourNum) & 0xff);						//blue
+		rgba[3] = (((colourNum >> 24) & 0xff) > 255) ? 255 : ((colourNum >> 24) & 0xff);			//alpha
+    	return rgba;
+
+    	*/
     }
 
     /**
@@ -57,14 +77,22 @@ abstract public class Operator_ImageScaling extends Operator
      * @param rgb array with [0]=red; [1]=green; [2]=blue
      * @return returns int value
      */
-    public int RGBtoInt (int [] rgb) {
-    	int rgbValue=rgb[0];
-    	rgbValue = (rgbValue << 8) + rgb[1];
-    	rgbValue = (rgbValue << 8) + rgb[2];
+    public int RGBAtoInt (int [] rgba) {
 
-    	return rgbValue;
+    	Color c = new Color (rgba[0], rgba[1], rgba[2], rgba[3]);
+
+    	return c.getRGB();
+
+    	/*
+    	int rgbaValue=rgba[0];
+    	rgbaValue = (rgbaValue << 8) + rgba[1];
+    	rgbaValue = (rgbaValue << 16) + rgba[2];
+    	rgbaValue = (rgbaValue << 24) + rgba[3];
+
+    	return rgbaValue;
+    	*/
     }
-    
+
     /**
      * @return Name of the Class
      */
@@ -73,7 +101,7 @@ abstract public class Operator_ImageScaling extends Operator
     {
         return "Operator_ImageScaling";
     }
-    
+
     /**
      * @return returns the scaled Image
      */
