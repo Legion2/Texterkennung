@@ -49,29 +49,12 @@ abstract public class Operator_ImageScaling extends Operator
     {
     	int [] rgba = new int [4];
 
-    	//Debugger.error(scaledImage, ""+colourNum);
-
-    	Color c = new Color(colourNum, true);
-
-    	rgba[0] = c.getRed();
-    	rgba[1] = c.getGreen();
-    	rgba[2] = c.getBlue();
-    	rgba[3] = c.getAlpha();
-    	
-    	//Debugger.info(this, "red: " + rgba[0] + " green: " + rgba[1] + " blue: " +rgba[2] + " alpha: " + rgba[3] );
-
-    	return rgba;
-
-    	/*
-
     	//int to rgb with error correction -> no values over 255 allowed
-    	rgba[0] = (((colourNum >> 16) & 0xff) > 255) ? 255 : ((colourNum >> 16) & 0xff) ;		//red
-		rgba[1] = (((colourNum >> 8) & 0xff) > 255) ? 255 : ((colourNum >> 8) & 0xff);			//green
-		rgba[2] = (((colourNum) & 0xff) > 255) ? 255 : ((colourNum) & 0xff);						//blue
-		rgba[3] = (((colourNum >> 24) & 0xff) > 255) ? 255 : ((colourNum >> 24) & 0xff);			//alpha
+    	rgba[0] = (colourNum >> 16) & 0xff;		//red
+		rgba[1] = (colourNum >> 8) & 0xff;		//green
+		rgba[2] = (colourNum) & 0xff;			//blue
+		rgba[3] = (colourNum >> 24) & 0xff;		//alpha
     	return rgba;
-
-    	*/
     }
 
     /**
@@ -79,20 +62,14 @@ abstract public class Operator_ImageScaling extends Operator
      * @param rgba array with [0]=red; [1]=green; [2]=blue [3]=alpha
      * @return returns int value with rgba information
      */
-    public int RGBAtoInt (int [] rgba) {
-
-    	Color c = new Color (rgba[0], rgba[1], rgba[2], rgba[3]);
-
-    	return c.getRGB();
-
-    	/*
+    public int RGBAtoInt (int [] rgba)
+    {
     	int rgbaValue=rgba[0];
-    	rgbaValue = (rgbaValue << 8) + rgba[1];
-    	rgbaValue = (rgbaValue << 16) + rgba[2];
-    	rgbaValue = (rgbaValue << 24) + rgba[3];
+    	rgbaValue += (rgba[1] << 8);
+    	rgbaValue += (rgba[2] << 16);
+    	rgbaValue += (rgba[3] << 24);
 
     	return rgbaValue;
-    	*/
     }
 
     /**

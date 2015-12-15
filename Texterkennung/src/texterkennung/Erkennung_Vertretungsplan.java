@@ -30,7 +30,7 @@ public class Erkennung_Vertretungsplan extends Erkennung
 		super.run();
 		if (!this.isrunning()) return;
 		
-		//ob bekommt skalliertes Bild
+		//
 		Operator_ImageScaling OI = new Operator_BilinearImageScaling(this.originalBild, this.scale);
 		if (!this.isrunning()) return;
 		OI.run();

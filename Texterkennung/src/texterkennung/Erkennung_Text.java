@@ -17,6 +17,8 @@ import texterkennung.operator.Operator_Verbindungen;
 import texterkennung.operator.Operator_Zeichenerkennung;
 import texterkennung.operator.Operator_Zeichengenerieren;
 import texterkennung.operator.Operator_Zeichenzuordnung;
+import texterkennung.operator.ImageScaling.Operator_BilinearImageScaling;
+import texterkennung.operator.ImageScaling.Operator_ImageScaling;
 
 public class Erkennung_Text extends Erkennung
 {
@@ -29,13 +31,18 @@ public class Erkennung_Text extends Erkennung
 	public void run()
 	{
 		super.run();
-		
 		if (!this.isrunning()) return;
+		
+		//
+		Operator_ImageScaling OI = new Operator_BilinearImageScaling(this.originalBild, this.scale);
+		if (!this.isrunning()) return;
+		OI.run();
+		Data_ID scaledImage = (Data_ID) OI.getData();
 		
 		//Markiert die Pixel, die die richtige Farbe haben.
 		Operator OF;
-		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(this.originalBild, this.farbListe, this.schwellwert, this.openGLHandler.getGL4());
-		else OF = new Operator_Farbzuordnung(this.originalBild, this.farbListe, this.schwellwert);
+		if (this.gpu) OF = new OperatorGPU_Farbzuordnung(scaledImage, this.farbListe, this.schwellwert, this.openGLHandler.getGL4());
+		else OF = new Operator_Farbzuordnung(scaledImage, this.farbListe, this.schwellwert);
 		if (!this.isrunning()) return;
 		OF.run();
 		DataList dataList = (DataList) OF.getData();
@@ -86,6 +93,6 @@ public class Erkennung_Text extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "false;true;Arial;200;0;100";
+		return "false;true;Arial;300;0;100";
 	}
 }

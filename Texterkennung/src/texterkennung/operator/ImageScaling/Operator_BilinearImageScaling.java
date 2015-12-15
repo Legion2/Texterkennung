@@ -78,21 +78,18 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 				 */
 				int [] P_rgba = new int [4];
 
-				for (int colour=0; colour<3; colour++) {
+				for (int colour = 0; colour < P_rgba.length; colour++)
+				{
 					//linear Interpolation in x-direction
-					float R1 = ((x2 - x)/(x2 - x1))*Q11[colour] + ((x - x1)/(x2 - x1))*Q21[colour];
-					float R2 = ((x2 - x)/(x2 - x1))*Q12[colour] + ((x - x1)/(x2 - x1))*Q22[colour];
+					float R1 = ((x2 - x)/(x2 - x1))*Q11[colour] + ((x - x1)/(x2 - x1)) * Q21[colour];
+					float R2 = ((x2 - x)/(x2 - x1))*Q12[colour] + ((x - x1)/(x2 - x1)) * Q22[colour];
 
 					//linear Interpolation in y-direction
-					float P = ((y2 - y)/(y2 - y1))*R1 + ((y - y1)/(y2 - y1))*R2;
+					float P = ((y2 - y)/(y2 - y1)) * R1 + ((y - y1)/(y2 - y1)) * R2;
 
-					P_rgba[colour]=(int) P;
+					P_rgba[colour] = (int) P;
 				}
-
-
-
-				this.scaledImage.setInt(xPos, yPos, RGBAtoInt(P_rgba));
-
+				this.scaledImage.setInt(xPos, yPos, this.RGBAtoInt(P_rgba));
 			}
 		}
 	}
@@ -100,13 +97,6 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 	@Override
 	public void run()
 	{
-		if (this.scaleFaktor == 1.0f)
-		{
-			//this.scaledImage = originalImage;
-
-			return;
-		}
-
 		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
 		scale();
 
