@@ -3,6 +3,7 @@ package texterkennung;
 import debug.Debugger;
 import jogl.OpenGLHandler;
 import texterkennung.data.DataList;
+import texterkennung.data.DataString;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
@@ -82,7 +83,8 @@ public class Erkennung_Text extends Erkennung
 		Operator_Zeichenerkennung OZE = new Operator_Zeichenerkennung(this.generierteZeichenliste, zeichenListe);
 		if (!this.isrunning()) return;
 		OZE.run();
-		OZE.getData();
+		DataString dataString = (DataString) OZE.getData();
+		dataString.setFont(this.font);
 		Debugger.info(this, "FERTIG!!!");
 	}
 	
@@ -92,6 +94,6 @@ public class Erkennung_Text extends Erkennung
 	 */
 	public static String getConfigPreset()
 	{
-		return "false;true;Arial;300;0;100";
+		return "false;true;Arial;400;0;100";
 	}
 }

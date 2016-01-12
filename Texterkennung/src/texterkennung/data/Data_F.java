@@ -1,6 +1,7 @@
 package texterkennung.data;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 import advanced.AColor;
 import javafx.scene.image.ImageView;
@@ -28,19 +29,19 @@ public class Data_F extends Data2D
 	 * @param data_Image Bild mit weiﬂem Hintergrund und schwarzer Schrift
 	 * @param name
 	 */
-	public Data_F(Data_Image data_Image, String name, boolean b)
+	public Data_F(BufferedImage bufferedImage, String name, boolean b)
 	{
-		super(data_Image, name, b);
-		this.setDatafromImage(data_Image);
+		super(bufferedImage.getWidth(), bufferedImage.getHeight(), name, b);
+		this.setDatafromImage(bufferedImage, b);
 	}
 	
-	private void setDatafromImage(Data_Image data_Image)
+	private void setDatafromImage(BufferedImage bufferedImage, boolean b)
 	{
 		for (int y = 0; y < this.ylenght; y++)
 		{
 			for (int x = 0; x < this.xlenght; x++)
 			{
-				this.setFloat(x, y, new AColor(data_Image.getInt(x, y)).getBlue() / 255.0f);
+				this.setFloat(x, y, new AColor(bufferedImage.getRGB(x, y)).getBlue() / 255.0f);
 			}
 		}
 	}

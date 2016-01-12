@@ -20,9 +20,9 @@ public class DataString extends Data
 		return this.data;
 	}
 	
-	public void setFont(Font font)
+	public void setFont(java.awt.Font font)
 	{
-		this.font = font;
+		this.font = new Font(font.getFamily(), font.getSize());
 	}
 	
 	@Override

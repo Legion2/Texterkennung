@@ -64,7 +64,7 @@ public class Operator_Zeichengenerieren extends Operator
 			g.clearRect(0, 0, breite, hoehe);
 			g.drawString(String.valueOf(c), 1, this.hoehe * 2 / 3);
 			
-			Data_F data_F = new Data_F(new Data_Image(zeichenBild, "generiertes Zeichen: " + c, false), "generiertes Zeichen: " + c, false);//TODO schneller machen durch eigene funktion
+			Data_F data_F = new Data_F(zeichenBild, "generiertes Zeichen: " + c, false);
 			
 			int xmin = this.breite - 1, xmax = 0, ymin = this.hoehe - 1, ymax = 0;
 			

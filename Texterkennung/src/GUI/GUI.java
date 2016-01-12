@@ -261,9 +261,12 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		ColorPicker colorPicker = new ColorPicker(Color.BLACK);
 		hBox.getChildren().add(colorPicker);
 		Button removeButton = new Button("Farbe entfernen");
+		removeButton.setOnAction(this);
 		Button addButton = new Button("Farbe hinzufügen");
+		addButton.setOnAction(this);
 		TextField textField2 = new TextField();
 		textField2.setPromptText("Skalierung in %");
+		
 		pane.setLeft(checkBox);
 		pane2.setLeft(checkBox2);
 		pane3.setLeft(comboBox); pane3.setRight(label);
@@ -417,14 +420,21 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 			{
 				if (this.sectedMode != null)
 				{
-					Class erkennung = this.modes.get(this.sectedMode);
-					try {
-						this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-						e.printStackTrace();
+					if (((HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft()).getChildren().size() > 0)
+					{
+						Class erkennung = this.modes.get(this.sectedMode);
+						try {
+							this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
+						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+							e.printStackTrace();
+						}
+						
+			        	this.erkennung.start();
 					}
-					
-		        	this.erkennung.start();
+					else
+					{
+						Debugger.error(this, "Keine Farbe ausgewählt!");
+					}
 				}
 				else
 				{
@@ -435,6 +445,27 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 			{
 				Debugger.error(this, "Keine Datei ausgewählt!");
 			}
+		}
+		else if (arg0.getSource() == ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getCenter())//Farbe entfernen
+		{
+			Debugger.info(this, "remove Colorpicker");
+			HBox hBox = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
+			
+			if (hBox.getChildren().size() > 0)
+			{
+				hBox.getChildren().remove(hBox.getChildren().size() - 1);
+			}
+			else
+			{
+				Debugger.error(this, "Kein Colorpicker!");
+			}
+		}
+		else if (arg0.getSource() == ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getRight())//Farbe hinzufügen
+		{
+			Debugger.info(this, "add Colorpicker");
+			HBox hBox = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
+			ColorPicker colorPicker = new ColorPicker(Color.BLACK);
+			 hBox.getChildren().add(colorPicker);
 		}
 	}
 	
