@@ -32,7 +32,7 @@ public class AColor extends Color
 		
 		double l = Math.pow(rot - rot2, 2) + Math.pow(gruen - gruen2, 2) + Math.pow(blau - blau2, 2);
 		
-		return l < Math.pow(schwellwert, 2);
+		return Math.sqrt(l) < schwellwert;
 	}
 	
 	public float fColor(int argb2, int schwellwert)
@@ -48,6 +48,6 @@ public class AColor extends Color
 		
 		double l = Math.pow(rot - rot2, 2) + Math.pow(gruen - gruen2, 2) + Math.pow(blau - blau2, 2);
 		
-		return (float) (l / Math.pow(schwellwert, 2));
+		return (float) (Math.sqrt(l) / schwellwert);
 	}
 }

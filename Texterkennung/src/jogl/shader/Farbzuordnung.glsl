@@ -43,7 +43,7 @@ float fColor(int color, int vcolor)
 	
 	float l = pow(rot - rot2, 2) + pow(gruen - gruen2, 2) + pow(blau - blau2, 2);
 	
-	return l / pow(schwellwert, 2);
+	return sqrt(l) / schwellwert;
 }
 
 void main()

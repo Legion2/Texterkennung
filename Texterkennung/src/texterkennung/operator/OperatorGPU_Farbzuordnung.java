@@ -9,6 +9,7 @@ import com.jogamp.opengl.GL4;
 
 import GUI.GUI;
 import advanced.AColor;
+import debug.Debugger;
 import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
@@ -51,7 +52,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		
 		for (int i = 0; i < farbListe.size(); i++)
 		{
-			this.farbenBuffer.put(0, farbListe.get(i).getRGB());
+			this.farbenBuffer.put(i, farbListe.get(i).getRGB());
 		}
 		
 		this.setBufferfromData(this.inputBuffer, this.data_Image);
@@ -70,7 +71,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		
 		IntBuffer buffers = Buffers.newDirectIntBuffer(4);
 		
-		gl.glGenBuffers(4, buffers);//Generiert drei neue Buffernamen(int)
+		gl.glGenBuffers(4, buffers);//Generiert vier neue Buffernamen(int)
 		
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(0));//Farben
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, this.farbenBuffer.limit() * 4, this.farbenBuffer, GL4.GL_STATIC_READ);
@@ -81,7 +82,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(2));//Data_ID
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, this.outputBuffer.limit() * 4, this.outputBuffer, GL4.GL_STREAM_READ);
 		
-		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(3));//Data_ID
+		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(3));//Data_F
 		gl.glBufferData(GL4.GL_ARRAY_BUFFER, this.outputBufferf.limit() * 4, this.outputBufferf, GL4.GL_STREAM_READ);
 		
 		gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, 0);
@@ -93,14 +94,16 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 2, buffers.get(2));
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 3, buffers.get(3));
 
-        this.compute(((data_ID.getXlenght() * data_ID.getYlenght()) / 1024) + 1, 1, 1);
+        int invoc = (((data_ID.getXlenght() * data_ID.getYlenght()) / 1024) + 1);
+        Debugger.info(this, "Invoc: " + invoc);
+        this.compute(invoc, 1, 1);
 
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 0, 0);
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 1, 0);
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 2, 0);
         gl.glBindBufferBase(GL4.GL_SHADER_STORAGE_BUFFER, 3, 0);
         
-        //Daten von der gpu zur cpu copieren
+        //Daten von der gpu zur cpu kopieren
         gl.glBindBuffer(GL4.GL_ARRAY_BUFFER, buffers.get(2));
         gl.glGetBufferSubData(GL4.GL_ARRAY_BUFFER, 0, this.outputBuffer.limit() * 4, this.outputBuffer);
         
@@ -117,8 +120,6 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		GUI.MainGUI.setTab(this.data_ID);
 		GUI.MainGUI.setTab(this.data_F);
 	}
-
-	
 
 	@Override
 	public Data getData()

@@ -228,6 +228,7 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	 */
 	private BorderPane configSetup()
 	{
+		//TODO alle Borderpanes in ein Array packen
 		BorderPane pane = new BorderPane();//AA
 		BorderPane pane2 = new BorderPane();//GPU
 		BorderPane pane3 = new BorderPane();//Schriftart
