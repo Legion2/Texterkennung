@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -45,7 +47,7 @@ import texterkennung.Erkennung_Vertretungsplan;
 import texterkennung.data.Data_Image;
 
 
-public class GUI extends Application implements EventHandler<ActionEvent>, ChangeListener<String>, IInfo, IConfigurable
+public class GUI extends Application implements EventHandler<ActionEvent>, ChangeListener, IInfo, IConfigurable
 {
 	public static GUI MainGUI;
 	
@@ -84,7 +86,7 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		
 		this.openGLHandler = new OpenGLHandler();
 		
-		list = new HashMap<IGUI, Tab>();
+		this.list = new HashMap<IGUI, Tab>();
 		this.modes = new HashMap<String, Class>();
 		
 		//Add Erkennungs Modes
@@ -124,6 +126,7 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		
 		//Tab Layout
 		this.tabPane = new TabPane();
+		this.tabPane.getSelectionModel().selectedItemProperty().addListener(this);
 		
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
@@ -381,14 +384,30 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	 */
 	public void setTab(IGUI data)
 	{
-		Platform.runLater(new Runnable() {
+		/*Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				BorderPane pane = new BorderPane();
 				data.gui(pane);
 				list.get(data).setContent(pane);
 			}
-		});
+		});*/
+	}
+	
+	private void updateTab(Tab tab)
+	{
+		BorderPane pane = new BorderPane();
+		Set<Map.Entry<IGUI, Tab>> set = list.entrySet();
+		for (Map.Entry<IGUI, Tab> entry : set)
+		{
+			if (tab.equals(entry.getValue()))
+			{
+				entry.getKey().gui(pane);
+				break;
+			}
+		}
+		tab.setContent(pane);
+		Debugger.info(this, "updated tab " + tab.getText());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -469,20 +488,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		}
 	}
 	
-	/**
-	 * wird aufgerufen, wenn die Schriftart geändert wird.
-	 * @param arg0 Liste mit allen Schriftarten
-	 * @param arg1 Alte Schriftart
-	 * @param newString Nun ausgewählte Schrift
-	 */
-	@Override
-	public void changed(ObservableValue<? extends String> arg0, String arg1, String newString)
-	{
-		this.sectedMode = newString;
-		this.updateModeConfig();
-		Debugger.info(this, "SelectedMode: " + this.sectedMode);
-	}
-
 	@Override
 	public String getName()
 	{
@@ -537,5 +542,29 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		
 		Debugger.info(this, "Config Parameter: " + config);
 		return config;
+	}
+
+	/**
+	 * wird aufgerufen, wenn die Schriftart geändert wird oder der Tab gewechslet wird.
+	 * @param arg0 Liste mit allen Schriftarten
+	 * @param arg1 Alte Schriftart
+	 * @param newString Nun ausgewählte Schrift
+	 */
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2)
+	{
+		if (arg2 instanceof String)
+		{
+			this.sectedMode = (String) arg2;
+			this.updateModeConfig();
+			Debugger.info(this, "SelectedMode: " + this.sectedMode);
+		}
+		else if (arg2 instanceof Tab)
+		{
+			Tab tab = (Tab) arg2;
+			Debugger.info(this, "Tab Selection changed " + tab.getText());
+			
+			this.updateTab(tab);
+		}
 	}
 }
