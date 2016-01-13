@@ -1,5 +1,9 @@
 # Texterkennung
-Bild laden und Text erkennen
+1. Bild auswählen
+2. Modus auswählen
+3. Paramater festlegen
+4. Berechnung starten
+5. Fertig
 
 #### Projekt importieren und Libraries hinzufügen
 
