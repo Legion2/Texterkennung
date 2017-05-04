@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import GUI.GUI;
 import advanced.AColor;
-import texterkennung.data.Data;
+import texterkennung.data.Data2D;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
@@ -15,7 +15,7 @@ import texterkennung.data.Data_ID;
  * @author Leon
  *
  */
-public class Operator_Farbzuordnung extends Operator
+public class Operator_Farbzuordnung implements Operator<DataList<Data2D>>
 {
 	private final Data_ID data_ID;
 	private final Data_F data_F;
@@ -40,7 +40,7 @@ public class Operator_Farbzuordnung extends Operator
 	}
 
 	@Override
-	public void run()
+	public DataList<Data2D> get()
 	{
 		for (int y = 0; y < this.data_Image.getYlenght(); y++)
 		{
@@ -64,14 +64,8 @@ public class Operator_Farbzuordnung extends Operator
 		
 		GUI.MainGUI.setTab(this.data_ID);
 		GUI.MainGUI.setTab(this.data_F);
-	}
-	
-	
-
-	@Override
-	public Data getData()
-	{
-		DataList list = new DataList("return list", false);
+		
+		DataList<Data2D> list = new DataList<Data2D>("return list", false);
 		list.add(this.data_ID);
 		list.add(this.data_F);
 		return list;

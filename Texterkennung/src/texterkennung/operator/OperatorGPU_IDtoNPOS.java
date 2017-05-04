@@ -7,7 +7,6 @@ import com.jogamp.opengl.GL4;
 
 import GUI.GUI;
 import debug.Debugger;
-import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
 
@@ -16,7 +15,7 @@ import texterkennung.data.Data_NPOS;
  * @author Leon
  *
  */
-public class OperatorGPU_IDtoNPOS extends OperatorGPU
+public class OperatorGPU_IDtoNPOS extends OperatorGPU<Data_NPOS>
 {
 	private final static String computeShaderPath = "./src/jogl/shader/IDtoNPOS.glsl";
 	
@@ -43,9 +42,9 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 	{
 		return "Konvertieren";
 	}
-
+	
 	@Override
-	public void run()
+	public Data_NPOS get()
 	{
 		Debugger.info(this, "Anzahl: " + this.data_ID_input.getMaxid());
 		this.begin();
@@ -86,13 +85,7 @@ public class OperatorGPU_IDtoNPOS extends OperatorGPU
 		this.end();
 		
 		GUI.MainGUI.setTab(this.data_NPOS_output);
-	}
-
-	
-
-	@Override
-	public Data getData()
-	{
+		
 		return this.data_NPOS_output;
 	}
 }

@@ -1,6 +1,7 @@
 package texterkennung.data;
 
 import java.awt.Color;
+import java.util.Optional;
 
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
@@ -27,7 +28,7 @@ public class Data_Zeichen extends Data
 	private Series<Number, Number> xseries;
 	private Series<Number, Number> yseries;
 	private char c;
-	private Data_Zeichen gData_Zeichen;
+	private Optional<Data_Zeichen> gData_Zeichen = Optional.empty();
 	
 	private String s = "";//Debug
 
@@ -129,7 +130,7 @@ public class Data_Zeichen extends Data
 			
 			vwert = this.getSnow_Boden(x2i) + (this.getSnow_Boden(x2i + 1) - this.getSnow_Boden(x2i)) * (x2 - x2i);
 			
-			summe += Math.abs(vwert - wert);
+			summe += Math.pow(vwert - wert, 2);
 		}
 		summe /= zeichen.breite;
 		
@@ -143,7 +144,7 @@ public class Data_Zeichen extends Data
 			
 			vwert = this.getSnow_Wand(y2i) + (this.getSnow_Wand(y2i + 1) - this.getSnow_Wand(y2i)) * (y2 - y2i);
 			
-			summe2 += Math.abs(vwert - wert);
+			summe2 += Math.pow(vwert - wert, 2);
 		}
 		summe2 /= zeichen.hoehe;
 		
@@ -180,7 +181,7 @@ public class Data_Zeichen extends Data
 	public void setchar(Data_Zeichen data_Zeichen)
 	{
 		this.c = data_Zeichen.c;
-		this.gData_Zeichen = data_Zeichen;
+		this.gData_Zeichen = Optional.of(data_Zeichen);
 	}
 	
 	public char getchar()
@@ -229,16 +230,15 @@ public class Data_Zeichen extends Data
         ac.setTitle("Snow_Boden");
         
         ac.getData().add(this.xseries);
-        if (this.gData_Zeichen != null)
-        {
+        this.gData_Zeichen.ifPresent(gData_Zeichen -> {
         	XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-        	series.setName(this.gData_Zeichen.getxSeries().getName());
-        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : this.gData_Zeichen.getxSeries().getData())
+        	series.setName(gData_Zeichen.getxSeries().getName());
+        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : gData_Zeichen.getxSeries().getData())
         	{
         		series.getData().add(new javafx.scene.chart.XYChart.Data<Number, Number>(data.getXValue(), data.getYValue()));
         	}
         	ac.getData().add(series);
-        }
+        });
         borderPane.setBottom(ac);
         
         final NumberAxis xAxis2 = new NumberAxis(0, 1, 0.1);
@@ -247,16 +247,15 @@ public class Data_Zeichen extends Data
         ac2.setTitle("Snow_Wand");
         
         ac2.getData().add(this.yseries);
-        if (this.gData_Zeichen != null)
-        {
+        this.gData_Zeichen.ifPresent(gData_Zeichen -> {
         	XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-        	series.setName(this.gData_Zeichen.getySeries().getName());
-        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : this.gData_Zeichen.getySeries().getData())
+        	series.setName(gData_Zeichen.getySeries().getName());
+        	for (javafx.scene.chart.XYChart.Data<Number, Number> data : gData_Zeichen.getySeries().getData())
         	{
         		series.getData().add(new javafx.scene.chart.XYChart.Data<Number, Number>(data.getXValue(), data.getYValue()));
         	}
         	ac2.getData().add(series);
-        }
+        });
         borderPane.setRight(ac2);
 	}
 }

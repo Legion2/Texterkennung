@@ -60,7 +60,7 @@ public class Data_ID extends Data2D
 
 	public int getMaxid()
 	{
-		return maxid;
+		return this.maxid;
 	}
 
 	/**

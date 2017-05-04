@@ -5,12 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.stream.Collectors;
 
 import GUI.GUI;
-import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
-import texterkennung.data.Data_Image;
 import texterkennung.data.Data_Zeichen;
 
 /**
@@ -18,9 +17,9 @@ import texterkennung.data.Data_Zeichen;
  * @author Leon
  *
  */
-public class Operator_Zeichengenerieren extends Operator
+public class Operator_Zeichengenerieren implements Operator<DataList<Data_Zeichen>>
 {
-	private final DataList zeichen;
+	private final DataList<Data_Zeichen> zeichen;
 	private final String zeichenString;
 	private final Font font;
 	private final boolean schwarzweiﬂ;
@@ -34,7 +33,7 @@ public class Operator_Zeichengenerieren extends Operator
 	 */
 	public Operator_Zeichengenerieren(String string, Font font, boolean schwarzweiﬂ)
 	{
-		this.zeichen = new DataList("Generierte Zeichen", true);
+		this.zeichen = new DataList<Data_Zeichen>("Generierte Zeichen", true);
 		this.zeichenString = string;
 		this.font = font;
 		this.schwarzweiﬂ = schwarzweiﬂ;
@@ -47,7 +46,7 @@ public class Operator_Zeichengenerieren extends Operator
 	}
 
 	@Override
-	public void run()
+	public DataList<Data_Zeichen> get()
 	{
 		BufferedImage zeichenBild = new BufferedImage(this.breite, this.hoehe, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = zeichenBild.createGraphics();
@@ -56,11 +55,9 @@ public class Operator_Zeichengenerieren extends Operator
 		g.setColor(new Color(0, 0, 0));
 		g.setBackground(new Color(255, 255, 255));
 		
-		for (int i = 0; i < this.zeichenString.length(); i++)
-		{
-			char c = this.zeichenString.charAt(i);
-			
+		this.zeichenString.chars().mapToObj(ci -> {
 			//Zeichen zeichnen
+			char c = (char) ci;
 			g.clearRect(0, 0, breite, hoehe);
 			g.drawString(String.valueOf(c), 1, this.hoehe * 2 / 3);
 			
@@ -82,15 +79,11 @@ public class Operator_Zeichengenerieren extends Operator
 				}
 			}
 			
-			this.zeichen.add(new Data_Zeichen(c, xmin, xmax, ymin, ymax, data_F, this.schwarzweiﬂ, "generiertes Zeichen: " + c));
-		}
+			return new Data_Zeichen(c, xmin, xmax, ymin, ymax, data_F, this.schwarzweiﬂ, "generiertes Zeichen: " + c);
+		}).collect(Collectors.toCollection(() -> this.zeichen));
 		
 		GUI.MainGUI.setTab(this.zeichen);
-	}
-
-	@Override
-	public Data getData()
-	{
+		
 		return this.zeichen;
 	}
 }

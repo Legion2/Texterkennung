@@ -10,7 +10,7 @@ import com.jogamp.opengl.GL4;
 import GUI.GUI;
 import advanced.AColor;
 import debug.Debugger;
-import texterkennung.data.Data;
+import texterkennung.data.Data2D;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
@@ -23,7 +23,7 @@ import texterkennung.data.Data_ID;
  * @author Leon
  *
  */
-public class OperatorGPU_Farbzuordnung extends OperatorGPU
+public class OperatorGPU_Farbzuordnung extends OperatorGPU<DataList<Data2D>>
 {
 	private final static String computeShaderPath = "./src/jogl/shader/Farbzuordnung.glsl";
 	
@@ -65,7 +65,7 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 	}
 
 	@Override
-	public void run()
+	public DataList<Data2D> get()
 	{
 		this.begin();
 		
@@ -119,12 +119,8 @@ public class OperatorGPU_Farbzuordnung extends OperatorGPU
 		
 		GUI.MainGUI.setTab(this.data_ID);
 		GUI.MainGUI.setTab(this.data_F);
-	}
-
-	@Override
-	public Data getData()
-	{
-		DataList list = new DataList("return list", false);
+		
+		DataList<Data2D> list = new DataList<Data2D>("return list", false);
 		list.add(this.data_ID);
 		list.add(this.data_F);
 		return list;

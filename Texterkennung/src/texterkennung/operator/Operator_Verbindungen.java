@@ -3,13 +3,12 @@ package texterkennung.operator;
 import java.util.ArrayList;
 
 import GUI.GUI;
-import texterkennung.data.Data;
 import texterkennung.data.Data_ID;
 
-public class Operator_Verbindungen extends Operator
+public class Operator_Verbindungen implements Operator<Data_ID>
 {
-	private Data_ID data_ID_input;
-	private Data_ID data_ID_output;
+	private final Data_ID data_ID_input;
+	private final Data_ID data_ID_output;
 	
 	public Operator_Verbindungen(Data_ID data_int)
 	{
@@ -24,7 +23,7 @@ public class Operator_Verbindungen extends Operator
 	}
 
 	@Override
-	public void run()
+	public Data_ID get()
 	{
 		int x = 0, y = 0, id = -1;
 		ArrayList<Integer> masterIDList = new ArrayList<Integer>();
@@ -155,12 +154,7 @@ public class Operator_Verbindungen extends Operator
 		
 		this.data_ID_output.setMaxid(id);
 		GUI.MainGUI.setTab(this.data_ID_output);
-	}
-
-
-	@Override
-	public Data getData()
-	{
+		
 		return this.data_ID_output;
 	}
 }

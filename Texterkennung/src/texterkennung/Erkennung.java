@@ -2,6 +2,7 @@ package texterkennung;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 import GUI.IConfigurable;
 import advanced.AColor;
@@ -10,11 +11,14 @@ import debug.IInfo;
 import jogl.OpenGLHandler;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_Image;
+import texterkennung.data.Data_Zeichen;
 import texterkennung.operator.Operator_Zeichengenerieren;
 
-public abstract class Erkennung extends Thread implements IInfo, IConfigurable
+public abstract class Erkennung implements IInfo, IConfigurable, Runnable
 {
 	protected static final String standartZeichen = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?‰ˆ¸ƒ÷‹ﬂ-";
+
+	private String name;
 	
 	//Config
 	private final String config;
@@ -31,7 +35,7 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 	/**
 	 * Liste mit den generierten vergleichs Zeichen
 	 */
-	protected DataList generierteZeichenliste;
+	protected CompletableFuture<DataList<Data_Zeichen>> generierteZeichenliste;
 	
 	/**
 	 * indicates whether the Thread is running
@@ -49,15 +53,14 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 	@Override
 	public void run()
 	{
-		super.run();
 		this.run = true;
 		Debugger.info(this, "run");
 		
 		//Generiert den standart Zeichensatz um diese mit den im Bild vorkommenden zu vergleichen
 		Operator_Zeichengenerieren OZG = new Operator_Zeichengenerieren(standartZeichen, this.font, this.schwarzweiﬂ);
 		if (!this.isrunning()) return;
-		OZG.run();
-		this.generierteZeichenliste = (DataList) OZG.getData();
+		this.generierteZeichenliste = CompletableFuture.supplyAsync(OZG);
+		
 		Debugger.info(this, "Zeichengenerieren fertig");
 	}
 	
@@ -116,5 +119,16 @@ public abstract class Erkennung extends Thread implements IInfo, IConfigurable
 	public String getConfig()
 	{
 		return this.config;
+	}
+
+	@Override
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	protected void setName(String string)
+	{
+		this.name = string;
 	}
 }

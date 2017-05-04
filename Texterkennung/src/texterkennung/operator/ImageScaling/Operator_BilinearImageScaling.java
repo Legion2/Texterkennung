@@ -4,25 +4,34 @@ package texterkennung.operator.ImageScaling;
 import GUI.GUI;
 import debug.Debugger;
 import texterkennung.data.Data_ID;
+import texterkennung.data.Data_Image;
 
 /**
  * @author Fabio Schmidberger
  *
  */
-public class Operator_BilinearImageScaling extends Operator_ImageScaling
+public class Operator_BilinearImageScaling implements Operator_ImageScaling
 {
+	private Data_ID originalImage;
+	private float scaleFaktor;
+	private Data_Image scaledImage;
+
 	/**
-	 * @param originalImage
-	 * @param scaleFaktor
+	 * @param originalImage Image that should be scaled
+     * @param scaleFaktor
+     * @
 	 */
 	public Operator_BilinearImageScaling(Data_ID originalImage, float scaleFaktor)
 	{
-		super(originalImage, scaleFaktor);
+		this.originalImage = originalImage;
+        this.scaleFaktor = scaleFaktor;
+        this.scaledImage = new Data_Image((int) (originalImage.getXlenght() * scaleFaktor), (int) (originalImage.getYlenght() * scaleFaktor), "scaledImage", true);
 	}
 
 	@Override
-	public void scale()
+	public Data_Image get()
 	{
+		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
 
 		/*
 		 * Bilinear Interpolation
@@ -92,14 +101,14 @@ public class Operator_BilinearImageScaling extends Operator_ImageScaling
 				this.scaledImage.setInt(xPos, yPos, this.RGBAtoInt(P_rgba));
 			}
 		}
+		
+		GUI.MainGUI.setTab(this.scaledImage);
+		return this.scaledImage;
 	}
 
 	@Override
-	public void run()
+	public String getName()
 	{
-		Debugger.info(this, "Skalierung: " + this.scaleFaktor);
-		scale();
-
-		GUI.MainGUI.setTab(this.scaledImage);
+		return "BilinearImageScaling";
 	}
 }

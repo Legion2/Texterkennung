@@ -40,7 +40,7 @@ public class Data_Image extends Data_ID
 		if (b) GUI.MainGUI.setTab(this);
 	}
 
-	public ImageView getImageView()
+	private ImageView getImageView()
 	{
 		WritableImage wr = new WritableImage(this.xlenght, this.ylenght);
         PixelWriter pw = wr.getPixelWriter();

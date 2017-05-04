@@ -13,6 +13,7 @@ import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL4;
 
 import debug.Debugger;
+import texterkennung.data.Data;
 import texterkennung.data.Data_F;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_NPOS;
@@ -22,7 +23,7 @@ import texterkennung.data.Data_NPOS;
  * @author Leon
  *
  */
-public abstract class OperatorGPU extends Operator
+public abstract class OperatorGPU<T extends Data> implements Operator<T>
 {
 	protected GL4 gl;
 	

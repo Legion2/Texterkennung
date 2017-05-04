@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import javax.imageio.ImageIO;
 
@@ -15,12 +14,8 @@ import debug.Debugger;
 import debug.IInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -47,7 +42,7 @@ import texterkennung.Erkennung_Vertretungsplan;
 import texterkennung.data.Data_Image;
 
 
-public class GUI extends Application implements EventHandler<ActionEvent>, ChangeListener, IInfo, IConfigurable
+public class GUI extends Application implements IInfo, IConfigurable
 {
 	public static GUI MainGUI;
 	
@@ -126,7 +121,12 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		
 		//Tab Layout
 		this.tabPane = new TabPane();
-		this.tabPane.getSelectionModel().selectedItemProperty().addListener(this);
+		this.tabPane.getSelectionModel().selectedItemProperty().addListener((arg0, arg1, arg2) -> {
+			Tab tab = (Tab) arg2;
+			Debugger.info(this, "Tab Selection changed " + tab.getText());
+			
+			this.updateTab(tab);
+		});
 		
 
 		// (2) Layout-Klassen erzeugen und Komponenten einsetzen
@@ -190,9 +190,26 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		BorderPane.setAlignment(label_file, Pos.TOP_CENTER);
 		BorderPane.setAlignment(button_browse, Pos.TOP_CENTER);
 		BorderPane.setAlignment(textfield_filepath, Pos.TOP_CENTER);
-		
-		this.button_browse.setOnAction(this);//EventHandler
-		
+
+		this.button_browse.setOnAction(arg0 -> {
+			FileChooser fileChooser = new FileChooser();
+
+			fileChooser.setInitialDirectory(new File("./res"));
+			File file = fileChooser.showOpenDialog(null);
+			if (file != null)
+			{
+				this.textfield_filepath.setText(file.getAbsolutePath());
+
+				try {
+					BufferedImage image = ImageIO.read(file);
+
+					this.data_Image = new Data_Image(image, "Originalbild", true);
+				} catch (IOException ex) {
+					Debugger.error(this, "Fehler aufgetreten beim Lesen der Datei");
+				}
+			}
+		});
+
 		return fileSetup;
 	}
 	
@@ -200,16 +217,46 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	 * Setup Modus Auswahl
 	 * @return BorderPane
 	 */
+	@SuppressWarnings("unchecked")
 	private BorderPane modeSetup()
 	{
 		Label label_mode = new Label ("Modus: ");
 
 		ComboBox<String> comboBox_mode = new ComboBox<String>(this.modesString);
-		comboBox_mode.valueProperty().addListener(this);
+		comboBox_mode.valueProperty().addListener((arg0, arg1, arg2) -> {
+			this.sectedMode = (String) arg2;
+			this.updateModeConfig();
+			Debugger.info(this, "SelectedMode: " + this.sectedMode);
+		});
 		comboBox_mode.setPromptText("Texterkennungs Modus");
 
-		this.button_startCalc = new Button ("Starte berechnung");
-		this.button_startCalc.setOnAction(this);
+		this.button_startCalc = new Button("Starte berechnung");
+		this.button_startCalc.setOnAction(arg0 -> {
+			if (this.data_Image != null) {
+				if (this.sectedMode != null) {
+					if (((HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft()).getChildren().size() > 0)
+					{
+						Class erkennung = this.modes.get(this.sectedMode);
+						try {
+							this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class)
+									.getConstructor(Data_Image.class, OpenGLHandler.class, String.class)
+									.newInstance(this.data_Image, this.openGLHandler, this.getConfig());
+						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+								| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+							e.printStackTrace();
+						}
+						CompletableFuture.runAsync(this.erkennung);
+						//this.erkennung.start();
+					} else {
+						Debugger.error(this, "Keine Farbe ausgewählt!");
+					}
+				} else {
+					Debugger.error(this, "Keine Modus ausgewählt!");
+				}
+			} else {
+				Debugger.error(this, "Keine Datei ausgewählt!");
+			}
+		});
 
 
 		BorderPane modeSelection = new BorderPane(comboBox_mode);
@@ -251,11 +298,8 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		ComboBox<String> comboBox = new ComboBox<String>(observableList);
 		comboBox.setPromptText("Schriftart");
 		comboBox.setEditable(true);
-		comboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				GUI.MainGUI.updateFont(arg2);
-			}
+		comboBox.getEditor().textProperty().addListener((arg0, arg1, arg2) -> {
+			GUI.MainGUI.updateFont(arg2);
 		});
 		Label label = new Label("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(),.;:!?äöüÄÖÜß-");
 		TextField textField = new TextField();
@@ -264,9 +308,26 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		ColorPicker colorPicker = new ColorPicker(Color.BLACK);
 		hBox.getChildren().add(colorPicker);
 		Button removeButton = new Button("Farbe entfernen");
-		removeButton.setOnAction(this);
+		removeButton.setOnAction(arg0 -> {
+			Debugger.info(this, "remove Colorpicker");
+			HBox hBoxl = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
+			
+			if (hBoxl.getChildren().size() > 0)
+			{
+				hBoxl.getChildren().remove(hBoxl.getChildren().size() - 1);
+			}
+			else
+			{
+				Debugger.error(this, "Kein Colorpicker!");
+			}
+		});
 		Button addButton = new Button("Farbe hinzufügen");
-		addButton.setOnAction(this);
+		addButton.setOnAction(arg0 -> {
+			Debugger.info(this, "add Colorpicker");
+			HBox hBoxl = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
+			ColorPicker colorPickerl = new ColorPicker(Color.BLACK);
+			hBoxl.getChildren().add(colorPickerl);
+		});
 		TextField textField2 = new TextField();
 		textField2.setPromptText("Skalierung in %");
 		
@@ -345,7 +406,6 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	 * Update the Font of the Font-selection Textfield
 	 * @param font Neue Schriftart
 	 */
-	@SuppressWarnings("unchecked")
 	public void updateFont(String font)
 	{
 		if (this.borderPane != null && javafx.scene.text.Font.font(font) != null)
@@ -364,19 +424,16 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	 */
 	public void addTab(IGUI data)
 	{
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				Tab tab = new Tab();
-				tab.setText(data.getName());
-				
-				list.put(data, tab);
-				
-				tabPane.getTabs().add(tab);
-			}
+		Platform.runLater(() -> {
+			Tab tab = new Tab();
+			tab.setText(data.getName());
+
+			list.put(data, tab);
+
+			tabPane.getTabs().add(tab);
 		});
 	}
-	
+
 	/**
 	 * Aktuallisiert den Inhalt des Tabs, der zu data gehört
 	 * 
@@ -397,95 +454,11 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 	private void updateTab(Tab tab)
 	{
 		BorderPane pane = new BorderPane();
-		Set<Map.Entry<IGUI, Tab>> set = list.entrySet();
-		for (Map.Entry<IGUI, Tab> entry : set)
-		{
-			if (tab.equals(entry.getValue()))
-			{
-				entry.getKey().gui(pane);
-				break;
-			}
-		}
+		
+		this.list.entrySet().stream().filter(entry -> (tab.equals(entry.getValue()))).findFirst().ifPresent(entry -> entry.getKey().gui(pane));
+		
 		tab.setContent(pane);
 		Debugger.info(this, "updated tab " + tab.getText());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void handle(ActionEvent arg0)
-	{
-		if (arg0.getSource() == this.button_browse)
-		{
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialDirectory(new File("./res"));
-			File file = fileChooser.showOpenDialog(null);
-			if (file != null)
-			{
-				this.textfield_filepath.setText(file.getAbsolutePath());
-				
-				try
-	            {
-					BufferedImage image = ImageIO.read(file);
-					
-					this.data_Image = new Data_Image(image, "Originalbild", true);
-	            } catch (IOException ex) {
-	            	Debugger.error(this, "Fehler aufgetreten beim Lesen der Datei");
-	            }
-			}
-		}
-		else if (arg0.getSource() == this.button_startCalc)
-		{
-			if (this.data_Image != null)
-			{
-				if (this.sectedMode != null)
-				{
-					if (((HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft()).getChildren().size() > 0)
-					{
-						Class erkennung = this.modes.get(this.sectedMode);
-						try {
-							this.erkennung = (Erkennung) erkennung.asSubclass(Erkennung.class).getConstructor(Data_Image.class, OpenGLHandler.class, String.class).newInstance(this.data_Image, this.openGLHandler, this.getConfig());
-						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-							e.printStackTrace();
-						}
-						
-			        	this.erkennung.start();
-					}
-					else
-					{
-						Debugger.error(this, "Keine Farbe ausgewählt!");
-					}
-				}
-				else
-				{
-					Debugger.error(this, "Keine Modus ausgewählt!");
-				}
-			}
-			else
-			{
-				Debugger.error(this, "Keine Datei ausgewählt!");
-			}
-		}
-		else if (arg0.getSource() == ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getCenter())//Farbe entfernen
-		{
-			Debugger.info(this, "remove Colorpicker");
-			HBox hBox = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
-			
-			if (hBox.getChildren().size() > 0)
-			{
-				hBox.getChildren().remove(hBox.getChildren().size() - 1);
-			}
-			else
-			{
-				Debugger.error(this, "Kein Colorpicker!");
-			}
-		}
-		else if (arg0.getSource() == ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getRight())//Farbe hinzufügen
-		{
-			Debugger.info(this, "add Colorpicker");
-			HBox hBox = (HBox) ((BorderPane) ((VBox) this.borderPane.getCenter()).getChildren().get(4)).getLeft();
-			ColorPicker colorPicker = new ColorPicker(Color.BLACK);
-			 hBox.getChildren().add(colorPicker);
-		}
 	}
 	
 	@Override
@@ -542,29 +515,5 @@ public class GUI extends Application implements EventHandler<ActionEvent>, Chang
 		
 		Debugger.info(this, "Config Parameter: " + config);
 		return config;
-	}
-
-	/**
-	 * wird aufgerufen, wenn die Schriftart geändert wird oder der Tab gewechslet wird.
-	 * @param arg0 Liste mit allen Schriftarten
-	 * @param arg1 Alte Schriftart
-	 * @param newString Nun ausgewählte Schrift
-	 */
-	@Override
-	public void changed(ObservableValue arg0, Object arg1, Object arg2)
-	{
-		if (arg2 instanceof String)
-		{
-			this.sectedMode = (String) arg2;
-			this.updateModeConfig();
-			Debugger.info(this, "SelectedMode: " + this.sectedMode);
-		}
-		else if (arg2 instanceof Tab)
-		{
-			Tab tab = (Tab) arg2;
-			Debugger.info(this, "Tab Selection changed " + tab.getText());
-			
-			this.updateTab(tab);
-		}
 	}
 }

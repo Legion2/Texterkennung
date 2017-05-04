@@ -1,12 +1,11 @@
 package texterkennung.operator;
 
 import GUI.GUI;
-import texterkennung.data.Data;
 import texterkennung.data.DataList;
 import texterkennung.data.Data_ID;
 import texterkennung.data.Data_Image;
 
-public class Operator_Bildteilen extends Operator
+public class Operator_Bildteilen implements Operator<DataList<Data_ID>>
 {
 	private final Data_ID data_ID_input;
 	private final Data_ID data_ID_output1;
@@ -26,7 +25,7 @@ public class Operator_Bildteilen extends Operator
 	}
 
 	@Override
-	public void run()
+	public DataList<Data_ID> get()
 	{
 		for (int y = 0; y < this.data_ID_output1.getYlenght(); y++)
 		{
@@ -45,15 +44,10 @@ public class Operator_Bildteilen extends Operator
 		}
 		GUI.MainGUI.setTab(this.data_ID_output1);
 		GUI.MainGUI.setTab(this.data_ID_output2);
-	}
-
-	@Override
-	public Data getData()
-	{
-		DataList dataList = new DataList("", false);
+		
+		DataList<Data_ID> dataList = new DataList<Data_ID>("", false);
 		dataList.add(this.data_ID_output1);
 		dataList.add(this.data_ID_output2);
 		return dataList;
 	}
-
 }

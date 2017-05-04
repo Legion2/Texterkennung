@@ -1,5 +1,7 @@
 package jogl;
 
+import java.util.Optional;
+
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLProfile;
 
@@ -13,7 +15,7 @@ public class OpenGLHandler implements IInfo
 	 */
 	private final boolean openGLsupport;
 
-	private JOGL jogl;
+	private Optional<JOGL> jogl = Optional.empty();
 	
 	public OpenGLHandler()
 	{
@@ -36,21 +38,22 @@ public class OpenGLHandler implements IInfo
 	{
 		if (this.openGLsupport)
 		{
-			if (this.jogl == null)
+			return this.jogl.orElseGet(() ->
 			{
-				this.jogl = new JOGL();
-				synchronized (this.jogl)
+				JOGL jogl = new JOGL();
+				synchronized (jogl)
 				{
 					try
 					{
-						this.jogl.wait();
+						jogl.wait();
 					} catch (InterruptedException e) {
 						Debugger.error(this, "Kann nicht auf JOGL Thread Warten!");
 						e.printStackTrace();
 					}
 				}
-			}
-			return this.jogl.getGL4();
+				this.jogl = Optional.of(jogl);
+				return jogl;
+			}).getGL4();
 		}
 		else
 		{
@@ -61,11 +64,11 @@ public class OpenGLHandler implements IInfo
 	
 	public void stop()
 	{
-		if (this.jogl != null)
+		this.jogl.ifPresent(jogl ->
 		{
 			jogl.dispose();
 			jogl.drawable.destroy();
-		}
+		});
 	}
 
 	@Override

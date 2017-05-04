@@ -1,18 +1,11 @@
 package texterkennung.operator;
 
+import java.util.function.Supplier;
+
 import debug.IInfo;
 import texterkennung.data.Data;
 
-public abstract class Operator implements IInfo
+public interface Operator<T extends Data> extends IInfo, Supplier<T>
 {
-	/**
-	 * Methode in der die Berechnung gemacht wird
-	 */
-	public abstract void run();
 	
-	/**
-	 * 
-	 * @return Die Daten die berechnet wurden.
-	 */
-	public abstract Data getData();
 }
